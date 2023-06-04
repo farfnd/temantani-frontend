@@ -1,0 +1,291 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial;
+  padding: 10px;
+  background: #f1f1f1 !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header/Blog Title */
+.header {
+  padding: 30px;
+  text-align: center;
+  background: white;
+}
+
+.header h1 {
+  margin: 0px;
+  font-size: 50px;
+}
+
+/* Style the top navigation bar */
+* {
+  list-style-type: none;
+}
+
+.topnav {
+  display: flex;
+  background-color: #ffffff;
+  position: sticky;
+  top: -5px;
+  margin: 0;
+  box-shadow: 0 37px 37px -4px rgba(0, 0, 0, 0.02);
+  z-index: 100;
+}
+
+/* Style the topnav links */
+.topnav a {
+  float: left;
+  display: block;
+  text-align: center;
+  padding: 0 20px;
+  text-decoration: none;
+}
+
+.topnav .auth {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: white;
+}
+
+.topnav form {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  text-decoration: none;
+  margin: 0px;
+  padding: 0px;
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+.section {
+  width: 90%;
+  background-color: white;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Right column */
+.rightcolumn {
+  float: left;
+  width: 25%;
+  background-color: #f1f1f1;
+  padding-left: 20px;
+}
+
+/* Fake image */
+.fakeimg {
+  margin-bottom: 1rem;
+  width: 50%;
+  max-height: 400px;
+  object-fit: cover;
+}
+
+/* Add a card effect for articles */
+.card {
+  background-color: white;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.display-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+}
+
+.display-cards .display-card {
+  width: calc(25% - 40px);
+  padding: 18px;
+  position: relative;
+}
+
+.display-card:hover {
+  box-shadow: 0 0 5px gray;
+}
+
+.display-cards .display-card .display-card-image-container {
+  border-radius: 20px;
+  overflow: hidden;
+  height: 200px;
+}
+
+.display-cards .display-card .display-card-image-container-movie {
+  border-radius: 20px;
+  overflow: hidden;
+  height: 400px;
+}
+
+.display-cards .display-card .display-card-image {
+  padding-top: 60%;
+  border-radius: 20px;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  transition: all 0.4s cubic-bezier(0.65, 0, 0.2, 1);
+  transform: scale(104%);
+}
+
+.display-cards .display-card .display-card-image-movie {
+  padding-top: 60%;
+  border-radius: 20px;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  transition: all 0.4s cubic-bezier(0.65, 0, 0.2, 1);
+  transform: scale(104%);
+}
+
+.display-cards .display-card .display-card-title {
+  display: flex;
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding-top: 20px;
+}
+
+.display-cards .display-card .display-card-info p {
+  color: black;
+  margin: 4px 0;
+  padding: 0;
+}
+
+.display-card a {
+  text-decoration: none;
+}
+
+.details h4 {
+  margin: 0 0 10px 0 !important;
+  line-height: normal;
+  font-weight: 400 !important;
+}
+
+.details hr {
+  margin: 10px 0;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Footer */
+footer {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #000;
+  color: white;
+  vertical-align: middle;
+  text-align: center;
+  padding: 20px;
+}
+
+footer h5 {
+  color: #eee;
+}
+
+.row {
+  margin: 20px;
+  min-height: 100vh;
+}
+
+h1.ant-typography,
+.ant-typography h1 {
+  text-align: center;
+}
+
+#appTable {
+  border-collapse: collapse;
+  margin: auto;
+}
+
+#inputForm {
+  border: 1px solid #aaa;
+  width: 75%;
+  margin: 30px auto;
+  padding: 20px;
+  overflow: hidden;
+}
+
+#inputForm label {
+  font-weight: bold;
+}
+
+.ant-row {
+  margin-bottom: 10px;
+}
+
+#submitBtn {
+  margin: 10px auto;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.gradient-custom-2 {
+  /* fallback for old browsers */
+  background: #1b8651;
+}
+
+@media (min-width: 768px) {
+  .gradient-form {
+    height: 100vh !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .gradient-custom-2 {
+    border-top-right-radius: 0.3rem;
+    border-bottom-right-radius: 0.3rem;
+  }
+}
+
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 800px) {
+  .section,
+  .rightcolumn {
+    width: 100%;
+    padding: 0;
+  }
+}
+
+/* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+@media screen and (max-width: 400px) {
+  .topnav a {
+    float: none;
+    width: 100%;
+  }
+
+  .topnav {
+    display: flex;
+    flex-direction: column;
+  }
+  .topnav form {
+    position: relative;
+    display: block;
+    right: 0;
+    text-decoration: none;
+    margin: 0px;
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
