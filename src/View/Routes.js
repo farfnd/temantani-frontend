@@ -17,9 +17,11 @@ import MoviesList from "./Pages/Movies/MoviesList";
 import MoviesForm from "./Pages/Movies/MoviesForm";
 import GameDetails from "./Pages/Games/GameDetails";
 import MovieDetails from "./Pages/Movies/MovieDetails";
+import AdminDashboard from "./Pages/Admin/Dashboard";
+import AdminProjectList from "./Pages/Admin/Projects/ProjectList";
 
 const Routes = () => {
-  
+
   const NotLoggedInRoute = ({ ...props }) => {
     if (Cookies.get('token') === undefined) { return <Route {...props} /> }
     else { return <Redirect to="/" /> }
@@ -51,7 +53,15 @@ const Routes = () => {
                 <AuthLayout body={<Register />} />
               </NotLoggedInRoute>
 
-              <Route path="/admin" exact>
+              <Route path="/admin/dashboard" exact>
+                <LayoutComponent body={< AdminDashboard />} />
+              </Route>
+
+              <Route path="/admin/projects" exact>
+                <LayoutComponent body={< AdminProjectList />} />
+              </Route>
+
+              <Route path="/games" exact>
                 <LayoutComponent body={<GamesList />} />
               </Route>
 

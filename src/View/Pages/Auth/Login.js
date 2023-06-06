@@ -35,7 +35,7 @@ const Login = () => {
 
     setIsLoading(true)
 
-    axios.post(config.api.userService + '/login', {
+    axios.post(`${config.api.userService}/login`, {
       email: input.email,
       password: input.password
     }).then(

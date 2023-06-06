@@ -1,14 +1,6 @@
-import React, { useContext } from "react"
-import Navbar from "./Navbar"
-import Sidebar from "./Sidebar"
+import React from "react"
 import { Layout } from 'antd';
-import { UserContext } from "../../Contexts/UserContext";
-import Cookies from "js-cookie";
-import { Link } from "react-router-dom";
 import Logo from "../../assets/img/logo.png"
-import Button from 'react-bootstrap/Button';
-
-const { Footer } = Layout;
 
 const AuthLayout = (props) => {
     return (
@@ -25,10 +17,10 @@ const AuthLayout = (props) => {
                         alignItems: 'center',
                     }}
                 >
-                    <div className="row d-flex justify-content-center align-items-center" style={{ minHeight: 'auto' }}>
+                    <div className="row d-flex justify-content-center align-items-center">
                         <div className="col-xl-8">
                             <div className="card rounded-3 text-black" style={{ marginTop: 0 }}>
-                                <div className="row g-0 m-auto" style={{ minHeight: 'auto' }}>
+                                <div className="row g-0 m-auto">
                                     <div className="col-lg-6 my-auto">
                                         <div className="card-body p-md-5 mx-md-4">
                                             <div className="text-center">

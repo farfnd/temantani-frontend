@@ -13,7 +13,6 @@ const Home = () => {
 
     useEffect(() => {
         document.title = 'Home';
-        console.log(role);
     }, []);
 
     let history = useHistory();

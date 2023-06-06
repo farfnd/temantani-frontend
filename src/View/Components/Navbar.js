@@ -33,13 +33,6 @@ const Navbar = () => {
             <Header className="topnav">
 
                 <Menu theme="dark" mode="horizontal">
-                    {
-                        Cookies.get('token') !== undefined && (
-                            <>
-                                <Menu.Item key="0" onClick={toggleSidebar}>{collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}</Menu.Item>
-                            </>
-                        )
-                    }
                     <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
                     <Menu.Item key="2"><Link to="/movies">Movies List</Link></Menu.Item>
                     <Menu.Item key="3"><Link to="/games">Games List</Link></Menu.Item>

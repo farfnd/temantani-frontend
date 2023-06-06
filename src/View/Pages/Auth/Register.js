@@ -24,7 +24,7 @@ const Register = () => {
     
     setIsLoading(true)
 
-    axios.post(config.api.userService + '/register', {
+    axios.post(`${config.api.userService}/register`, {
       name: input.name,
       email: input.email,
       password: input.password,

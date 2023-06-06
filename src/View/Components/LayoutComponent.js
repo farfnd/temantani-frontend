@@ -13,24 +13,12 @@ const LayoutComponent = (props) => {
 
     return (
         <>
-            <Layout>
-                {
-                    Cookies.get('token') !== undefined && (
-                        <>
-                            <Sidebar />
-                        </>
-                    )
-                }
+            <Layout style={{ minHeight: '100vh'}}>
+                <Sidebar />
                 <Layout>
 
                     <Navbar />
-                    <div className="row">
-                        <div className="section">
-                            {props.body}
-                        </div>
-                    </div>
-
-                    <Footer style={{ textAlign: 'center' }}>Final Project ReactJS Sanbercode<br />Made with ❤ by Farhan</Footer>
+                    {props.body}
                 </Layout>
             </Layout>
         </>

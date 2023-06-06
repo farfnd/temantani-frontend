@@ -1,6 +1,7 @@
 import React, { useState, createContext } from "react";
 import axios from "axios"
 import Cookies from "js-cookie";
+import config from "../config";
 
 export const ProjectsContext = createContext();
 
@@ -19,7 +20,7 @@ export const ProjectsProvider = props => {
     const [currentId, setCurrentId] = useState(null)
 
     const fetchData = async () => {
-        const result = await axios.get(`https://backendexample.sanbersy.com/api/data-project`)
+        const result = await axios.get(`${config.api.projectService}/projects`)
 
         setProjects(result.data.map(x => {
             return {
@@ -36,7 +37,7 @@ export const ProjectsProvider = props => {
     }
 
     const fetchDataById = async (id) => {
-        const result = await axios.get(`https://backendexample.sanbersy.com/api/data-project/${id}`)
+        const result = await axios.get(`${config.api.projectService}/projects/${id}`)
 
         let data = result.data
         setInputData({
@@ -51,35 +52,35 @@ export const ProjectsProvider = props => {
         setCurrentId(data.id)
     }
 
-    const updateData = (id) => {
-        axios.put(`https://backendexample.sanbersy.com/api/data-project/${id}`,
-        {
-            name: inputData.name,
-            genre: inputData.genre,
-            image_url: inputData.image_url,
-            singlePlayer: inputData.singlePlayer,
-            multiplayer: inputData.multiplayer,
-            platform: inputData.platform,
-            release: inputData.release,
-        }, 
-        {
-            headers: {
-                "Authorization" : "Bearer "+ Cookies.get('token')
-            }
-        }).then(() => {
-            let updatedProject = projects.find(el => el.id === currentId)
+    // const updateData = (id) => {
+    //     axios.put(`https://backendexample.sanbersy.com/api/data-project/${id}`,
+    //     {
+    //         name: inputData.name,
+    //         genre: inputData.genre,
+    //         image_url: inputData.image_url,
+    //         singlePlayer: inputData.singlePlayer,
+    //         multiplayer: inputData.multiplayer,
+    //         platform: inputData.platform,
+    //         release: inputData.release,
+    //     }, 
+    //     {
+    //         headers: {
+    //             "Authorization" : "Bearer "+ Cookies.get('token')
+    //         }
+    //     }).then(() => {
+    //         let updatedProject = projects.find(el => el.id === currentId)
 
-            updatedProject.name = inputData.name
-            updatedProject.genre = inputData.genre
-            updatedProject.image_url = inputData.image_url
-            updatedProject.singlePlayer = inputData.singlePlayer
-            updatedProject.multiplayer = inputData.multiplayer
-            updatedProject.platform = inputData.platform
-            updatedProject.release = parseInt(inputData.release)
+    //         updatedProject.name = inputData.name
+    //         updatedProject.genre = inputData.genre
+    //         updatedProject.image_url = inputData.image_url
+    //         updatedProject.singlePlayer = inputData.singlePlayer
+    //         updatedProject.multiplayer = inputData.multiplayer
+    //         updatedProject.platform = inputData.platform
+    //         updatedProject.release = parseInt(inputData.release)
 
-            setProjects([...projects])
-        })
-    }
+    //         setProjects([...projects])
+    //     })
+    // }
 
     return (
         <ProjectsContext.Provider value={{

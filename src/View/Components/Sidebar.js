@@ -1,78 +1,59 @@
-import React, { useContext } from "react"
-import { UserContext } from "../../Contexts/UserContext";
-import { Layout, Menu } from 'antd';
-import {PlusCircleOutlined } from '@ant-design/icons';
-import { Link } from "react-router-dom";
-import Logo from "../../assets/img/logo.png"
-import { GamesContext } from "../../Contexts/GamesContext";
-import { MoviesContext } from "../../Contexts/MoviesContext";
+import { DesktopOutlined, FileOutlined, HomeOutlined, PaperClipOutlined, PieChartOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
+import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+const { Header, Content, Footer, Sider } = Layout;
+const { SubMenu } = Menu;
+
+function getItem(label, key, icon, path = null, children) {
+    return {
+        key,
+        icon,
+        children,
+        label,
+        path,
+    };
+}
+
+
+const items = [
+    getItem('Dashboard', '1', <HomeOutlined />, '/admin/dashboard'),
+    getItem('Projects', '2', <PaperClipOutlined />, '/admin/projects'),
+    // getItem('User', 'sub1', <UserOutlined />, [
+    //     getItem('Tom', '3'),
+    //     getItem('Bill', '4'),
+    //     getItem('Alex', '5'),
+    // ]),
+    // getItem('Team', 'sub2', <TeamOutlined />, [getItem('Team 1', '6'), getItem('Team 2', '8')]),
+    // getItem('Files', '9', <FileOutlined />),
+];
 
 const Sidebar = () => {
-
-    const { setLoginStatus, collapsed, setCollapsed } = useContext(UserContext)
-    const {
-        inputData: inputGame,
-        setInputData: setInputGame,
-        setCurrentId: setCurrentGameId
-    } = useContext(GamesContext)
-
-    const {
-        inputData: inputMovie,
-        setInputData: setInputMovie,
-        setCurrentId: setCurrentMovieId
-    } = useContext(MoviesContext)
-
-    const { Sider } = Layout;
-
-    const handleCreateGame = () => {
-        setInputGame({
-            name: "",
-            genre: "",
-            image_url: "",
-            singlePlayer: true,
-            multiplayer: true,
-            platform: "",
-            release: 2000,
-        })
-        setCurrentGameId(null)
-    }
-    
-    const handleCreateMovie = () => {
-        setInputMovie({
-            title: "",
-            genre: "",
-            description: "",
-            year: 1980,
-            duration: 0,
-            rating: 0,
-            review: "",
-            image_url: "",
-        })
-        setCurrentMovieId(null)
-    }
+    const [collapsed, setCollapsed] = useState(false);
 
     return (
-        <Sider trigger={null} collapsible collapsed={collapsed}>
-            <Menu theme="dark" mode="inline">
-                <Menu.Item key="0" style={{backgroundColor: "white", textAlign:"center"}} >
-                    <Link to="/" className="logo">
-                        <p className="my-auto" style={{color: "black", fontSize: "20px", fontWeight: "bold"}}>TemanTani</p>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key="1" icon={<PlusCircleOutlined />} onClick={() => { handleCreateMovie(); document.title="Add New Movie" }}>
-                <Link to="/movies/create">
-                        Add New Movie Data
-                    </Link>
-                </Menu.Item>
-                <Menu.Item key="2" icon={<PlusCircleOutlined/>} onClick={() => { handleCreateGame(); document.title="Add New Game" }}>
-                    <Link to="/games/create">
-                        Add New Game Data
-                    </Link>
-                </Menu.Item>
+        <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
+            <div className="logo" style={{ height: '32px', background: 'rgba(255, 255, 255, 0.2)', margin: '16px' }} />
+            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+                {items.map(item => (
+                    item.children ? (
+                        <SubMenu key={item.key} icon={item.icon} title={item.label}>
+                            {item.children.map(child => (
+                                <Menu.Item key={child.key}>
+                                    <Link to={child.path}>{child.label}</Link>
+                                </Menu.Item>
+                            ))}
+                        </SubMenu>
+                    ) : (
+                        <Menu.Item key={item.key} icon={item.icon}>
+                            <Link to={item.path}>{item.label}</Link>
+                        </Menu.Item>
+                    )
+                ))}
             </Menu>
         </Sider>
     )
-
 }
 
-export default Sidebar
+
+export default Sidebar;

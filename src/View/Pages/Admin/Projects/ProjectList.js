@@ -1,0 +1,125 @@
+import { Card, Row, Col, Badge } from 'react-bootstrap';
+import { Layout, Pagination, Spin } from 'antd';
+import React, { useState, useEffect } from 'react';
+import Holder from 'holderjs';
+import config from '../../../../config';
+import Cookies from 'js-cookie';
+
+const { Content } = Layout;
+
+const ProjectList = () => {
+    const [projects, setProjects] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [projectsPerPage] = useState(4);
+    const [loading, setLoading] = useState(true); // Add loading state
+
+    useEffect(() => {
+        fetchProjects();
+    }, []);
+
+    useEffect(() => {
+        Holder.run();
+    }, [projects]);
+
+    const fetchProjects = async () => {
+        try {
+            setLoading(true); // Set loading to true before fetching data
+
+            // Replace 'API_ENDPOINT' with the actual endpoint to fetch projects data
+            const response = await fetch(`${config.api.projectService}/projects`, {
+                method: 'GET',
+                headers: {
+                    Authorization: "Bearer " + Cookies.get('token'),
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+
+            // Fetch land data for each project
+            const updatedProjects = await Promise.all(data.map(async (project) => {
+                const landResponse = await fetch(`${config.api.landService}/lands/${project.landId}`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: "Bearer " + Cookies.get('token'),
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const landData = await landResponse.json();
+                project.land = landData;
+                return project;
+            }));
+
+            setProjects(updatedProjects);
+            setLoading(false); // Set loading to false after fetching data
+        } catch (error) {
+            console.error(error);
+            setLoading(false); // Set loading to false if there's an error
+        }
+    };
+
+    // Get current projects
+    const indexOfLastProject = currentPage * projectsPerPage;
+    const indexOfFirstProject = indexOfLastProject - projectsPerPage;
+    const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
+
+    // Change page
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    return (
+        <Content className="mx-3">
+            {loading ? (
+                // Render the loading animation while loading is true
+                <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '300px' }}>
+                    <Spin size="large" />
+                </div>
+            ) : (
+                // Render the projects cards if loading is false
+                <>
+                    <Row className="row-cols-1 row-cols-md-2 row-cols-lg-4 pb-3" xs={1} md={2} lg={4} gap={16}>
+                        {currentProjects.map((project) => (
+                            <Col key={project.id}>
+                                <Card className="h-100">
+                                    <Card.Img
+                                        variant="top"
+                                        data-src="holder.js/300x180"
+                                        className="img-fluid"
+                                        style={{ objectFit: "cover", height: "180px" }}
+                                    />
+                                    <Card.Body>
+                                        <Badge variant="info" className='mb-1'>{project.status}</Badge> 
+                                        <Card.Title>
+                                            {project.land && (
+                                                <>
+                                                    {project.land.street}, {project.land.city}
+                                                </>
+                                            )}
+                                        </Card.Title>
+                                        <Card.Text>
+                                            {project.description}
+                                        </Card.Text>
+
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
+
+                    <div className="mt-3"></div>
+
+                    <div className="d-flex justify-content-center mt-3">
+                        <Pagination
+                            current={currentPage}
+                            total={projects.length}
+                            pageSize={projectsPerPage}
+                            onChange={handlePageChange}
+                        />
+                    </div>
+                </>
+            )}
+        </Content>
+    );
+};
+
+export default ProjectList;

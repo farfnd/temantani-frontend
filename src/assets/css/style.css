@@ -199,11 +199,6 @@ footer h5 {
   color: #eee;
 }
 
-.row {
-  margin: 20px;
-  min-height: 100vh;
-}
-
 h1.ant-typography,
 .ant-typography h1 {
   text-align: center;
