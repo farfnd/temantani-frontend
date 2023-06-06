@@ -1,7 +1,7 @@
 import axios from "axios"
 import Cookies from "js-cookie"
 import React, { useContext, useEffect, useState } from "react"
-import { useHistory } from "react-router"
+import { Link, useHistory } from "react-router-dom"
 import { UserContext } from "../../../Contexts/UserContext"
 import { message } from 'antd';
 import { Form, Button } from 'react-bootstrap';
@@ -71,7 +71,10 @@ const Login = () => {
       </Form>
 
       <br/>
-      <p className="text-center">Belum punya akun? <a href="/register">Daftar</a></p>
+      <p className="text-center">
+        Belum punya akun?&nbsp;
+        <Link to="/register">Daftar</Link>
+      </p>
     </>
   )
 }

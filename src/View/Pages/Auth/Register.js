@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import axios from "axios"
-import { useHistory } from "react-router"
+import { Link, useHistory } from "react-router-dom"
 import { Form, Button } from 'react-bootstrap';
 import { message } from 'antd';
 import config from "../../../config"
@@ -80,7 +80,10 @@ const Register = () => {
       </Form>
 
       <br />
-      <p className="text-center">Sudah punya akun? <a href="/login">Login</a></p>
+      <p className="text-center">
+        Sudah punya akun?&nbsp;
+        <Link to="/login">Masuk</Link>
+      </p>
     </>
   )
 }

@@ -52,7 +52,7 @@ const Routes = () => {
                 <AuthLayout body={<Register />} />
               </NotLoggedInRoute>
 
-              <Route path="/games" exact>
+              <Route path="/admin" exact>
                 <LayoutComponent body={<GamesList />} />
               </Route>
 
