@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from "react"
 import axios from "axios"
 import { Link, useHistory } from "react-router-dom"
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Spinner } from 'react-bootstrap';
 import { message } from 'antd';
 import config from "../../../config"
 
 const Register = () => {
   let history = useHistory()
-  const [input, setInput] = useState({ name: "", email: "", password: "", confirmPassword: "", phoneNumber: "" })
+  const [input, setInput] = useState({ name: "", email: "", password: "", confirmPassword: "", phoneNumber: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => document.title = "Register", [])
 
@@ -20,11 +21,15 @@ const Register = () => {
       message.error('Password tidak sama!');
       return
     }
+    
+    setIsLoading(true)
+
     axios.post(config.api.userService + '/register', {
       name: input.name,
       email: input.email,
       password: input.password,
-      phoneNumber: input.phoneNumber
+      phoneNumber: input.phoneNumber,
+      roles: ["BUYER"]
     }).then(
       () => {
         history.push('/register')
@@ -34,7 +39,9 @@ const Register = () => {
     ).catch((err) => {
       console.log(err)
       alert(err)
-    })
+    }).finally(() => {
+      setIsLoading(false); // Set isLoading to false when the API call is completed
+    });
   }
 
   const handleChange = (event) => {
@@ -74,8 +81,27 @@ const Register = () => {
           <Form.Control type="text" name="phoneNumber" placeholder="Masukkan nomor telepon" onChange={handleChange} />
         </Form.Group>
 
-        <Button variant="outline-success" onClick={handleSubmit} className="w-100">
-          Submit
+        <Button
+          variant="outline-success"
+          onClick={handleSubmit}
+          className="w-100"
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <Spinner
+                as="span"
+                animation="grow"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+              />
+              &nbsp;
+              Loading...
+            </>
+          ) : (
+            "Submit"
+          )}
         </Button>
       </Form>
 
