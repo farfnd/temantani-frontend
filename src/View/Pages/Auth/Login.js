@@ -6,10 +6,11 @@ import { UserContext } from "../../../Contexts/UserContext"
 import { message } from 'antd';
 import { Form, Button } from 'react-bootstrap';
 import config from "../../../config"
+import jwt_decode from 'jwt-decode'
 
 const Login = () => {
   let history = useHistory()
-  const { setLoginStatus } = useContext(UserContext)
+  const { setLoginStatus, setRole } = useContext(UserContext)
 
   const [input, setInput] = useState({
     email: "",
@@ -21,7 +22,6 @@ const Login = () => {
   const handleChange = (event) => {
     let typeOfInput = event.target.value
     let name = event.target.name
-    console.log({ ...input, [name]: typeOfInput })
 
     setInput({ ...input, [name]: typeOfInput })
   }
@@ -36,13 +36,14 @@ const Login = () => {
       password: input.password
     }).then(
       (res) => {
-        console.log(res)
         var token = res.data.accessToken
-        Cookies.set('token', token, { expires: 1 })
-        history.push('/')
-
+        const decoded = jwt_decode(token)
+        
         setLoginStatus(true)
-
+        setRole(decoded.roles)
+        Cookies.set('token', token, { expires: 1 })
+        
+        history.push('/')
         message.success('Login berhasil!');
       },
     ).catch((err) => {

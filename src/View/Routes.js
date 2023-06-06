@@ -28,7 +28,9 @@ const Routes = () => {
 
   const LoggedInRoute = ({ ...props }) => {
     if (Cookies.get('token') !== undefined) { return <Route {...props} /> }
-    else if (Cookies.get('token') === undefined) { return <Redirect to="/" /> }
+    else if (Cookies.get('token') === undefined) { 
+      return <Redirect to="/" /> 
+    }
   }
 
   return (

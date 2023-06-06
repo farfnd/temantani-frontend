@@ -56,7 +56,7 @@ const Sidebar = () => {
             <Menu theme="dark" mode="inline">
                 <Menu.Item key="0" style={{backgroundColor: "white", textAlign:"center"}} >
                     <Link to="/" className="logo">
-                        <img src={Logo} width="150" alt="logo"/>
+                        <p className="my-auto" style={{color: "black", fontSize: "20px", fontWeight: "bold"}}>TemanTani</p>
                     </Link>
                 </Menu.Item>
                 <Menu.Item key="1" icon={<PlusCircleOutlined />} onClick={() => { handleCreateMovie(); document.title="Add New Movie" }}>
