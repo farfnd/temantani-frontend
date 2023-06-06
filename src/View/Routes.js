@@ -19,6 +19,7 @@ import GameDetails from "./Pages/Games/GameDetails";
 import MovieDetails from "./Pages/Movies/MovieDetails";
 import AdminDashboard from "./Pages/Admin/Dashboard";
 import AdminProjectList from "./Pages/Admin/Projects/ProjectList";
+import AdminProjectDetail from "./Pages/Admin/Projects/ProjectDetail";
 
 const Routes = () => {
 
@@ -59,6 +60,10 @@ const Routes = () => {
 
               <Route path="/admin/projects" exact>
                 <LayoutComponent body={< AdminProjectList />} />
+              </Route>
+
+              <Route path="/admin/projects/:id" exact>
+                <LayoutComponent body={< AdminProjectDetail />} />
               </Route>
 
               <Route path="/games" exact>

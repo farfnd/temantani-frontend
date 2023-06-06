@@ -1,6 +1,6 @@
-import { DesktopOutlined, FileOutlined, HomeOutlined, PaperClipOutlined, PieChartOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons';
+import { DesktopOutlined, FileOutlined, HomeOutlined, PaperClipOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -14,7 +14,6 @@ function getItem(label, key, icon, path = null, children) {
         path,
     };
 }
-
 
 const items = [
     getItem('Dashboard', '1', <HomeOutlined />, '/admin/dashboard'),
@@ -30,22 +29,23 @@ const items = [
 
 const Sidebar = () => {
     const [collapsed, setCollapsed] = useState(false);
+    const location = useLocation();
 
     return (
         <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
             <div className="logo" style={{ height: '32px', background: 'rgba(255, 255, 255, 0.2)', margin: '16px' }} />
-            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+            <Menu theme="dark" selectedKeys={[location.pathname]} defaultOpenKeys={['sub1']} mode="inline">
                 {items.map(item => (
                     item.children ? (
                         <SubMenu key={item.key} icon={item.icon} title={item.label}>
                             {item.children.map(child => (
-                                <Menu.Item key={child.key}>
+                                <Menu.Item key={child.path}>
                                     <Link to={child.path}>{child.label}</Link>
                                 </Menu.Item>
                             ))}
                         </SubMenu>
                     ) : (
-                        <Menu.Item key={item.key} icon={item.icon}>
+                        <Menu.Item key={item.path} icon={item.icon}>
                             <Link to={item.path}>{item.label}</Link>
                         </Menu.Item>
                     )
@@ -54,6 +54,5 @@ const Sidebar = () => {
         </Sider>
     )
 }
-
 
 export default Sidebar;

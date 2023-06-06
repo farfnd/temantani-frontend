@@ -5,7 +5,7 @@ import { Layout } from 'antd';
 import { UserContext } from "../../Contexts/UserContext";
 import Cookies from "js-cookie";
 
-const { Footer } = Layout;
+const { Content, Footer } = Layout;
 
 const LayoutComponent = (props) => {
 
@@ -18,7 +18,9 @@ const LayoutComponent = (props) => {
                 <Layout>
 
                     <Navbar />
-                    {props.body}
+                    <Content className="mx-3">
+                        {props.body}
+                    </Content>
                 </Layout>
             </Layout>
         </>
