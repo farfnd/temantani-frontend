@@ -19,8 +19,7 @@ import GameDetails from "./Pages/Games/GameDetails";
 import MovieDetails from "./Pages/Movies/MovieDetails";
 
 const Routes = () => {
-  const { loginStatus, setLoginStatus } = useContext(UserContext)
-
+  
   const NotLoggedInRoute = ({ ...props }) => {
     if (Cookies.get('token') === undefined) { return <Route {...props} /> }
     else { return <Redirect to="/" /> }
