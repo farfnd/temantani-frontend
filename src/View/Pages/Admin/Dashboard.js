@@ -1,5 +1,5 @@
 import { Layout } from 'antd';
-import { Card, Row, Col } from "react-bootstrap";
+import { Card, Row, Col, Button } from "react-bootstrap";
 import React, { useEffect, useState } from 'react';
 import config from '../../../config';
 import Cookies from 'js-cookie';
@@ -7,13 +7,13 @@ import Cookies from 'js-cookie';
 const { Content } = Layout;
 
 const AdminDashboard = () => {
-    const [adminName, setAdminName] = useState('');
+    const [adminData, setAdminData] = useState(null);
 
     useEffect(() => {
-        fetchAdminName();
+        fetchAdminData();
     }, []);
 
-    const fetchAdminName = async () => {
+    const fetchAdminData = async () => {
         try {
             const response = await fetch(`${config.api.userService}/me`, {
                 method: 'GET',
@@ -23,10 +23,9 @@ const AdminDashboard = () => {
                 }
             });
             const data = await response.json();
-            const { name } = data; // Assuming the API response returns the admin's name as "name"
-            setAdminName(name);
+            setAdminData(data);
         } catch (error) {
-            console.error('Error fetching admin name:', error);
+            console.error('Error fetching admin data:', error);
         }
     };
 
@@ -35,30 +34,40 @@ const AdminDashboard = () => {
             <Row>
                 <Col>
                     <Card>
-                        <Card.Title className="my-0">Hello, {adminName}</Card.Title>
+                        <Card.Title className="my-0">Hello, {adminData?.name}</Card.Title>
                     </Card>
                 </Col>
             </Row>
 
-            <Row>
-                <Col sm={3}>
+            <Row className="mt-3">
+                <Col sm={9}>
                     <Card>
-                        <Card.Body>This is card 2</Card.Body>
+                        <Card.Title>Profile</Card.Title>
+                        <Card.Body>
+                            <p>Email: {adminData?.email}</p>
+                            <p>Phone Number: {adminData?.phoneNumber}</p>
+                            <p>Roles:
+                                {adminData?.roles?.map((role, index) => (
+                                    <span key={index}> {role.name}</span>
+                                ))}
+                            </p>
+                        </Card.Body>
                     </Card>
                 </Col>
                 <Col sm={3}>
                     <Card>
-                        <Card.Body>This is card 3</Card.Body>
-                    </Card>
-                </Col>
-                <Col sm={3}>
-                    <Card>
-                        <Card.Body>This is card 4</Card.Body>
-                    </Card>
-                </Col>
-                <Col sm={3}>
-                    <Card>
-                        <Card.Body>This is card 5</Card.Body>
+                        <Card.Body>
+                            <Row>
+                                <Col>
+                                    <Button variant="outline-primary" className="w-100">Edit Profile</Button>
+                                </Col>
+                            </Row>
+                            <Row className="mt-3">
+                                <Col>
+                                    <Button variant="outline-primary" className="w-100">Change Password</Button>
+                                </Col>
+                            </Row>
+                        </Card.Body>
                     </Card>
                 </Col>
             </Row>

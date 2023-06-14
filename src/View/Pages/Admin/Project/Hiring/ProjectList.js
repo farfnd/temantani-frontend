@@ -3,18 +3,18 @@ import { Layout, Pagination, Spin, message } from 'antd';
 import { Link, useHistory } from "react-router-dom"
 import React, { useState, useEffect } from 'react';
 import Holder from 'holderjs';
-import config from '../../../../config';
+import config from '../../../../../config';
 import Cookies from 'js-cookie';
 
 const { Content } = Layout;
 
 const ProjectList = () => {
     const [projects, setProjects] = useState(() => {
-        const cachedProjects = localStorage.getItem('cachedProjects');
-        const cacheExpiry = localStorage.getItem('cacheExpiry');
+        const cachedHiringProjects = localStorage.getItem('cachedHiringProjects');
+        const cacheExpiryH = localStorage.getItem('cacheExpiryH');
 
-        if (cachedProjects && cacheExpiry && Date.now() < parseInt(cacheExpiry)) {
-            return JSON.parse(cachedProjects);
+        if (cachedHiringProjects && cacheExpiryH && Date.now() < parseInt(cacheExpiryH)) {
+            return JSON.parse(cachedHiringProjects);
         }
         return [];
     });
@@ -35,17 +35,17 @@ const ProjectList = () => {
         try {
             setLoading(true);
 
-            const cachedProjects = localStorage.getItem('cachedProjects');
-            let cacheExpiry = localStorage.getItem('cacheExpiry');
+            const cachedHiringProjects = localStorage.getItem('cachedHiringProjects');
+            let cacheExpiryH = localStorage.getItem('cacheExpiryH');
 
             // Check if cached data is still valid
-            if (cachedProjects && cacheExpiry && Date.now() < parseInt(cacheExpiry)) {
-                setProjects(JSON.parse(cachedProjects));
+            if (cachedHiringProjects && cacheExpiryH && Date.now() < parseInt(cacheExpiryH)) {
+                setProjects(JSON.parse(cachedHiringProjects));
                 setLoading(false);
                 return;
             }
 
-            const response = await fetch(`${config.api.projectService}/projects`, {
+            const response = await fetch(`${config.api.projectService}/projects?filter[status]=HIRING`, {
                 method: 'GET',
                 headers: {
                     Authorization: "Bearer " + Cookies.get('token'),
@@ -70,10 +70,10 @@ const ProjectList = () => {
             setProjects(updatedProjects);
             setLoading(false);
 
-            // Cache the projects in localStorage with an expiry time of 1 hour
-            cacheExpiry = Date.now() + 3600000;
-            localStorage.setItem('cachedProjects', JSON.stringify(updatedProjects));
-            localStorage.setItem('cacheExpiry', cacheExpiry.toString());
+            // Cache the projects in localStorage with an expiry time of 30 minutes
+            cacheExpiryH = Date.now() + 1800000;
+            localStorage.setItem('cachedHiringProjects', JSON.stringify(updatedProjects));
+            localStorage.setItem('cacheExpiryH', cacheExpiryH.toString());
         } catch (error) {
             console.error(error);
             message.error('Error fetching projects');
@@ -107,7 +107,7 @@ const ProjectList = () => {
                     <Row className="row-cols-1 row-cols-md-2 row-cols-lg-4 pb-3" xs={1} md={2} lg={4} gap={16}>
                         {currentProjects.map((project) => (
                             <Col key={project.id}>
-                                <Link to={`/admin/projects/${project.id}`}>
+                                <Link to={`/admin/projects/hiring/${project.id}`}>
                                     <Card className="h-100">
                                         <Card.Img
                                             variant="top"

@@ -18,8 +18,10 @@ import MoviesForm from "./Pages/Movies/MoviesForm";
 import GameDetails from "./Pages/Games/GameDetails";
 import MovieDetails from "./Pages/Movies/MovieDetails";
 import AdminDashboard from "./Pages/Admin/Dashboard";
-import AdminProjectList from "./Pages/Admin/Projects/ProjectList";
-import AdminProjectDetail from "./Pages/Admin/Projects/ProjectDetail";
+import HiringProjectList from "./Pages/Admin/Project/Hiring/ProjectList";
+import HiringProjectDetail from "./Pages/Admin/Project/Hiring/ProjectDetail";
+import OngoingProjectList from "./Pages/Admin/Project/Ongoing/ProjectList";
+import OngoingProjectDetail from "./Pages/Admin/Project/Ongoing/ProjectDetail";
 
 const Routes = () => {
 
@@ -58,12 +60,20 @@ const Routes = () => {
                 <LayoutComponent body={< AdminDashboard />} />
               </Route>
 
-              <Route path="/admin/projects" exact>
-                <LayoutComponent body={< AdminProjectList />} />
+              <Route path="/admin/projects/hiring" exact>
+                <LayoutComponent body={< HiringProjectList />} />
               </Route>
 
-              <Route path="/admin/projects/:id" exact>
-                <LayoutComponent body={< AdminProjectDetail />} />
+              <Route path="/admin/projects/hiring/:id" exact>
+                <LayoutComponent body={< HiringProjectDetail />} />
+              </Route>
+
+              <Route path="/admin/projects/ongoing" exact>
+                <LayoutComponent body={< OngoingProjectList />} />
+              </Route>
+
+              <Route path="/admin/projects/ongoing/:id" exact>
+                <LayoutComponent body={< OngoingProjectDetail />} />
               </Route>
 
               <Route path="/games" exact>
