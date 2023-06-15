@@ -65,7 +65,7 @@ const ProjectDetail = () => {
         <>
           {row.status === "PENDING" ? (
             <>
-              <Button variant="success" onClick={() => verifyReport(row.id, "ACCEPTED")}>Accept</Button>
+              <Button variant="success" className='me-2' onClick={() => verifyReport(row.id, "ACCEPTED")}>Accept</Button>
               <Button variant="danger" onClick={() => verifyReport(row.id, "REJECTED")}>Reject</Button>
             </>
           ) : (
@@ -73,6 +73,7 @@ const ProjectDetail = () => {
               <Badge bg={row.status === "ACCEPTED" ? "success" : "danger"}>
                 {row.status}
               </Badge>
+              <br />
               <Button variant="primary" onClick={() => verifyReport(row.id, "PENDING")}>Reset</Button>
             </>
           )}

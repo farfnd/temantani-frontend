@@ -3,6 +3,7 @@ import { Card, Row, Col, Button } from "react-bootstrap";
 import React, { useEffect, useState } from 'react';
 import config from '../../../config';
 import Cookies from 'js-cookie';
+import { Link } from 'react-router-dom';
 
 const { Content } = Layout;
 
@@ -18,7 +19,7 @@ const AdminDashboard = () => {
             const response = await fetch(`${config.api.userService}/me`, {
                 method: 'GET',
                 headers: {
-                    Authorization: "Bearer "+ Cookies.get('token'),
+                    Authorization: "Bearer " + Cookies.get('token'),
                     'Content-Type': 'application/json'
                 }
             });
@@ -64,7 +65,9 @@ const AdminDashboard = () => {
                             </Row>
                             <Row className="mt-3">
                                 <Col>
-                                    <Button variant="outline-primary" className="w-100">Change Password</Button>
+                                    <Link to="/change-password">
+                                        <Button variant="outline-primary" className="w-100">Change Password</Button>
+                                    </Link>
                                 </Col>
                             </Row>
                         </Card.Body>

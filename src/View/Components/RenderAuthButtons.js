@@ -11,7 +11,7 @@ function RenderAuthButtons(props) {
         return (
             <>
                 {role.some(role => role.toLowerCase().startsWith('admin')) && (
-                    <Link to="/admin/dashboard">
+                    <Link to="/admin">
                         <Button variant="primary" className="w-100 mt-3">
                             Admin Dashboard
                         </Button>

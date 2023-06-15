@@ -19,11 +19,12 @@ function getItem(label, key, icon, path = null, children) {
 }
 
 const items = [
-    getItem('Dashboard', '1', <HomeOutlined />, '/admin/dashboard'),
+    getItem('Dashboard', '1', <HomeOutlined />, '/admin'),
     getItem('Projects', '2', <PaperClipOutlined />, '#', [
         getItem('Hire Worker', '3', <PaperClipOutlined />, '/admin/projects/hiring'),
         getItem('Ongoing Projects', '3', <PaperClipOutlined />, '/admin/projects/ongoing'),
     ]),
+    getItem('Products Inventory', '4', <FileOutlined />, '/admin/products'),
 ];
 
 const Sidebar = () => {

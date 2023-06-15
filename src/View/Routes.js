@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Switch, Route, BrowserRouter as Router, Redirect } from "react-router-dom";
 import { GamesProvider } from "../Contexts/GamesContext";
 import { MoviesProvider } from "../Contexts/MoviesContext";
-import { UserContext } from "../Contexts/UserContext";
+import { ProductsContext, ProductsProvider } from "../Contexts/ProductsContext";
 import Cookies from "js-cookie";
 
 import AuthLayout from "./Components/AuthLayout";
@@ -22,6 +22,9 @@ import HiringProjectList from "./Pages/Admin/Project/Hiring/ProjectList";
 import HiringProjectDetail from "./Pages/Admin/Project/Hiring/ProjectDetail";
 import OngoingProjectList from "./Pages/Admin/Project/Ongoing/ProjectList";
 import OngoingProjectDetail from "./Pages/Admin/Project/Ongoing/ProjectDetail";
+import ProductList from "./Pages/Admin/Inventory/ProductList";
+import ProductForm from "./Pages/Admin/Inventory/ProductForm";
+import { message } from "antd";
 
 const Routes = () => {
 
@@ -32,7 +35,8 @@ const Routes = () => {
 
   const LoggedInRoute = ({ ...props }) => {
     if (Cookies.get('token') !== undefined) { return <Route {...props} /> }
-    else if (Cookies.get('token') === undefined) { 
+    else { 
+      message.error("You need to login first")
       return <Redirect to="/" /> 
     }
   }
@@ -56,7 +60,7 @@ const Routes = () => {
                 <AuthLayout body={<Register />} />
               </NotLoggedInRoute>
 
-              <Route path="/admin/dashboard" exact>
+              <Route path="/admin" exact>
                 <LayoutComponent body={< AdminDashboard />} />
               </Route>
 
@@ -75,6 +79,18 @@ const Routes = () => {
               <Route path="/admin/projects/ongoing/:id" exact>
                 <LayoutComponent body={< OngoingProjectDetail />} />
               </Route>
+
+              <ProductsProvider>
+                <Route path="/admin/products" exact>
+                  <LayoutComponent body={< ProductList />} />
+                </Route>
+                <Route path="/admin/products/create" exact>
+                  <LayoutComponent body={< ProductForm />} />
+                </Route>
+                <Route path="/admin/products/:id/edit" exact>
+                  <LayoutComponent body={< ProductForm />} />
+                </Route>
+              </ProductsProvider>
 
               <Route path="/games" exact>
                 <LayoutComponent body={<GamesList />} />

@@ -17,7 +17,7 @@ const AuthLayout = (props) => {
                         alignItems: 'center',
                     }}
                 >
-                    <div className="row d-flex justify-content-center align-items-center">
+                    <div className="row d-flex justify-content-center align-items-center g-0">
                         <div className="col-xl-8">
                             <div className="card rounded-3 text-black" style={{ marginTop: 0 }}>
                                 <div className="row g-0 m-auto">
