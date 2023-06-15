@@ -34,8 +34,6 @@ const Navbar = () => {
 
                 <Menu theme="dark" mode="horizontal">
                     <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
-                    <Menu.Item key="2"><Link to="/movies">Movies List</Link></Menu.Item>
-                    <Menu.Item key="3"><Link to="/games">Games List</Link></Menu.Item>
                 </Menu>
                 <Menu theme="dark" mode="horizontal" style={{ marginLeft: "auto" }} disabledOverflow="true">
                     {

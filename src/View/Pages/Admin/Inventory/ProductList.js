@@ -6,6 +6,8 @@ import Cookies from 'js-cookie';
 import { Spin, message, Modal } from 'antd';
 import Datatable from '../../../Components/Datatable';
 import { ProductsContext } from "../../../../Contexts/ProductsContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
 
 const ProductList = () => {
     const {
@@ -80,7 +82,7 @@ const ProductList = () => {
                 <div className="d-block mb-4 mb-md-0">
                     <nav aria-label="breadcrumb" className="d-none d-md-inline-block">
                         <ol className="breadcrumb breadcrumb-dark breadcrumb-transparent">
-                            <li className="breadcrumb-item"><Link to="/admin"><span className="fas fa-home"></span></Link></li>
+                            <li className="breadcrumb-item"><Link to="/admin"><FontAwesomeIcon icon={faHouse}/></Link></li>
                             <li className="breadcrumb-item"><Link to="/admin/inventory">Inventory</Link></li>
                             <li className="breadcrumb-item active" aria-current="page">Product List</li>
                         </ol>

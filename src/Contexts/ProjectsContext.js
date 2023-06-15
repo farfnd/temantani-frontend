@@ -52,35 +52,6 @@ export const ProjectsProvider = props => {
         setCurrentId(data.id)
     }
 
-    // const updateData = (id) => {
-    //     axios.put(`https://backendexample.sanbersy.com/api/data-project/${id}`,
-    //     {
-    //         name: inputData.name,
-    //         genre: inputData.genre,
-    //         image_url: inputData.image_url,
-    //         singlePlayer: inputData.singlePlayer,
-    //         multiplayer: inputData.multiplayer,
-    //         platform: inputData.platform,
-    //         release: inputData.release,
-    //     }, 
-    //     {
-    //         headers: {
-    //             "Authorization" : "Bearer "+ Cookies.get('token')
-    //         }
-    //     }).then(() => {
-    //         let updatedProject = projects.find(el => el.id === currentId)
-
-    //         updatedProject.name = inputData.name
-    //         updatedProject.genre = inputData.genre
-    //         updatedProject.image_url = inputData.image_url
-    //         updatedProject.singlePlayer = inputData.singlePlayer
-    //         updatedProject.multiplayer = inputData.multiplayer
-    //         updatedProject.platform = inputData.platform
-    //         updatedProject.release = parseInt(inputData.release)
-
-    //         setProjects([...projects])
-    //     })
-    // }
 
     return (
         <ProjectsContext.Provider value={{
@@ -91,7 +62,6 @@ export const ProjectsProvider = props => {
 
             fetchData,
             fetchDataById,
-            updateData,
         }}>
             {props.children}
         </ProjectsContext.Provider>

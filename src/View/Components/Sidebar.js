@@ -25,6 +25,7 @@ const items = [
         getItem('Ongoing Projects', '3', <PaperClipOutlined />, '/admin/projects/ongoing'),
     ]),
     getItem('Products Inventory', '4', <FileOutlined />, '/admin/products'),
+    getItem('Orders', '5', <FileOutlined />, '/admin/orders'),
 ];
 
 const Sidebar = () => {
