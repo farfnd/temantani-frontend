@@ -7,6 +7,7 @@ export const UserContext = createContext();
 export const UserProvider = props => {
     const [loginStatus, setLoginStatus] = useState(false)
     const [collapsed, setCollapsed] = useState(false)
+    const [user, setUser] = useState({});
     const [role, setRole] = useState(() => {
         const token = Cookies.get('token');
         if (token) {
@@ -20,7 +21,8 @@ export const UserProvider = props => {
         <UserContext.Provider value={{
             loginStatus, setLoginStatus,
             collapsed, setCollapsed,
-            role, setRole
+            role, setRole,
+            user, setUser
         }}>
             {props.children}
         </UserContext.Provider>

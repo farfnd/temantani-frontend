@@ -91,7 +91,6 @@ export const ProductsProvider = props => {
             formData.append("preOrderEstimatedDate", preOrderEstimatedDate);
         }
         formData.append("image", inputData.image);
-        console.log(inputData)
     
         const requestConfig = {
             headers: {

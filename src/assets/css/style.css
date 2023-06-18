@@ -204,6 +204,12 @@ h1.ant-typography,
   text-align: center;
 }
 
+.dropdown-toggle::before,
+.dropdown-toggle::after {
+    border: none !important;
+    content: none !important;
+}
+
 #appTable {
   border-collapse: collapse;
   margin: auto;
