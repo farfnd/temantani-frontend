@@ -48,7 +48,6 @@ const Sidebar = () => {
                 history.push('/');
 
                 message.success('Successfully logged out!');
-                history.push('/');
             },
         });
     };

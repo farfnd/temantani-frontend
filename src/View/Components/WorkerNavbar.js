@@ -4,6 +4,8 @@ import { Navbar, Nav, Container, Image } from 'react-bootstrap';
 import { UserContext } from "../../Contexts/UserContext";
 import React, { useContext } from "react";
 import config from "../../config";
+import { Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 const WorkerNavbar = (props) => {
     const { user } = useContext(UserContext);
@@ -12,23 +14,27 @@ const WorkerNavbar = (props) => {
         <>
             <Navbar expand="lg" bg="success" variant="dark">
                 <Container style={{ maxWidth: '100%' }}>
-                    <Navbar.Brand href="#home">TemanTani</Navbar.Brand>
+                    <Navbar.Brand><Link to="/" className="nav-link">TemanTani</Link></Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto" id="navLinks">
-                            <Nav.Link href="/">Home</Nav.Link>
+                            <Link to="/worker" className="nav-link">Dashboard</Link>
                         </Nav>
                         <Nav>
                             <NavDropdown drop="start" title={
                                 <div className="d-flex align-items-center">
-                                    <Image src={`${config.api.userService}/images/${user.profilePictureUrl}`} roundedCircle style={{ width: '30px', height: '30px', marginRight: '5px' }} />
-                                    {user.name}
+                                    {user.profilePictureUrl ? (
+                                        <Avatar src={`${config.api.userService}/images/${user.profilePictureUrl}`} size={30} />
+                                    ) : (
+                                        <Avatar size={30} icon={<UserOutlined />} />
+                                    )}
+                                    <span className="mx-2">{user.name}</span>
                                 </div>
                             } id="basic-nav-dropdown">
                                 <NavDropdown.Item href="/edit-profile">Edit Profile</NavDropdown.Item>
                                 <NavDropdown.Item href="/change-password">Change Password</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
+                                <NavDropdown.Item><Link to="/logout">Logout</Link></NavDropdown.Item>
                             </NavDropdown>
                         </Nav>
                     </Navbar.Collapse>

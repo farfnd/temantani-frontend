@@ -18,7 +18,7 @@ function RenderAuthButtons(props) {
                     </Link>
                 )}
                 {role.includes("WORKER") && (
-                    <Link to="/worker-dashboard">
+                    <Link to="/worker">
                         <Button variant="success" className="w-100 mt-3">
                             Worker Dashboard
                         </Button>

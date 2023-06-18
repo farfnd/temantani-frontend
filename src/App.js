@@ -3,12 +3,15 @@ import './assets/css/style.css';
 import 'antd/dist/antd.css';
 import Routes from './View/Routes';
 import { UserProvider } from './Contexts/UserContext';
+import { BrowserRouter as Router } from "react-router-dom";
 
 function App() {
   return (
     <>
       <UserProvider>
-          <Routes/>
+        <Router>
+          <Routes />
+        </Router>
       </UserProvider>
     </>
   );

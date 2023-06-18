@@ -10,7 +10,11 @@ import jwt_decode from 'jwt-decode'
 
 const Login = () => {
   let history = useHistory()
-  const { setLoginStatus, setRole } = useContext(UserContext)
+  const {
+    setLoginStatus,
+    setRole,
+    setUser
+  } = useContext(UserContext)
   const [isLoading, setIsLoading] = useState(false);
 
   const [input, setInput] = useState({
@@ -39,13 +43,23 @@ const Login = () => {
       email: input.email,
       password: input.password
     }).then(
-      (res) => {
+      async (res) => {
         var token = res.data.accessToken
         const decoded = jwt_decode(token)
 
         setLoginStatus(true)
         setRole(decoded.roles)
         Cookies.set('token', token, { expires: 1 })
+        
+        const response = await fetch(`${config.api.userService}/me`, {
+          method: 'GET',
+          headers: {
+              Authorization: "Bearer " + token,
+              'Content-Type': 'application/json'
+          }
+        });
+        const data = await response.json();
+        setUser(data);
 
         history.push('/')
         message.success('Login berhasil!');
