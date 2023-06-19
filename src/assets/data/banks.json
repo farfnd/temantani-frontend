@@ -1,0 +1,667 @@
+[
+    {
+        "id": "1",
+        "name": "BANK RAKYAT INDONESIA (BRI)",
+        "code": "2"
+    },
+    {
+        "id": "3",
+        "name": "BANK MANDIRI",
+        "code": "8"
+    },
+    {
+        "id": "5",
+        "name": "BANK NEGARA INDONESIA (BNI)",
+        "code": "9"
+    },
+    {
+        "id": "6",
+        "name": "BANK SYARIAH INDONESIA",
+        "code": "422"
+    },
+    {
+        "id": "7",
+        "name": "BANK CENTRAL ASIA (BCA)",
+        "code": "14"
+    },
+    {
+        "id": "8",
+        "name": "BANK DANAMON",
+        "code": "11"
+    },
+    {
+        "id": "9",
+        "name": "PERMATA BANK",
+        "code": "13"
+    },
+    {
+        "id": "10",
+        "name": "BANK MEGA",
+        "code": "426"
+    },
+    {
+        "id": "11",
+        "name": "BANK SYARIAH MEGA",
+        "code": "506"
+    },
+    {
+        "id": "12",
+        "name": "BANK KB BUKOPIN",
+        "code": "441"
+    },
+    {
+        "id": "13",
+        "name": "MAYBANK INDONESIA",
+        "code": "16"
+    },
+    {
+        "id": "14",
+        "name": "BANK PANIN",
+        "code": "19"
+    },
+    {
+        "id": "15",
+        "name": "BANK ARTA NIAGA KENCANA",
+        "code": "20"
+    },
+    {
+        "id": "16",
+        "name": "BANK CIMB NIAGA",
+        "code": "22"
+    },
+    {
+        "id": "17",
+        "name": "BANK UOB INDONESIA",
+        "code": "23"
+    },
+    {
+        "id": "18",
+        "name": "BANK LIPPO",
+        "code": "26"
+    },
+    {
+        "id": "19",
+        "name": "BANK OCBC NISP",
+        "code": "28"
+    },
+    {
+        "id": "20",
+        "name": "AMERICAN EXPRESS BANK LTD",
+        "code": "30"
+    },
+    {
+        "id": "21",
+        "name": "CITIBANK N.A.",
+        "code": "31"
+    },
+    {
+        "id": "22",
+        "name": "JP. MORGAN CHASE BANK",
+        "code": "N.A."
+    },
+    {
+        "id": "23",
+        "name": "BANK OF AMERICA",
+        "code": "N.A"
+    },
+    {
+        "id": "24",
+        "name": "ING INDONESIA BANK",
+        "code": "34"
+    },
+    {
+        "id": "25",
+        "name": "BANK MULTICOR TBK.",
+        "code": "36"
+    },
+    {
+        "id": "26",
+        "name": "BANK ARTHA GRAHA",
+        "code": "37"
+    },
+    {
+        "id": "27",
+        "name": "BANK CREDIT AGRICOLE INDOSUEZ",
+        "code": "39"
+    },
+    {
+        "id": "28",
+        "name": "THE BANGKOK BANK COMP. LTD",
+        "code": "40"
+    },
+    {
+        "id": "29",
+        "name": "THE HONGKONG & SHANGHAI B.C.",
+        "code": "41"
+    },
+    {
+        "id": "30",
+        "name": "THE BANK OF TOKYO MITSUBISHI UFJ LTD",
+        "code": "42"
+    },
+    {
+        "id": "31",
+        "name": "BANK SUMITOMO MITSUI INDONESIA",
+        "code": "45"
+    },
+    {
+        "id": "32",
+        "name": "BANK DBS INDONESIA",
+        "code": "46"
+    },
+    {
+        "id": "33",
+        "name": "BANK RESONA PERDANIA",
+        "code": "47"
+    },
+    {
+        "id": "34",
+        "name": "BANK MIZUHO INDONESIA",
+        "code": "48"
+    },
+    {
+        "id": "35",
+        "name": "STANDARD CHARTERED BANK",
+        "code": "50"
+    },
+    {
+        "id": "36",
+        "name": "BANK ABN AMRO",
+        "code": "52"
+    },
+    {
+        "id": "37",
+        "name": "BANK KEPPEL TATLEE BUANA",
+        "code": "53"
+    },
+    {
+        "id": "38",
+        "name": "BANK CAPITAL INDONESIA",
+        "code": "TBK."
+    },
+    {
+        "id": "39",
+        "name": "BANK BNP PARIBAS INDONESIA",
+        "code": "57"
+    },
+    {
+        "id": "40",
+        "name": "KOREA EXCHANGE BANK DANAMON",
+        "code": "59"
+    },
+    {
+        "id": "41",
+        "name": "RABOBANK INTERNASIONAL INDONESIA",
+        "code": "60"
+    },
+    {
+        "id": "42",
+        "name": "ANZ PANIN BANK",
+        "code": "61"
+    },
+    {
+        "id": "43",
+        "name": "DEUTSCHE BANK AG.",
+        "code": "67"
+    },
+    {
+        "id": "44",
+        "name": "BANK WOORI INDONESIA",
+        "code": "68"
+    },
+    {
+        "id": "45",
+        "name": "BANK OF CHINA LIMITED",
+        "code": "69"
+    },
+    {
+        "id": "46",
+        "name": "BANK BUMI ARTA",
+        "code": "76"
+    },
+    {
+        "id": "47",
+        "name": "BANK EKONOMI",
+        "code": "87"
+    },
+    {
+        "id": "48",
+        "name": "BANK ANTARDAERAH",
+        "code": "88"
+    },
+    {
+        "id": "49",
+        "name": "BANK HAGA",
+        "code": "89"
+    },
+    {
+        "id": "50",
+        "name": "BANK IFI",
+        "code": "93"
+    },
+    {
+        "id": "51",
+        "name": "BANK CENTURY",
+        "code": "TBK."
+    },
+    {
+        "id": "52",
+        "name": "BANK MAYAPADA",
+        "code": "97"
+    },
+    {
+        "id": "53",
+        "name": "BANK JABAR",
+        "code": "110"
+    },
+    {
+        "id": "54",
+        "name": "BANK DKI",
+        "code": "111"
+    },
+    {
+        "id": "55",
+        "name": "BPD DIY",
+        "code": "112"
+    },
+    {
+        "id": "56",
+        "name": "BANK JATENG",
+        "code": "113"
+    },
+    {
+        "id": "57",
+        "name": "BANK JATIM",
+        "code": "114"
+    },
+    {
+        "id": "58",
+        "name": "BPD JAMBI",
+        "code": "115"
+    },
+    {
+        "id": "59",
+        "name": "BPD ACEH",
+        "code": "116"
+    },
+    {
+        "id": "60",
+        "name": "BANK SUMUT",
+        "code": "117"
+    },
+    {
+        "id": "61",
+        "name": "BANK NAGARI",
+        "code": "118"
+    },
+    {
+        "id": "62",
+        "name": "BANK RIAU",
+        "code": "119"
+    },
+    {
+        "id": "63",
+        "name": "BANK SUMSEL",
+        "code": "120"
+    },
+    {
+        "id": "64",
+        "name": "BANK LAMPUNG",
+        "code": "121"
+    },
+    {
+        "id": "65",
+        "name": "BPD KALSEL",
+        "code": "122"
+    },
+    {
+        "id": "66",
+        "name": "BPD KALIMANTAN BARAT",
+        "code": "123"
+    },
+    {
+        "id": "67",
+        "name": "BPD KALTIM",
+        "code": "124"
+    },
+    {
+        "id": "68",
+        "name": "BPD KALTENG",
+        "code": "125"
+    },
+    {
+        "id": "69",
+        "name": "BPD SULSEL",
+        "code": "126"
+    },
+    {
+        "id": "70",
+        "name": "BANK SULUT",
+        "code": "127"
+    },
+    {
+        "id": "71",
+        "name": "BPD NTB",
+        "code": "128"
+    },
+    {
+        "id": "72",
+        "name": "BPD BALI",
+        "code": "129"
+    },
+    {
+        "id": "73",
+        "name": "BANK NTT",
+        "code": "130"
+    },
+    {
+        "id": "74",
+        "name": "BANK MALUKU",
+        "code": "131"
+    },
+    {
+        "id": "75",
+        "name": "BPD PAPUA",
+        "code": "132"
+    },
+    {
+        "id": "76",
+        "name": "BANK BENGKULU",
+        "code": "133"
+    },
+    {
+        "id": "77",
+        "name": "BPD SULAWESI TENGAH",
+        "code": "134"
+    },
+    {
+        "id": "78",
+        "name": "BANK SULTRA",
+        "code": "135"
+    },
+    {
+        "id": "79",
+        "name": "BANK NUSANTARA PARAHYANGAN",
+        "code": "145"
+    },
+    {
+        "id": "80",
+        "name": "BANK SWADESI",
+        "code": "146"
+    },
+    {
+        "id": "81",
+        "name": "BANK MUAMALAT",
+        "code": "147"
+    },
+    {
+        "id": "82",
+        "name": "BANK MESTIKA",
+        "code": "151"
+    },
+    {
+        "id": "83",
+        "name": "BANK METRO EXPRESS",
+        "code": "152"
+    },
+    {
+        "id": "84",
+        "name": "BANK SHINTA INDONESIA",
+        "code": "153"
+    },
+    {
+        "id": "85",
+        "name": "BANK MASPION",
+        "code": "157"
+    },
+    {
+        "id": "86",
+        "name": "BANK HAGAKITA",
+        "code": "159"
+    },
+    {
+        "id": "87",
+        "name": "BANK GANESHA",
+        "code": "161"
+    },
+    {
+        "id": "88",
+        "name": "BANK WINDU KENTJANA",
+        "code": "162"
+    },
+    {
+        "id": "89",
+        "name": "HALIM INDONESIA BANK",
+        "code": "164"
+    },
+    {
+        "id": "90",
+        "name": "BANK HARMONI INTERNATIONAL",
+        "code": "166"
+    },
+    {
+        "id": "91",
+        "name": "BANK KESAWAN",
+        "code": "167"
+    },
+    {
+        "id": "92",
+        "name": "BANK TABUNGAN NEGARA (PERSERO)",
+        "code": "200"
+    },
+    {
+        "id": "93",
+        "name": "BANK HIMPUNAN SAUDARA 1906",
+        "code": "TBK ."
+    },
+    {
+        "id": "94",
+        "name": "BANK TABUNGAN PENSIUNAN NASIONAL/JENIUS",
+        "code": "213"
+    },
+    {
+        "id": "95",
+        "name": "BANK SWAGUNA",
+        "code": "405"
+    },
+    {
+        "id": "96",
+        "name": "BANK JASA ARTA",
+        "code": "422"
+    },
+    {
+        "id": "97",
+        "name": "BANK BISNIS INTERNASIONAL",
+        "code": "459"
+    },
+    {
+        "id": "98",
+        "name": "BANK SRI PARTHA",
+        "code": "466"
+    },
+    {
+        "id": "99",
+        "name": "BANK JASA JAKARTA",
+        "code": "472"
+    },
+    {
+        "id": "100",
+        "name": "BANK BINTANG MANUNGGAL",
+        "code": "484"
+    },
+    {
+        "id": "101",
+        "name": "BANK BUMIPUTERA",
+        "code": "485"
+    },
+    {
+        "id": "102",
+        "name": "BANK YUDHA BHAKTI",
+        "code": "490"
+    },
+    {
+        "id": "103",
+        "name": "BANK MITRANIAGA",
+        "code": "491"
+    },
+    {
+        "id": "104",
+        "name": "BANK AGRO NIAGA",
+        "code": "494"
+    },
+    {
+        "id": "105",
+        "name": "BANK INDOMONEX",
+        "code": "498"
+    },
+    {
+        "id": "106",
+        "name": "BANK ROYAL INDONESIA",
+        "code": "501"
+    },
+    {
+        "id": "107",
+        "name": "BANK ALFINDO",
+        "code": "503"
+    },
+    {
+        "id": "108",
+        "name": "BANK INA PERDANA",
+        "code": "513"
+    },
+    {
+        "id": "109",
+        "name": "BANK HARFA",
+        "code": "517"
+    },
+    {
+        "id": "110",
+        "name": "PRIMA MASTER BANK",
+        "code": "520"
+    },
+    {
+        "id": "111",
+        "name": "BANK PERSYARIKATAN INDONESIA",
+        "code": "521"
+    },
+    {
+        "id": "112",
+        "name": "BANK AKITA",
+        "code": "525"
+    },
+    {
+        "id": "113",
+        "name": "LIMAN INTERNATIONAL BANK",
+        "code": "526"
+    },
+    {
+        "id": "114",
+        "name": "ANGLOMAS INTERNASIONAL BANK",
+        "code": "531"
+    },
+    {
+        "id": "115",
+        "name": "BANK DIPO INTERNATIONAL",
+        "code": "523"
+    },
+    {
+        "id": "116",
+        "name": "BANK KESEJAHTERAAN EKONOMI",
+        "code": "535"
+    },
+    {
+        "id": "117",
+        "name": "BANK UIB",
+        "code": "536"
+    },
+    {
+        "id": "118",
+        "name": "BANK JAGO",
+        "code": "542"
+    },
+    {
+        "id": "119",
+        "name": "BANK PURBA DANARTA",
+        "code": "547"
+    },
+    {
+        "id": "120",
+        "name": "BANK MULTI ARTA SENTOSA",
+        "code": "548"
+    },
+    {
+        "id": "121",
+        "name": "BANK MAYORA",
+        "code": "553"
+    },
+    {
+        "id": "122",
+        "name": "BANK INDEX SELINDO",
+        "code": "555"
+    },
+    {
+        "id": "123",
+        "name": "BANK VICTORIA INTERNATIONAL",
+        "code": "566"
+    },
+    {
+        "id": "124",
+        "name": "BANK EKSEKUTIF",
+        "code": "558"
+    },
+    {
+        "id": "125",
+        "name": "CENTRATAMA NASIONAL BANK",
+        "code": "559"
+    },
+    {
+        "id": "126",
+        "name": "BANK FAMA INTERNASIONAL",
+        "code": "562"
+    },
+    {
+        "id": "127",
+        "name": "BANK SINAR HARAPAN BALI",
+        "code": "564"
+    },
+    {
+        "id": "128",
+        "name": "BANK HARDA",
+        "code": "567"
+    },
+    {
+        "id": "129",
+        "name": "BANK FINCONESIA",
+        "code": "945"
+    },
+    {
+        "id": "130",
+        "name": "BANK MERINCORP",
+        "code": "946"
+    },
+    {
+        "id": "131",
+        "name": "BANK MAYBANK INDOCORP",
+        "code": "947"
+    },
+    {
+        "id": "132",
+        "name": "BANK CHINA TRUST INDONESIA",
+        "code": "949"
+    },
+    {
+        "id": "133",
+        "name": "BANK COMMONWEALTH",
+        "code": "950"
+    },
+    {
+        "id": "134",
+        "name": "BANK BJB SYARIAH",
+        "code": "425"
+    },
+    {
+        "id": "135",
+        "name": "BPR KS (KARYAJATNIKA SEDAYA)",
+        "code": "688"
+    }
+]

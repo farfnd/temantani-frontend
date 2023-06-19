@@ -112,11 +112,11 @@ const EditProfile = () => {
                     body: formData,
                 });
                 const data = await response.json();
-                setUserData(data);
-                message.success("Profile updated successfully");
+                setUserData(data.data);
+                message.success("Profil berhasil diperbarui.");
             } catch (error) {
-                console.error('Error updating worker profile:', error);
-                message.error("Failed to update profile. Please try again.");
+                console.error('Gagal memperbarui profil:', error);
+                message.error("Gagal memperbarui profil: " + error);
             }
         }
     };
@@ -128,7 +128,7 @@ const EditProfile = () => {
                 <Col md="12">
                     <Card className="text-center">
                         <Card.Header>
-                            <h1>Edit Profile</h1>
+                            <h1>Edit Profil</h1>
                         </Card.Header>
                         <Card.Body>
                             {
@@ -148,7 +148,7 @@ const EditProfile = () => {
                                                 <Row>
                                                     <Col>
                                                         <Form.Group controlId="formImage">
-                                                            <Form.Label>Profile Picture</Form.Label>
+                                                            <Form.Label>Foto Profil</Form.Label>
                                                             <Form.Control type="file" name="image" onChange={handleImage} />
                                                         </Form.Group>
                                                     </Col>
@@ -159,18 +159,18 @@ const EditProfile = () => {
                                                 <Row className="mb-3">
                                                     <Col md="4">
                                                         <Form.Group controlId="formName">
-                                                            <Form.Label>Name</Form.Label>
+                                                            <Form.Label>Nama</Form.Label>
                                                             <Form.Control
                                                                 required
                                                                 type="text"
                                                                 name="name"
-                                                                placeholder="Enter name"
+                                                                placeholder="Masukkan nama Anda"
                                                                 defaultValue={userData?.name}
                                                                 onChange={handleChange}
                                                                 minLength={2}
                                                             />
                                                             <Form.Control.Feedback type="invalid">
-                                                                Please enter your name.
+                                                                Mohon masukkan nama Anda.
                                                             </Form.Control.Feedback>
                                                         </Form.Group>
                                                     </Col>
@@ -181,80 +181,30 @@ const EditProfile = () => {
                                                                 required
                                                                 type="email"
                                                                 name="email"
-                                                                placeholder="Enter email"
+                                                                placeholder="Masukkan email"
                                                                 defaultValue={userData?.email}
                                                                 onChange={handleChange}
                                                                 minLength={2}
                                                             />
                                                             <Form.Control.Feedback type="invalid">
-                                                                Please enter your email.
+                                                                Mohon masukkan email Anda.
                                                             </Form.Control.Feedback>
                                                         </Form.Group>
                                                     </Col>
                                                     <Col md="4">
                                                         <Form.Group controlId="formPhoneNumber">
-                                                            <Form.Label>Phone Number</Form.Label>
+                                                            <Form.Label>Nomor telepon</Form.Label>
                                                             <Form.Control
                                                                 required
                                                                 type="text"
                                                                 name="phoneNumber"
-                                                                placeholder="Enter phone number"
+                                                                placeholder="Masukkan nomor telepon"
                                                                 defaultValue={userData?.phoneNumber}
                                                                 onChange={handleChange}
                                                                 minLength={2}
                                                             />
                                                             <Form.Control.Feedback type="invalid">
-                                                                Please enter your phone number.
-                                                            </Form.Control.Feedback>
-                                                        </Form.Group>
-                                                    </Col>
-                                                </Row>
-                                                <Row className="mb-3">
-                                                    <Col md="4">
-                                                        <Form.Group controlId="formBank">
-                                                            <Form.Label>Bank</Form.Label>
-                                                            <Form.Control
-                                                                required
-                                                                type="text"
-                                                                name="bank"
-                                                                placeholder="Enter bank"
-                                                                defaultValue={userData?.bank}
-                                                                onChange={handleChange}
-                                                            />
-                                                            <Form.Control.Feedback type="invalid">
-                                                                Please enter your bank.
-                                                            </Form.Control.Feedback>
-                                                        </Form.Group>
-                                                    </Col>
-                                                    <Col md="4">
-                                                        <Form.Group controlId="formBankAccountNumber">
-                                                            <Form.Label>Bank Account Number</Form.Label>
-                                                            <Form.Control
-                                                                required
-                                                                type="text"
-                                                                name="bankAccountNumber"
-                                                                placeholder="Enter bank account number"
-                                                                defaultValue={userData?.bankAccountNumber}
-                                                                onChange={handleChange}
-                                                            />
-                                                            <Form.Control.Feedback type="invalid">
-                                                                Please enter your bank account number.
-                                                            </Form.Control.Feedback>
-                                                        </Form.Group>
-                                                    </Col>
-                                                    <Col md="4">
-                                                        <Form.Group controlId="formBankAccountHolderName">
-                                                            <Form.Label>Bank Account Holder Name</Form.Label>
-                                                            <Form.Control
-                                                                required
-                                                                type="text"
-                                                                name="bankAccountHolderName"
-                                                                placeholder="Enter bank account holder name"
-                                                                defaultValue={userData?.bankAccountHolderName}
-                                                                onChange={handleChange}
-                                                            />
-                                                            <Form.Control.Feedback type="invalid">
-                                                                Please enter your bank account holder name.
+                                                                Mohon masukkan nomor telepon Anda.
                                                             </Form.Control.Feedback>
                                                         </Form.Group>
                                                     </Col>
@@ -262,49 +212,49 @@ const EditProfile = () => {
                                                 <Row className="mb-3">
                                                     <Col md="4">
                                                         <Form.Group controlId="formStreet">
-                                                            <Form.Label>Street</Form.Label>
+                                                            <Form.Label>Alamat</Form.Label>
                                                             <Form.Control
                                                                 required
                                                                 type="text"
                                                                 name="street"
-                                                                placeholder="Enter street"
+                                                                placeholder="Masukkan alamat Anda"
                                                                 defaultValue={userData?.street}
                                                                 onChange={handleChange}
                                                             />
                                                             <Form.Control.Feedback type="invalid">
-                                                                Please enter your street.
+                                                                Mohon masukkan alamat Anda.
                                                             </Form.Control.Feedback>
                                                         </Form.Group>
                                                     </Col>
                                                     <Col md="4">
                                                         <Form.Group controlId="formCity">
-                                                            <Form.Label>City</Form.Label>
+                                                            <Form.Label>Kota</Form.Label>
                                                             <Form.Control
                                                                 required
                                                                 type="text"
                                                                 name="city"
-                                                                placeholder="Enter city"
+                                                                placeholder="Masukkan kota Anda"
                                                                 defaultValue={userData?.city}
                                                                 onChange={handleChange}
                                                             />
                                                             <Form.Control.Feedback type="invalid">
-                                                                Please enter your city.
+                                                                Mohon masukkan kota Anda.
                                                             </Form.Control.Feedback>
                                                         </Form.Group>
                                                     </Col>
                                                     <Col md="4">
                                                         <Form.Group controlId="formPostalCode">
-                                                            <Form.Label>Postal Code</Form.Label>
+                                                            <Form.Label>Kode Pos</Form.Label>
                                                             <Form.Control
                                                                 required
                                                                 type="text"
                                                                 name="postalCode"
-                                                                placeholder="Enter postal code"
+                                                                placeholder="Masukkan kode pos Anda"
                                                                 defaultValue={userData?.postalCode}
                                                                 onChange={handleChange}
                                                             />
                                                             <Form.Control.Feedback type="invalid">
-                                                                Please enter your postal code.
+                                                                Mohon masukkan kode pos Anda.
                                                             </Form.Control.Feedback>
                                                         </Form.Group>
                                                     </Col>

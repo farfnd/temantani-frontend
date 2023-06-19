@@ -24,6 +24,8 @@ import OrderList from "./Pages/Admin/Order/OrderList";
 import WorkerDashboard from "./Pages/Worker/Dashboard";
 import WorkerProfile from "./Pages/Worker/Profile/Show";
 import WorkerProfileEdit from "./Pages/Worker/Profile/Edit";
+import WorkerBankAccount from "./Pages/Worker/BankAccount/Show";
+import WorkerBankAccountEdit from "./Pages/Worker/BankAccount/Edit";
 
 const Routes = () => {
   const { user, setLoginStatus, setUser } = useContext(UserContext);
@@ -116,6 +118,14 @@ const Routes = () => {
 
             <Route path="/worker/profile/edit" exact>
               <WorkerLayout body={<WorkerProfileEdit />} />
+            </Route>
+
+            <Route path="/worker/bank-account" exact>
+              <WorkerLayout body={<WorkerBankAccount />} />
+            </Route>
+
+            <Route path="/worker/bank-account/edit" exact>
+              <WorkerLayout body={<WorkerBankAccountEdit />} />
             </Route>
 
             <LoggedInRoute path="/change-password" exact>

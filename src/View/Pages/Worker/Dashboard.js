@@ -17,7 +17,7 @@ const WorkerDashboard = () => {
     } = useContext(UserContext);
 
     const history = useHistory();
-    
+
     const handleLogout = () => {
         Modal.confirm({
             title: 'Logout',
@@ -39,22 +39,22 @@ const WorkerDashboard = () => {
                                     {
                                         user ? (
                                             <Row className="align-middle">
-                                            <Col md={2}>
-                                                {user.profilePictureUrl ? (
-                                                    <Avatar src={`${config.api.userService}/images/${user.profilePictureUrl}`} size={50} />
-                                                ) : (
-                                                    <Avatar size={50} icon={<UserOutlined />} />
-                                                )}
-                                            </Col>
-                                            <Col md={10}>
-                                                <Row>
-                                                    <h5 className="mb-1">Hello, {user?.name}</h5>
-                                                </Row>
-                                                <Row>
-                                                    <h6 className="text-muted m-0">Worker</h6>
-                                                </Row>
-                                            </Col>
-                                        </Row>
+                                                <Col md={2}>
+                                                    {user.profilePictureUrl ? (
+                                                        <Avatar src={`${config.api.userService}/images/${user.profilePictureUrl}`} size={50} />
+                                                    ) : (
+                                                        <Avatar size={50} icon={<UserOutlined />} />
+                                                    )}
+                                                </Col>
+                                                <Col md={10}>
+                                                    <Row>
+                                                        <h5 className="mb-1">Hello, {user?.name}</h5>
+                                                    </Row>
+                                                    <Row>
+                                                        <h6 className="text-muted m-0">Worker</h6>
+                                                    </Row>
+                                                </Col>
+                                            </Row>
                                         ) : (
                                             <Row className="align-middle">
                                                 <Col md={2}>
@@ -89,7 +89,9 @@ const WorkerDashboard = () => {
                                     </Row>
                                     <Row className="mt-3">
                                         <Col>
-                                            <Button variant="outline-primary" className="w-100">Kelola Rekening Bank</Button>
+                                            <Link to="/worker/bank-account">
+                                                <Button variant="outline-primary" className="w-100">Kelola Rekening Bank</Button>
+                                            </Link>
                                         </Col>
                                     </Row>
                                     <Row className="mt-3">

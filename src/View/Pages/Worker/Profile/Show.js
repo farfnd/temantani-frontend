@@ -12,7 +12,7 @@ import {
     Spinner,
     Badge,
 } from 'react-bootstrap';
-import { UserOutlined } from '@ant-design/icons';
+import { LeftCircleOutlined, UserOutlined } from '@ant-design/icons';
 import { UserContext } from '../../../../Contexts/UserContext';
 
 const { Content } = Layout;
@@ -24,8 +24,27 @@ const ShowProfile = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        fetchUserData();
         fetchWorkerData();
     }, []);
+
+    const fetchUserData = async () => {
+        if (Object.keys(user).length === 0 && user.constructor === Object) {
+            try {
+                const response = await fetch(`${config.api.userService}/me`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: "Bearer " + Cookies.get('token'),
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                setUser(data);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        }
+    };
 
     const fetchWorkerData = async () => {
         setLoading(true);
@@ -49,8 +68,12 @@ const ShowProfile = () => {
     return (
         <Content className="mx-3">
             <Card>
-                <Card.Header>
-                    <h3>Worker Profile</h3>
+                <Link to="/worker" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                    <LeftCircleOutlined style={{ marginRight: '5px' }} />
+                    <span>Kembali</span>
+                </Link>
+                <Card.Header className="text-center">
+                    <h3>Profil</h3>
                 </Card.Header>
                 <Card.Body>
                     {
@@ -69,13 +92,12 @@ const ShowProfile = () => {
                                     <p><strong>Nama:</strong> {user.name}</p>
                                     <p><strong>Email:</strong> {user.email}</p>
                                     <p><strong>Nomor Telepon:</strong> {user.phoneNumber}</p>
-                                    <p><strong>Bank:</strong> {user.bank}</p>
-                                    <p><strong>Nomor Rekening:</strong> {user.bankAccountNumber}</p>
-                                    <p><strong>Nama Pemegang Rekening:</strong> {user.bankAccountHolderName}</p>
-                                    <p><strong>Street:</strong> {user.street}</p>
-                                    <p><strong>City:</strong> {user.city}</p>
-                                    <p><strong>Postal Code:</strong> {user.postalCode}</p>
-                                    <p><strong>Work Availability:</strong>&nbsp;
+                                    <p>
+                                        <strong>Alamat:</strong><br />
+                                        {user.street}<br />
+                                        {user.city}, {user.postalCode}
+                                    </p>
+                                    <p><strong>Status Ketersediaan Bekerja:</strong>&nbsp;
                                         <Badge bg={workerData.workAvailability === "AVAILABLE" ? "success" : "danger"} className="ml-2">
                                             {workerData.workAvailability}
                                         </Badge>
