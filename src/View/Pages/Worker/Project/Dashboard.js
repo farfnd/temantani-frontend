@@ -83,17 +83,31 @@ const WorkerDashboard = () => {
             prop: "proof",
             title: "Bukti",
             cell: (row) => (
-                <a href={`${config.api.workerService}/images/${row.proof}`} target="_blank" rel="noopener noreferrer">
-                    Lihat Bukti
-                </a>
+                <>
+                    {
+                        row.proof ? (
+                            <a href={`${config.api.workerService}/images/${row.proof}`} target="_blank" rel="noopener noreferrer">
+                                Lihat Bukti
+                            </a>
+                        ) : null
+                    }
+                </>
             )
         },
         {
             prop: "status",
             title: "Status",
+            isFilterable: true,
+            isSortable: true,
             cell: (row) => (
                 <>
-                    <Badge bg={row.status === "ACCEPTED" ? "success" : (row.status === 'PENDING' ? 'warning' : 'danger')}>
+                    <Badge bg={
+                        row.status === "ACCEPTED" ? "success" : (
+                            row.status === 'PENDING' ? 'warning' : (
+                                row.status === 'REJECTED' ? 'danger' : 'secondary'
+                            )
+                        )
+                    }>
                         {row.status}
                     </Badge>
                 </>
@@ -297,12 +311,12 @@ const WorkerDashboard = () => {
             setValidated(true);
         } else {
             setValidated(true);
-    
+
             const formData = new FormData();
             for (let key in inputData) {
                 formData.append(key, inputData[key]);
             }
-    
+
             const id = workReports.find(report => report.week === selectedWeek)?.id;
             let url = `${config.api.workerService}/worker/work-reports`;
             let method = 'POST';
@@ -313,10 +327,10 @@ const WorkerDashboard = () => {
                 formData.append('projectId', activeOffer.projectId);
                 formData.append('week', selectedWeek);
             }
-    
+
             try {
                 setLoading(true);
-    
+
                 const response = await fetch(url, {
                     method,
                     headers: {
@@ -330,7 +344,7 @@ const WorkerDashboard = () => {
                     const index = workReports.findIndex(report => report.week === data.week);
                     workReports[index] = data.data;
                     setWorkReports([...workReports]);
-                    
+
                     await fetchWorkReports();
                 } else {
                     message.error('Laporan kerja gagal terkirim');
@@ -386,7 +400,7 @@ const WorkerDashboard = () => {
                                     </Card.Body>
                                 ) : (
                                     <Card.Body>
-                                        <p>Tidak ada proyek aktif</p>
+                                        <Spin />
                                     </Card.Body>
                                 )}
                                 <Card.Footer>
