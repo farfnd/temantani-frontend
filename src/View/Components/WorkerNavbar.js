@@ -19,7 +19,7 @@ const WorkerNavbar = (props) => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto" id="navLinks">
                             <Link to="/worker" className="nav-link">Dashboard</Link>
-                            <Link to="/worker/projects" className="nav-link">Work Offers</Link>
+                            <Link to="/worker/projects" className="nav-link">Proyek</Link>
                         </Nav>
                         <Nav>
                             <NavDropdown drop="start" title={

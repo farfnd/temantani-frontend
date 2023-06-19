@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 import React, { useState, createContext } from "react";
 import jwt_decode from 'jwt-decode'
+import config from "../config";
 
 export const UserContext = createContext();
 
@@ -17,12 +18,35 @@ export const UserProvider = props => {
         return [];
     });
 
+    const fetchUser = async () => {
+        try {
+            const response = await fetch(`${config.api.userService}/me`, {
+                method: 'GET',
+                headers: {
+                    Authorization: "Bearer " + Cookies.get('token'),
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            setUser(data);
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+        }
+    };
+
+    const fetchUserIfEmpty = async () => {
+        if (Object.keys(user).length === 0 && user.constructor === Object) {
+            await fetchUser();
+        }
+    };
+
     return (
         <UserContext.Provider value={{
             loginStatus, setLoginStatus,
             collapsed, setCollapsed,
             role, setRole,
-            user, setUser
+            user, setUser,
+            fetchUser, fetchUserIfEmpty
         }}>
             {props.children}
         </UserContext.Provider>

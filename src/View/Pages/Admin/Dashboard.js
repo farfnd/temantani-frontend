@@ -1,41 +1,26 @@
 import { Layout } from 'antd';
 import { Card, Row, Col, Button } from "react-bootstrap";
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import config from '../../../config';
 import Cookies from 'js-cookie';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../../Contexts/UserContext';
 
 const { Content } = Layout;
 
 const AdminDashboard = () => {
-    const [adminData, setAdminData] = useState(null);
+    const { user, fetchUserIfEmpty, fetchUser } = useContext(UserContext);
 
     useEffect(() => {
-        fetchAdminData();
+        fetchUser();
     }, []);
-
-    const fetchAdminData = async () => {
-        try {
-            const response = await fetch(`${config.api.userService}/me`, {
-                method: 'GET',
-                headers: {
-                    Authorization: "Bearer " + Cookies.get('token'),
-                    'Content-Type': 'application/json'
-                }
-            });
-            const data = await response.json();
-            setAdminData(data);
-        } catch (error) {
-            console.error('Error fetching admin data:', error);
-        }
-    };
 
     return (
         <Content className="mx-3">
             <Row>
                 <Col>
                     <Card>
-                        <Card.Title className="my-0">Hello, {adminData?.name}</Card.Title>
+                        <Card.Title className="my-0">Hello, {user?.name}</Card.Title>
                     </Card>
                 </Col>
             </Row>
@@ -45,10 +30,10 @@ const AdminDashboard = () => {
                     <Card>
                         <Card.Title>Profile</Card.Title>
                         <Card.Body>
-                            <p>Email: {adminData?.email}</p>
-                            <p>Phone Number: {adminData?.phoneNumber}</p>
+                            <p>Email: {user?.email}</p>
+                            <p>Phone Number: {user?.phoneNumber}</p>
                             <p>Roles:
-                                {adminData?.roles?.map((role, index) => (
+                                {user?.roles?.map((role, index) => (
                                     <span key={index}> {role.name}</span>
                                 ))}
                             </p>

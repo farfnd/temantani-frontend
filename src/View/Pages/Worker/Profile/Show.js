@@ -18,33 +18,15 @@ import { UserContext } from '../../../../Contexts/UserContext';
 const { Content } = Layout;
 
 const ShowProfile = () => {
-    const { user, setUser } = useContext(UserContext);
-    const [userData, setUserData] = useState(null);
+    const { user, setUser, fetchUserIfEmpty } = useContext(UserContext);
     const [workerData, setWorkerData] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchUserData();
+        fetchUserIfEmpty();
         fetchWorkerData();
     }, []);
 
-    const fetchUserData = async () => {
-        if (Object.keys(user).length === 0 && user.constructor === Object) {
-            try {
-                const response = await fetch(`${config.api.userService}/me`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: "Bearer " + Cookies.get('token'),
-                        'Content-Type': 'application/json'
-                    }
-                });
-                const data = await response.json();
-                setUser(data);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
-        }
-    };
 
     const fetchWorkerData = async () => {
         setLoading(true);

@@ -21,9 +21,10 @@ import { UserContext } from '../../../../Contexts/UserContext';
 const { Content } = Layout;
 
 const EditBankAccount = () => {
-    const { user, setUser } = useContext(UserContext);
+    const { user, setUser, fetchUser } = useContext(UserContext);
     const [validated, setValidated] = useState(false);
     const [bankOptions, setBankOptions] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     const [inputData, setInputData] = useState({
         bank: "",
@@ -34,32 +35,15 @@ const EditBankAccount = () => {
     const history = useHistory();
 
     useEffect(() => {
-        fetchUserData();
+        fetchUser();
+        setInputData({
+            bank: user.bank,
+            bankAccountNumber: user.bankAccountNumber,
+            bankAccountHolderName: user.bankAccountHolderName,
+        })
         fetchBankOptions();
     }, []);
 
-    const fetchUserData = async () => {
-        try {
-            if (Object.keys(user).length === 0 && user.constructor === Object) {
-                const response = await fetch(`${config.api.userService}/me`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: "Bearer " + Cookies.get('token'),
-                        'Content-Type': 'application/json'
-                    }
-                });
-                const data = await response.json();
-                setUser(data);
-            }
-            setInputData({
-                bank: user.bank,
-                bankAccountNumber: user.bankAccountNumber,
-                bankAccountHolderName: user.bankAccountHolderName,
-            })
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-        }
-    };
 
     const fetchBankOptions = async () => {
         const bankOptions = banks.map((bank) => ({
@@ -90,24 +74,15 @@ const EditBankAccount = () => {
                 formData.append(key, inputData[key]);
             }
             try {
-                const response = await fetch(`${config.api.userService}/me`, {
-                    method: 'PUT',
-                    headers: {
-                        Authorization: "Bearer " + Cookies.get('token'),
-                    },
-                    body: formData,
-                });
-                const data = await response.json();
-                setUser(data.data);
-                if (response.ok) {
-                    history.push('/worker/bank-account');
-                    message.success("Data rekening berhasil diperbarui.");
-                } else {
-                    message.error("Gagal memperbarui data rekening. Silakan coba lagi.");
-                }
+                setLoading(true);
+                await fetchUser();
+                history.push('/worker/bank-account');
+                message.success("Data rekening berhasil diperbarui.");
             } catch (error) {
                 console.error('Gagal memperbarui data rekening:', error);
                 message.error("Gagal memperbarui data rekening. Silakan coba lagi.");
+            } finally {
+                setLoading(false);
             }
         }
     };
@@ -185,9 +160,17 @@ const EditBankAccount = () => {
                                                         Batal
                                                     </Button>
                                                 </Link>
-                                                <Button variant="primary" type="submit" onClick={handleSubmit}>
-                                                    Simpan
-                                                </Button>
+                                                {
+                                                    loading ? (
+                                                        <Button variant="primary" disabled>
+                                                            <Spinner animation="border" size="sm" />
+                                                        </Button>
+                                                    ) : (
+                                                        <Button variant="primary" type="submit">
+                                                            Simpan
+                                                        </Button>
+                                                    )
+                                                }
                                             </Col>
                                         </Row>
                                     </Form>

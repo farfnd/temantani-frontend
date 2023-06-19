@@ -80,7 +80,6 @@ const ProjectDetail = () => {
         </>
       )
     }
-
   ];
 
   const fetchProject = async () => {

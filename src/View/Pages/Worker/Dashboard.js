@@ -14,7 +14,12 @@ const WorkerDashboard = () => {
         user, setUser,
         role, setRole,
         setLoginStatus,
+        fetchUser,
     } = useContext(UserContext);
+
+    useEffect(() => {
+        fetchUser();
+    }, []);
 
     const history = useHistory();
 

@@ -13,7 +13,8 @@ const Login = () => {
   const {
     setLoginStatus,
     setRole,
-    setUser
+    setUser,
+    fetchUser
   } = useContext(UserContext)
   const [isLoading, setIsLoading] = useState(false);
 
@@ -51,15 +52,7 @@ const Login = () => {
         setRole(decoded.roles)
         Cookies.set('token', token, { expires: 1 })
         
-        const response = await fetch(`${config.api.userService}/me`, {
-          method: 'GET',
-          headers: {
-              Authorization: "Bearer " + token,
-              'Content-Type': 'application/json'
-          }
-        });
-        const data = await response.json();
-        setUser(data);
+        await fetchUser()
 
         history.push('/')
         message.success('Login berhasil!');

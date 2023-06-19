@@ -22,29 +22,11 @@ import { LeftCircleOutlined } from '@ant-design/icons';
 const { Content } = Layout;
 
 const ShowBankAccount = () => {
-    const { user, setUser } = useContext(UserContext);
+    const { user, fetchUserIfEmpty } = useContext(UserContext);
 
     useEffect(() => {
-        if (Object.keys(user).length === 0 && user.constructor === Object) {
-            fetchUserData();
-        }
+        fetchUserIfEmpty();
     }, []);
-
-    const fetchUserData = async () => {
-        try {
-            const response = await fetch(`${config.api.userService}/me`, {
-                method: 'GET',
-                headers: {
-                    Authorization: "Bearer " + Cookies.get('token'),
-                    'Content-Type': 'application/json'
-                }
-            });
-            const data = await response.json();
-            setUser(data);
-        } catch (error) {
-            console.error('Error fetching user data:', error);
-        }
-    };
 
     return (
         <Container>

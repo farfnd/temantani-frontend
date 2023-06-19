@@ -1,8 +1,8 @@
 import { Avatar, Layout, message } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import config from '../../../../config';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import {
     Form,
     Button,
@@ -16,13 +16,15 @@ import {
     Spinner,
 } from 'react-bootstrap';
 import { UserOutlined } from '@ant-design/icons';
+import { UserContext } from '../../../../Contexts/UserContext';
 
 const { Content } = Layout;
 
 const EditProfile = () => {
-    const [userData, setUserData] = useState(null);
+    const { user, setUser, fetchUser } = useContext(UserContext);
     const [validated, setValidated] = useState(false);
     const [imagePreview, setImagePreview] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const [inputData, setInputData] = useState({
         name: "",
@@ -36,37 +38,23 @@ const EditProfile = () => {
         postalCode: "",
     })
 
+    const history = useHistory();
+
     useEffect(() => {
-        fetchUserData();
+        fetchUser();
+        setInputData({
+            name: user?.name || "",
+            email: user?.email || "",
+            phoneNumber: user?.phoneNumber || "",
+            bank: user?.bank || "",
+            bankAccountNumber: user?.bankAccountNumber || "",
+            bankAccountHolderName: user?.bankAccountHolderName || "",
+            street: user?.street || "",
+            city: user?.city || "",
+            postalCode: user?.postalCode || "",
+        });
 
     }, []);
-
-    const fetchUserData = async () => {
-        try {
-            const response = await fetch(`${config.api.userService}/me`, {
-                method: 'GET',
-                headers: {
-                    Authorization: "Bearer " + Cookies.get('token'),
-                    'Content-Type': 'application/json'
-                }
-            });
-            const data = await response.json();
-            setUserData(data);
-            setInputData({
-                name: data?.name || "",
-                email: data?.email || "",
-                phoneNumber: data?.phoneNumber || "",
-                bank: data?.bank || "",
-                bankAccountNumber: data?.bankAccountNumber || "",
-                bankAccountHolderName: data?.bankAccountHolderName || "",
-                street: data?.street || "",
-                city: data?.city || "",
-                postalCode: data?.postalCode || "",
-            });
-        } catch (error) {
-            console.error('Error fetching worker data:', error);
-        }
-    };    
 
     const handleChange = (event) => {
         let name = event.target.name
@@ -104,6 +92,7 @@ const EditProfile = () => {
             }
     
             try {
+                setLoading(true);
                 const response = await fetch(`${config.api.userService}/me`, {
                     method: 'PUT',
                     headers: {
@@ -112,11 +101,14 @@ const EditProfile = () => {
                     body: formData,
                 });
                 const data = await response.json();
-                setUserData(data.data);
+                setUser(data.data);
+                history.push('/worker/profile');
                 message.success("Profil berhasil diperbarui.");
             } catch (error) {
                 console.error('Gagal memperbarui profil:', error);
                 message.error("Gagal memperbarui profil: " + error);
+            } finally {
+                setLoading(false);
             }
         }
     };
@@ -132,14 +124,14 @@ const EditProfile = () => {
                         </Card.Header>
                         <Card.Body>
                             {
-                                userData ? (
+                                user ? (
                                     <Form noValidate validated={validated} onSubmit={handleSubmit} encType="multipart/form-data">
                                         <Row>
                                             <Col md="2">
                                                 <Row>
                                                     <Col>
-                                                        {userData.profilePictureUrl ? (
-                                                            <Avatar src={`${config.api.userService}/images/${userData.profilePictureUrl}`} size={128} />
+                                                        {user.profilePictureUrl ? (
+                                                            <Avatar src={`${config.api.userService}/images/${user.profilePictureUrl}`} size={128} />
                                                         ) : (
                                                             <Avatar size={128} icon={<UserOutlined />} />
                                                         )}
@@ -165,7 +157,7 @@ const EditProfile = () => {
                                                                 type="text"
                                                                 name="name"
                                                                 placeholder="Masukkan nama Anda"
-                                                                defaultValue={userData?.name}
+                                                                defaultValue={user?.name}
                                                                 onChange={handleChange}
                                                                 minLength={2}
                                                             />
@@ -182,7 +174,7 @@ const EditProfile = () => {
                                                                 type="email"
                                                                 name="email"
                                                                 placeholder="Masukkan email"
-                                                                defaultValue={userData?.email}
+                                                                defaultValue={user?.email}
                                                                 onChange={handleChange}
                                                                 minLength={2}
                                                             />
@@ -199,7 +191,7 @@ const EditProfile = () => {
                                                                 type="text"
                                                                 name="phoneNumber"
                                                                 placeholder="Masukkan nomor telepon"
-                                                                defaultValue={userData?.phoneNumber}
+                                                                defaultValue={user?.phoneNumber}
                                                                 onChange={handleChange}
                                                                 minLength={2}
                                                             />
@@ -218,7 +210,7 @@ const EditProfile = () => {
                                                                 type="text"
                                                                 name="street"
                                                                 placeholder="Masukkan alamat Anda"
-                                                                defaultValue={userData?.street}
+                                                                defaultValue={user?.street}
                                                                 onChange={handleChange}
                                                             />
                                                             <Form.Control.Feedback type="invalid">
@@ -234,7 +226,7 @@ const EditProfile = () => {
                                                                 type="text"
                                                                 name="city"
                                                                 placeholder="Masukkan kota Anda"
-                                                                defaultValue={userData?.city}
+                                                                defaultValue={user?.city}
                                                                 onChange={handleChange}
                                                             />
                                                             <Form.Control.Feedback type="invalid">
@@ -250,7 +242,7 @@ const EditProfile = () => {
                                                                 type="text"
                                                                 name="postalCode"
                                                                 placeholder="Masukkan kode pos Anda"
-                                                                defaultValue={userData?.postalCode}
+                                                                defaultValue={user?.postalCode}
                                                                 onChange={handleChange}
                                                             />
                                                             <Form.Control.Feedback type="invalid">
@@ -266,12 +258,20 @@ const EditProfile = () => {
                                             <Col md="4">
                                                 <Link to="/worker/profile">
                                                     <Button variant="secondary" className='me-3'>
-                                                        Cancel
+                                                        Batal
                                                     </Button>
                                                 </Link>
-                                                <Button variant="primary" type="submit">
-                                                    Update Profile
-                                                </Button>
+                                                {
+                                                    loading ? (
+                                                        <Button variant="primary" disabled>
+                                                            <Spinner animation="border" size="sm" />
+                                                        </Button>
+                                                    ) : (
+                                                        <Button variant="primary" type="submit">
+                                                            Simpan
+                                                        </Button>
+                                                    )
+                                                }   
                                             </Col>
                                         </Row>
                                     </Form>

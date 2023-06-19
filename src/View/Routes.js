@@ -26,6 +26,7 @@ import WorkerProfile from "./Pages/Worker/Profile/Show";
 import WorkerProfileEdit from "./Pages/Worker/Profile/Edit";
 import WorkerBankAccount from "./Pages/Worker/BankAccount/Show";
 import WorkerBankAccountEdit from "./Pages/Worker/BankAccount/Edit";
+import WorkerProjectDashboard from "./Pages/Worker/Project/Dashboard";
 
 const Routes = () => {
   const { user, setLoginStatus, setUser } = useContext(UserContext);
@@ -126,6 +127,10 @@ const Routes = () => {
 
             <Route path="/worker/bank-account/edit" exact>
               <WorkerLayout body={<WorkerBankAccountEdit />} />
+            </Route>
+
+            <Route path="/worker/projects" exact>
+              <WorkerLayout body={<WorkerProjectDashboard />} />
             </Route>
 
             <LoggedInRoute path="/change-password" exact>

@@ -2,7 +2,7 @@ const config = {
     api: {
         userService: "http://localhost:4000",
         landService: "http://localhost:4000",
-        projectService: "http://localhost:4001",
+        projectService: "http://localhost:4000",
         workerService: "http://localhost:4001",
         inventoryService: "http://localhost:3333",
         orderService: "http://localhost:4002",
