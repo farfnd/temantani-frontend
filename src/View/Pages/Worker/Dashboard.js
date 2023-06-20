@@ -51,7 +51,6 @@ const WorkerProjectDashboard = () => {
         });
     };
 
-
     const fetchActiveWorkOffer = async () => {
         try {
             setLoadingOffer(true);
@@ -278,145 +277,115 @@ const WorkerProjectDashboard = () => {
                         <Col>
                             <Card className='mt-0'>
                                 <Card.Body className='p-0'>
-                                    <Row className='mb-3'>
-                                        <Col md={1} style={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                        }}>
-                                            <FontAwesomeIcon icon={faWheatAwn} size='3x' className='m-3' />
-                                        </Col>
-                                        <Col style={{ display: 'flex', alignItems: 'center' }}>
-                                            {
-                                                land ? (
-                                                    <div>
-                                                        <div>
-                                                            <h5 className='mb-0'>
-                                                                <strong>{land.street}, {land.city}</strong>
-                                                            </h5>
-                                                        </div>
-                                                        <div>
-                                                            <p className='m-0' style={{ wordBreak: 'break-word' }}>
-                                                                {project.initiatedAtReadable ?? "N/A"} - {project.estimatedFinishedReadable ?? "N/A"}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                ) : (
-                                                    <Spinner animation="border" />
-                                                )
-                                            }
-                                        </Col>
-                                    </Row>
-                                    <Row className='mb-3'>
-                                        <Col>
-                                            {
-                                                land ? (
-                                                    <Image
-                                                        src={
-                                                            land.imageUrl ? `${config.api.landService}/images/${land.imageUrl}`
-                                                                : 'https://ik.trn.asia/uploads/2021/04/lahan-pertanian-mulai-terbatas.jpg'
-                                                        }
-                                                        fluid
-                                                        style={{
-                                                            borderRadius: '10px',
-                                                            maxHeight: '200px',
-                                                            objectFit: 'cover',
-                                                            objectPosition: 'center',
-                                                        }}
-                                                        wrapperClassName='w-100'
-                                                    />
-                                                ) : (
-                                                    <Spinner animation="border" />
-                                                )
-                                            }
-                                        </Col>
-                                    </Row>
-                                    <Row className='mb-3'>
-                                        <Col>
-                                            {
-                                                project ? (
-                                                    <h6>
-                                                        <strong>Deskripsi:</strong><br />{project.description}
-                                                    </h6>
-                                                ) : (
-                                                    <Spinner animation="border" />
-                                                )
-                                            }
-                                        </Col>
-                                    </Row>
-                                    <Row className='mb-3'>
-                                        <Col>
-                                            {
-                                                land ? (
-                                                    <h6>
-                                                        <strong>Pemilik Lahan:</strong><br />{land.owner.name}
-                                                    </h6>
-                                                ) : (
-                                                    <Spinner animation="border" />
-                                                )
-                                            }
-                                        </Col>
-                                        <Col>
-                                            {
-                                                land ? (
-                                                    <h6>
-                                                        <strong>Komoditas:</strong><br />{land.harvest ?? "Padi"}
-                                                    </h6>
-                                                ) : (
-                                                    <Spinner animation="border" />
-                                                )
-                                            }
-                                        </Col>
-                                    </Row>
-                                    <Row className='mb-3'>
-                                        <Col>
-                                            <Row>
-                                                <Col>
-                                                    <h6>
-                                                        <strong>Laporan Mingguan:</strong>
-                                                    </h6>
-                                                    {
-                                                        isReportComplete ? (
-                                                            <Badge bg='success' className='mr-2'>
-                                                                <FontAwesomeIcon icon={faCheckCircle} className='mr-1' />
-                                                                &nbsp;
-                                                                Lengkap
-                                                            </Badge>
-                                                        ) : (
-                                                            <Badge bg='danger' className='mr-2'>
-                                                                <FontAwesomeIcon icon={faTimesCircle} className='mr-1' />
-                                                                &nbsp;
-                                                                Belum Lengkap
-                                                            </Badge>
-                                                        )
-                                                    }
-
-                                                </Col>
-                                                <Col xs={12} sm={6} lg={4} className="d-flex flex-col justify-content-end align-items-end">
-                                                    {
-                                                        project && (
-                                                            <Link to={`/worker/projects/active`}>
-                                                                <Button variant='outline-primary' className='w-100'>Lihat Semua</Button>
-                                                            </Link>
-                                                        )
-                                                    }
-                                                </Col>
-                                            </Row>
-                                            <Row className='mt-3'>
-                                                {getWeeksArray().map((week) => (
-                                                    <Col lg={1} key={week}>
-                                                        <Button
-                                                            variant={getReportBadgeVariant(week)}
-                                                            className="w-100 disabled-button"
-                                                            title={getReportStatus(week)}
-                                                        >
-                                                            {week}
-                                                        </Button>
+                                    {
+                                        land && project ? (
+                                            <>
+                                                <Row className='mb-3'>
+                                                    <Col md={1} style={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                    }}>
+                                                        <FontAwesomeIcon icon={faWheatAwn} size='3x' className='m-3' />
                                                     </Col>
-                                                ))}
-                                            </Row>
-                                        </Col>
-                                    </Row>
+                                                    <Col style={{ display: 'flex', alignItems: 'center' }}>
+
+                                                        <div>
+                                                            <div>
+                                                                <h5 className='mb-0'>
+                                                                    <strong>{land.street ?? 'N/A'}, {land.city ?? 'N/A'}</strong>
+                                                                </h5>
+                                                            </div>
+                                                            <div>
+                                                                <p className='m-0' style={{ wordBreak: 'break-word' }}>
+                                                                    {project.initiatedAtReadable ?? "N/A"} - {project.estimatedFinishedReadable ?? "N/A"}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </Col>
+                                                </Row><Row className='mb-3'>
+                                                    <Col>
+                                                        <Image
+                                                            src={land.imageUrl ? `${config.api.landService}/images/${land.imageUrl}`
+                                                                : 'https://ik.trn.asia/uploads/2021/04/lahan-pertanian-mulai-terbatas.jpg'}
+                                                            fluid
+                                                            style={{
+                                                                borderRadius: '10px',
+                                                                maxHeight: '200px',
+                                                                objectFit: 'cover',
+                                                                objectPosition: 'center',
+                                                            }}
+                                                            wrapperClassName='w-100' />
+                                                    </Col>
+                                                </Row><Row className='mb-3'>
+                                                    <Col>
+                                                        <h6>
+                                                            <strong>Deskripsi:</strong><br />{project.description ?? "N/A"}
+                                                        </h6>
+                                                    </Col>
+                                                </Row><Row className='mb-3'>
+                                                    <Col>
+                                                        <h6>
+                                                            <strong>Pemilik Lahan:</strong><br />{land.owner.name ?? "N/A"}
+                                                        </h6>
+                                                    </Col>
+                                                    <Col>
+                                                        <h6>
+                                                            <strong>Komoditas:</strong><br />{land.harvest ?? "Padi"}
+                                                        </h6>
+                                                    </Col>
+                                                </Row><Row className='mb-3'>
+                                                    <Col>
+                                                        <Row>
+                                                            <Col>
+                                                                <h6>
+                                                                    <strong>Laporan Mingguan:</strong>
+                                                                </h6>
+                                                                {isReportComplete ? (
+                                                                    <Badge bg='success' className='mr-2'>
+                                                                        <FontAwesomeIcon icon={faCheckCircle} className='mr-1' />
+                                                                        &nbsp;
+                                                                        Lengkap
+                                                                    </Badge>
+                                                                ) : (
+                                                                    <Badge bg='danger' className='mr-2'>
+                                                                        <FontAwesomeIcon icon={faTimesCircle} className='mr-1' />
+                                                                        &nbsp;
+                                                                        Belum Lengkap
+                                                                    </Badge>
+                                                                )}
+
+                                                            </Col>
+                                                            <Col xs={12} sm={6} lg={4} className="d-flex flex-col justify-content-end align-items-end">
+                                                                {project && (
+                                                                    <Link to={`/worker/projects/active`}>
+                                                                        <Button variant='outline-primary' className='w-100'>Lihat Semua</Button>
+                                                                    </Link>
+                                                                )}
+                                                            </Col>
+                                                        </Row>
+                                                        <Row className='mt-3'>
+                                                            {getWeeksArray().map((week) => (
+                                                                <Col lg={1} key={week}>
+                                                                    <Button
+                                                                        variant={getReportBadgeVariant(week)}
+                                                                        className="w-100 disabled-button"
+                                                                        title={getReportStatus(week)}
+                                                                    >
+                                                                        {week}
+                                                                    </Button>
+                                                                </Col>
+                                                            ))}
+                                                        </Row>
+                                                    </Col>
+                                                </Row>
+                                            </>
+                                        ) : (
+                                            <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
+                                                <Spinner animation="border" />
+                                            </div>
+                                        )
+                                    }
                                 </Card.Body>
                             </Card>
                         </Col>
