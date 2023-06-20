@@ -36,14 +36,18 @@ const EditBankAccount = () => {
 
     useEffect(() => {
         fetchUser();
-        setInputData({
-            bank: user.bank,
-            bankAccountNumber: user.bankAccountNumber,
-            bankAccountHolderName: user.bankAccountHolderName,
-        })
         fetchBankOptions();
     }, []);
 
+    useEffect(() => {
+        if (user) {
+            setInputData({
+                bank: user.bank,
+                bankAccountNumber: user.bankAccountNumber,
+                bankAccountHolderName: user.bankAccountHolderName,
+            });
+        }
+    }, [user]);
 
     const fetchBankOptions = async () => {
         const bankOptions = banks.map((bank) => ({
@@ -75,9 +79,21 @@ const EditBankAccount = () => {
             }
             try {
                 setLoading(true);
-                await fetchUser();
+                const response = await fetch(`${config.api.userService}/me`, {
+                    method: 'PUT',
+                    headers: {
+                        Authorization: "Bearer " + Cookies.get('token'),
+                    },
+                    body: formData,
+                });
+                if (response.ok) {
+                    await fetchUser();
+                    message.success('Data rekening berhasil diperbarui');
+                } else {
+                    const responseBody = await response.json();
+                    message.error('Gagal memperbarui data rekening: ' + responseBody.message);
+                }
                 history.push('/worker/bank-account');
-                message.success("Data rekening berhasil diperbarui.");
             } catch (error) {
                 console.error('Gagal memperbarui data rekening:', error);
                 message.error("Gagal memperbarui data rekening. Silakan coba lagi.");
