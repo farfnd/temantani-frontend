@@ -378,11 +378,12 @@ const WorkHistory = () => {
                                             activeOffer && land && (
                                                 <>
                                                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <img
+
+                                                        <Image
                                                             src="https://ik.trn.asia/uploads/2021/04/lahan-pertanian-mulai-terbatas.jpg"
-                                                            alt="Placeholder"
-                                                            style={{ marginRight: '10px', maxWidth: '300px', maxHeight: '300px' }}
+                                                            style={{ maxWidth: '300px', maxHeight: '300px' }}
                                                         />
+                                                        <div style={{ marginLeft: '10px' }}></div>
                                                         <div style={{ flex: 1 }}>
                                                             <Card.Title>{land.street}, {land.city}</Card.Title>
                                                             <Card.Text>

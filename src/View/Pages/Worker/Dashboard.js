@@ -1,5 +1,5 @@
-import { Avatar, Layout, Modal, message } from 'antd';
-import { Card, Row, Col, Button, Spinner, Image, Badge } from "react-bootstrap";
+import { Avatar, Layout, Modal, message, Image } from 'antd';
+import { Card, Row, Col, Button, Spinner, Badge } from "react-bootstrap";
 import React, { useContext, useEffect, useState } from 'react';
 import config from '../../../config';
 import Cookies from 'js-cookie';
@@ -317,13 +317,13 @@ const WorkerProjectDashboard = () => {
                                                                 : 'https://ik.trn.asia/uploads/2021/04/lahan-pertanian-mulai-terbatas.jpg'
                                                         }
                                                         fluid
-                                                        className='w-100'
                                                         style={{
                                                             borderRadius: '10px',
                                                             maxHeight: '200px',
                                                             objectFit: 'cover',
                                                             objectPosition: 'center',
                                                         }}
+                                                        wrapperClassName='w-100'
                                                     />
                                                 ) : (
                                                     <Spinner animation="border" />
