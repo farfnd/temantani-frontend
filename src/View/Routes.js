@@ -24,6 +24,7 @@ import OrderList from "./Pages/Admin/Order/OrderList";
 import WorkerDashboard from "./Pages/Worker/Dashboard";
 import WorkerProfile from "./Pages/Worker/Profile/Show";
 import WorkerProfileEdit from "./Pages/Worker/Profile/Edit";
+import WorkerWorkDetailEdit from "./Pages/Worker/Profile/EditWork";
 import WorkerBankAccount from "./Pages/Worker/BankAccount/Show";
 import WorkerBankAccountEdit from "./Pages/Worker/BankAccount/Edit";
 import WorkerProjectDashboard from "./Pages/Worker/Project/Dashboard";
@@ -121,6 +122,10 @@ const Routes = () => {
 
             <Route path="/worker/profile/edit" exact>
               <WorkerLayout body={<WorkerProfileEdit />} />
+            </Route>
+
+            <Route path="/worker/work-details/edit" exact>
+              <WorkerLayout body={<WorkerWorkDetailEdit />} />
             </Route>
 
             <Route path="/worker/bank-account" exact>

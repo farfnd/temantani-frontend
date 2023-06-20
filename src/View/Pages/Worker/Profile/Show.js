@@ -19,19 +19,18 @@ const { Content } = Layout;
 
 const ShowProfile = () => {
     const { user, setUser, fetchUserIfEmpty } = useContext(UserContext);
-    const [workerData, setWorkerData] = useState(null);
+    const [worker, setWorker] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchUserIfEmpty();
-        fetchWorkerData();
+        fetchWorker();
     }, []);
 
-
-    const fetchWorkerData = async () => {
+    const fetchWorker = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`${config.api.workerService}/worker/me`, {
+            const response = await fetch(`${config.api.workerService}/worker/me?include=skills`, {
                 method: 'GET',
                 headers: {
                     Authorization: "Bearer " + Cookies.get('token'),
@@ -39,7 +38,7 @@ const ShowProfile = () => {
                 }
             });
             const data = await response.json();
-            setWorkerData(data);
+            setWorker(data);
         } catch (error) {
             console.error('Error fetching worker data:', error);
         } finally {
@@ -49,7 +48,7 @@ const ShowProfile = () => {
 
     return (
         <Content className="mx-3">
-            <Card>
+            <Card className="mb-3">
                 <Link to="/worker" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
                     <LeftCircleOutlined style={{ marginRight: '5px' }} />
                     <span>Kembali</span>
@@ -59,40 +58,95 @@ const ShowProfile = () => {
                 </Card.Header>
                 <Card.Body>
                     {
-                        loading || !(user && workerData) ? (
+                        loading || !user ? (
                             <Spinner animation="border" />
                         ) : (
-                            <Row>
-                                <Col md={2} className='text-center'>
-                                    {user.profilePictureUrl ? (
-                                        <Avatar src={`${config.api.userService}/images/${user.profilePictureUrl}`} size={128} />
-                                    ) : (
-                                        <Avatar size={128} icon={<UserOutlined />} />
-                                    )}
-                                </Col>
-                                <Col md={10}>
-                                    <p><strong>Nama:</strong> {user.name}</p>
-                                    <p><strong>Email:</strong> {user.email}</p>
-                                    <p><strong>Nomor Telepon:</strong> {user.phoneNumber}</p>
-                                    <p>
-                                        <strong>Alamat:</strong><br />
-                                        {user.street}<br />
-                                        {user.city}, {user.postalCode}
-                                    </p>
-                                    <p><strong>Status Ketersediaan Bekerja:</strong>&nbsp;
-                                        <Badge bg={workerData.workAvailability === "AVAILABLE" ? "success" : "danger"} className="ml-2">
-                                            {workerData.workAvailability}
-                                        </Badge>
-                                    </p>
-                                    <Link to="/worker/profile/edit">
-                                        <Button variant="primary">Edit Profile</Button>
-                                    </Link>
-                                </Col>
-                            </Row>
+                            <>
+                                <Row>
+                                    <Col>
+                                        <Card>
+                                            <Card.Body>
+                                                <Row>
+                                                    <Col md={2} className='text-center'>
+                                                        {user.profilePictureUrl ? (
+                                                            <Avatar src={`${config.api.userService}/images/${user.profilePictureUrl}`} size={128} />
+                                                        ) : (
+                                                            <Avatar size={128} icon={<UserOutlined />} />
+                                                        )}
+                                                    </Col>
+                                                    <Col md={10}>
+                                                        <p><strong>Nama:</strong> {user.name}</p>
+                                                        <p><strong>Email:</strong> {user.email}</p>
+                                                        <p><strong>Nomor Telepon:</strong> {user.phoneNumber}</p>
+                                                        <p>
+                                                            <strong>Alamat:</strong><br />
+                                                            {user.street}<br />
+                                                            {user.city}, {user.postalCode}
+                                                        </p>
+                                                        <Link to="/worker/profile/edit">
+                                                            <Button variant="primary">Edit Profil</Button>
+                                                        </Link>
+                                                    </Col>
+                                                </Row>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Card>
+                                            <Card.Body>
+                                                <Row>
+                                                    <Form.Label column md="2" htmlFor="formBasicBank">
+                                                        <strong>Status Ketersediaan Bekerja</strong>
+                                                    </Form.Label>
+                                                    <Form.Label column md="10">
+                                                        <Badge bg={worker.workAvailability === "AVAILABLE" ? "success" : "danger"} className="ml-2">
+                                                            {worker.workAvailability}
+                                                        </Badge>
+                                                    </Form.Label>
+                                                </Row>
+                                                <Row>
+                                                    <Form.Label column md="2" htmlFor="formBasicDescription">
+                                                        <strong>Ringkasan Profil</strong>
+                                                    </Form.Label>
+                                                    <Form.Label column md="10">
+                                                        <p className='m-0'>{worker.description ?? "-"}</p>
+                                                    </Form.Label>
+                                                </Row>
+                                                <Row>
+                                                    <Form.Label column md="2" htmlFor="formBasicSkills">
+                                                        <strong>Kemampuan</strong>
+                                                    </Form.Label>
+                                                    <Form.Label column md="10">
+                                                        <p className='m-0'>
+                                                            {
+                                                                worker.skills.length > 0 ? (
+                                                                    worker.skills.map((skill, index) => skill.tag).join(', ')
+                                                                ) : (
+                                                                    'No skills available'
+                                                                )
+                                                            }
+                                                        </p>
+                                                    </Form.Label>
+                                                </Row>
+
+                                                <Row className="mt-3">
+                                                    <Col md="2">
+                                                    <Link to="/worker/work-details/edit">
+                                                        <Button variant="primary">Edit</Button>
+                                                    </Link>
+                                                    </Col>
+                                                </Row>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                </Row>
+                            </>
                         )}
                 </Card.Body>
             </Card>
-        </Content>
+        </Content >
     );
 }
 
