@@ -43,7 +43,7 @@ const ProductDetail = () => {
     const headers = [
         {
             prop: "name",
-            title: "Name",
+            title: "Nama Produk",
             isFilterable: true,
             isSortable: true,
             cell: (row) => (
@@ -59,19 +59,19 @@ const ProductDetail = () => {
         },
         {
             prop: "description",
-            title: "Description",
+            title: "Deskripsi",
             isFilterable: true,
             isSortable: true,
         },
         {
             prop: "price",
-            title: "Price",
+            title: "Harga",
             isFilterable: true,
             isSortable: true,
         },
         {
             prop: "stock",
-            title: "Stock",
+            title: "Stok",
             isFilterable: true,
             isSortable: true,
         },

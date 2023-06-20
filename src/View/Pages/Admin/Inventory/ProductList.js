@@ -32,7 +32,7 @@ const ProductList = () => {
     const headers = [
         {
             prop: "name",
-            title: "Name",
+            title: "Nama Produk",
             isFilterable: true,
             isSortable: true,
             cell: (row) => (
@@ -48,25 +48,25 @@ const ProductList = () => {
         },
         {
             prop: "description",
-            title: "Description",
+            title: "Deskripsi",
             isFilterable: true,
             isSortable: true,
         },
         {
             prop: "price",
-            title: "Price",
+            title: "Harga",
             isFilterable: true,
             isSortable: true,
         },
         {
             prop: "stock",
-            title: "Stock",
+            title: "Stok",
             isFilterable: true,
             isSortable: true,
         },
         {
             prop: "status",
-            title: 'Action',
+            title: 'Aksi',
             cell: (row) => (
                 <div>
                     <Link to={`/admin/products/${row.id}/edit`} className="btn btn-primary btn-sm me-2">Edit</Link>
@@ -83,15 +83,15 @@ const ProductList = () => {
                     <nav aria-label="breadcrumb" className="d-none d-md-inline-block">
                         <ol className="breadcrumb breadcrumb-dark breadcrumb-transparent">
                             <li className="breadcrumb-item"><Link to="/admin"><FontAwesomeIcon icon={faHouse}/></Link></li>
-                            <li className="breadcrumb-item"><Link to="/admin/inventory">Inventory</Link></li>
-                            <li className="breadcrumb-item active" aria-current="page">Product List</li>
+                            <li className="breadcrumb-item"><Link to="/admin/inventory">Inventaris Hasil Panen</Link></li>
+                            <li className="breadcrumb-item active" aria-current="page">Daftar Produk</li>
                         </ol>
                     </nav>
-                    <h2 className="h4">Product List</h2>
-                    <p className="mb-0">Show all products in the inventory.</p>
+                    <h2 className="h4">Daftar Produk</h2>
+                    <p className="mb-0">Daftar produk yang tersedia di Inventaris Hasil Panen.</p>
                 </div>
                 <div className="btn-toolbar mb-2 mb-md-0">
-                    <Link to="/admin/products/create" className="btn btn-primary">Create Product</Link>
+                    <Link to="/admin/products/create" className="btn btn-primary">Tambah Produk</Link>
                 </div>
             </div>
             <Datatable headers={headers} data={products} />

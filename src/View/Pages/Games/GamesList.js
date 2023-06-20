@@ -240,7 +240,7 @@ const GamesList = () => {
             sortDirections: ['ascend', 'descend'],
         },
         {
-            title: 'Action',
+            title: 'Aksi',
             key: 'action',
             render: (text, record) => (
                 <Space>
