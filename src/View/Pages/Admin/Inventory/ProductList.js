@@ -11,16 +11,8 @@ import { faHouse } from "@fortawesome/free-solid-svg-icons";
 
 const ProductList = () => {
     const {
-        products, setProducts,
-        inputData, setInputData,
-        currentId, setCurrentId,
-        fetchStatus, setFetchStatus,
-        loading, setLoading,
-
+        products, 
         fetchData,
-        fetchDataById,
-        submitData,
-        updateData,
         deleteData
     } = useContext(ProductsContext)
 

@@ -86,7 +86,7 @@ const ProductDetail = () => {
                     </div>
                 ) : (
                     <>
-                      <Datatable data={product} headers={headers} />
+                        <Datatable data={product} headers={headers} />
                     </>
                 )
             }

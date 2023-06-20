@@ -11,16 +11,9 @@ import { faEye, faHouse } from "@fortawesome/free-solid-svg-icons";
 
 const OrderList = () => {
     const {
-        orders, setOrders,
-        currentId, setCurrentId,
-        fetchStatus, setFetchStatus,
+        orders,
         loading, setLoading,
-
-        fetchData,
-        fetchDataById,
-        submitData,
-        updateData,
-        deleteData
+        fetchData
     } = useContext(OrdersContext)
     const [open, setOpen] = useState(false);
     const [loadingModal, setLoadingModal] = useState(false);
@@ -128,8 +121,8 @@ const OrderList = () => {
             const response = await fetch(`${config.api.orderService}/orders/${orderId}`, {
                 method: 'PUT',
                 headers: {
-                Authorization: "Bearer " + Cookies.get('token'),
-                'Content-Type': 'application/json'
+                    Authorization: "Bearer " + Cookies.get('token'),
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ orderStatus: newStatus })
             });
