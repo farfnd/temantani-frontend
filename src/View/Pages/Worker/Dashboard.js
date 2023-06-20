@@ -11,7 +11,7 @@ import { faCheck, faCheckCircle, faTimesCircle, faWheatAwn } from '@fortawesome/
 
 const { Content } = Layout;
 
-const WorkerDashboard = () => {
+const WorkerProjectDashboard = () => {
     const {
         user,
         fetchUserIfEmpty,
@@ -152,6 +152,14 @@ const WorkerDashboard = () => {
 
         isReportComplete = workReports.length >= diff;
     }
+
+    const getReportStatus = (week) => {
+        const report = workReports.find((r) => r.week === week);
+        if (report) {
+            return report.status;
+        }
+        return 'Belum ada laporan';
+    };
 
     const getReportBadgeVariant = (week) => {
         const report = workReports.find((r) => r.week === week);
@@ -387,7 +395,7 @@ const WorkerDashboard = () => {
                                                 <Col xs={12} sm={6} lg={4} className="d-flex flex-col justify-content-end align-items-end">
                                                     {
                                                         project && (
-                                                            <Link to={`/worker/projects`}>
+                                                            <Link to={`/worker/projects/active`}>
                                                                 <Button variant='outline-primary' className='w-100'>Lihat Semua</Button>
                                                             </Link>
                                                         )
@@ -397,7 +405,11 @@ const WorkerDashboard = () => {
                                             <Row className='mt-3'>
                                                 {getWeeksArray().map((week) => (
                                                     <Col lg={1} key={week}>
-                                                        <Button variant={getReportBadgeVariant(week)} className="w-100" disabled>
+                                                        <Button
+                                                            variant={getReportBadgeVariant(week)}
+                                                            className="w-100 disabled-button"
+                                                            title={getReportStatus(week)}
+                                                        >
                                                             {week}
                                                         </Button>
                                                     </Col>
@@ -415,4 +427,4 @@ const WorkerDashboard = () => {
     );
 };
 
-export default WorkerDashboard;
+export default WorkerProjectDashboard;

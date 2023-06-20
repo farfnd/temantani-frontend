@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 
 const { Content } = Layout;
 
-const WorkerDashboard = () => {
+const WorkHistory = () => {
     const [workOffers, setWorkOffers] = useState([]);
     const [activeOffer, setActiveOffer] = useState(null);
     const [project, setProject] = useState(null);
@@ -479,4 +479,4 @@ const WorkerDashboard = () => {
     );
 };
 
-export default WorkerDashboard;
+export default WorkHistory;

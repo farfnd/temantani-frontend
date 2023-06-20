@@ -6,6 +6,7 @@ const WorkerProjectHeader = () => {
     const location = useLocation();
 
     const isActivePath = (path) => {
+        if(path === '/worker/projects/active') return location.pathname === path || location.pathname === '/worker/projects';
         return location.pathname === path;
     };
 
@@ -35,7 +36,7 @@ const WorkerProjectHeader = () => {
                                 <Card.Body className='pb-0'>
                                     <Row className='px-3'>
                                         <Col>
-                                            <TabButton path="/worker/projects" text="Proyek Aktif" />
+                                            <TabButton path="/worker/projects/active" text="Proyek Aktif" />
                                         </Col>
                                         <Col>
                                             <TabButton path="/worker/projects/history" text="Riwayat Proyek" />
