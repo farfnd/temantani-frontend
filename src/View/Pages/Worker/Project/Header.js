@@ -42,7 +42,7 @@ const WorkerProjectHeader = () => {
                                             <TabButton path="/worker/projects/history" text="Riwayat Proyek" />
                                         </Col>
                                         <Col>
-                                            <TabButton path="/worker/projects/offer" text="Riwayat Tawaran Pekerjaan" />
+                                            <TabButton path="/worker/projects/offers" text="Riwayat Tawaran Pekerjaan" />
                                         </Col>
                                     </Row>
                                 </Card.Body>

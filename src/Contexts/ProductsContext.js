@@ -129,7 +129,7 @@ export const ProductsProvider = props => {
                     });
     
                     setProducts(updatedProducts);
-                    message.success("Product updated successfully");
+                    message.success("Produk berhasil diperbarui");
                 } else {
                     // Add new product to the local state
                     setProducts([
@@ -145,7 +145,7 @@ export const ProductsProvider = props => {
                             preOrderEstimatedDate: data.preOrderEstimatedDate,
                         },
                     ]);
-                    message.success("Product added successfully");
+                    message.success("Produk berhasil ditambahkan");
                 }
     
                 history.push("/admin/products");
@@ -163,9 +163,9 @@ export const ProductsProvider = props => {
             .catch((err) => {
                 console.log(err);
                 if (err.response.status === 400 && err.response.data.message === "No files were uploaded") {
-                    message.error("Please select an image file to upload");
+                    message.error("Mohon ungah gambar produk");
                 } else {
-                    message.error("Failed to " + (id ? "update" : "add") + " product: " + err.response.data.message);
+                    message.error("Gagal " + (id ? "memperbarui" : "menambahkan") + " produk: " + err.response.data.message);
                 }
             })
             .finally(() => {
@@ -183,7 +183,7 @@ export const ProductsProvider = props => {
 
     const deleteData = (id) => {
         confirm({
-            title: 'Are you sure you want to delete this product?',
+            title: 'Apakah anda yakin akan menghapus produk ini?',
             icon: <ExclamationCircleOutlined />,
             okText: 'Yes',
             cancelText: 'No',
@@ -198,16 +198,16 @@ export const ProductsProvider = props => {
                     });
 
                     if (response.ok) {
-                        message.success('Successfully deleted product');
+                        message.success('Berhasil menghapus produk');
                         const newProducts = products.filter(product => product.id !== id);
                         setProducts(newProducts);
                     } else {
                         const responseBody = await response.json();
-                        message.error('Failed to delete product: ' + responseBody.message);
+                        message.error('Gagal menghapus produk: ' + responseBody.message);
                     }
                 } catch (error) {
                     console.error(error);
-                    message.error('Failed to delete product: ' + error.message);
+                    message.error('Gagal menghapus produk: ' + error.message);
                 }
             }
         });

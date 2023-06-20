@@ -1,5 +1,5 @@
-import { Card, Row, Col, Badge, Form } from 'react-bootstrap';
-import { Layout, Pagination, Spin, message } from 'antd';
+import { Card, Row, Col, Badge, Form, Pagination } from 'react-bootstrap';
+import { Layout, Spin, message } from 'antd';
 import { Link, useHistory } from "react-router-dom"
 import React, { useState, useEffect } from 'react';
 import Holder from 'holderjs';
@@ -9,15 +9,7 @@ import Cookies from 'js-cookie';
 const { Content } = Layout;
 
 const ProjectList = () => {
-    const [projects, setProjects] = useState(() => {
-        const cachedHiringProjects = localStorage.getItem('cachedHiringProjects');
-        const cacheExpiryH = localStorage.getItem('cacheExpiryH');
-
-        if (cachedHiringProjects && cacheExpiryH && Date.now() < parseInt(cacheExpiryH)) {
-            return JSON.parse(cachedHiringProjects);
-        }
-        return [];
-    });
+    const [projects, setProjects] = useState([]);
 
     const [currentPage, setCurrentPage] = useState(1);
     const [projectsPerPage, setProjectsPerPage] = useState(4);
@@ -27,23 +19,9 @@ const ProjectList = () => {
         fetchProjects();
     }, []);
 
-    useEffect(() => {
-        Holder.run();
-    }, [projects]);
-
     const fetchProjects = async () => {
         try {
             setLoading(true);
-
-            const cachedHiringProjects = localStorage.getItem('cachedHiringProjects');
-            let cacheExpiryH = localStorage.getItem('cacheExpiryH');
-
-            // Check if cached data is still valid
-            if (cachedHiringProjects && cacheExpiryH && Date.now() < parseInt(cacheExpiryH)) {
-                setProjects(JSON.parse(cachedHiringProjects));
-                setLoading(false);
-                return;
-            }
 
             const response = await fetch(`${config.api.projectService}/projects?filter[status]=HIRING`, {
                 method: 'GET',
@@ -69,11 +47,6 @@ const ProjectList = () => {
 
             setProjects(updatedProjects);
             setLoading(false);
-
-            // Cache the projects in localStorage with an expiry time of 30 minutes
-            cacheExpiryH = Date.now() + 1800000;
-            localStorage.setItem('cachedHiringProjects', JSON.stringify(updatedProjects));
-            localStorage.setItem('cacheExpiryH', cacheExpiryH.toString());
         } catch (error) {
             console.error(error);
             message.error('Error fetching projects');
@@ -97,66 +70,94 @@ const ProjectList = () => {
     };
 
     return (
-        <>
-            {loading ? (
-                <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '300px' }}>
-                    <Spin size="large" />
-                </div>
-            ) : (
-                <>
-                    <Row className="row-cols-1 row-cols-md-2 row-cols-lg-4 pb-3" xs={1} md={2} lg={4} gap={16}>
-                        {currentProjects.map((project) => (
-                            <Col key={project.id}>
-                                <Link to={`/admin/projects/hiring/${project.id}`}>
-                                    <Card className="h-100">
-                                        <Card.Img
-                                            variant="top"
-                                            data-src="holder.js/300x180"
-                                            className="img-fluid"
-                                            style={{ objectFit: "cover", height: "180px" }}
-                                        />
-                                        <Card.Body>
-                                            <Badge variant="info" className='mb-1'>{project.status}</Badge>
-                                            <Card.Title>
-                                                {project.land && (
-                                                    <>
-                                                        {project.land.street}, {project.land.city}
-                                                    </>
-                                                )}
-                                            </Card.Title>
-                                        </Card.Body>
-                                    </Card>
-                                </Link>
-                            </Col>
-                        ))}
-                    </Row>
+        <Content className="mx-5 mb-3">
+            <Row>
+                <Col>
+                    <Row>
+                        <Col>
+                            <Card>
+                                <Card.Header className="text-center">
+                                    <h3>Cari Pekerja</h3>
+                                </Card.Header>
+                                <Card.Body>
+                                    {loading ? (
+                                        <div className="d-flex justify-content-center align-items-center" style={{ minHeight: '300px' }}>
+                                            <Spin size="large" />
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <Row className="row-cols-1 row-cols-md-2 row-cols-lg-4 pb-3" xs={1} md={2} lg={4} gap={16}>
+                                                {currentProjects.map((project) => (
+                                                    <Col key={project.id}>
+                                                        <Link to={`/admin/projects/hiring/${project.id}`}>
+                                                            <Card className="h-100">
+                                                                <Card.Img
+                                                                    variant="top"
+                                                                    src="https://ik.trn.asia/uploads/2021/04/lahan-pertanian-mulai-terbatas.jpg"
+                                                                    className="img-fluid"
+                                                                    style={{ objectFit: "cover", height: "180px" }}
+                                                                />
+                                                                <Card.Body>
+                                                                    <Badge variant="info" className='mb-1'>{project.status}</Badge>
+                                                                    <Card.Title>
+                                                                        {project.land && (
+                                                                            <>
+                                                                                {project.land.street}, {project.land.city}
+                                                                            </>
+                                                                        )}
+                                                                    </Card.Title>
+                                                                </Card.Body>
+                                                            </Card>
+                                                        </Link>
+                                                    </Col>
+                                                ))}
+                                            </Row>
 
-                    <div className="d-flex justify-content-between mt-3">
-                        <div>
-                            <Pagination
-                                current={currentPage}
-                                total={projects.length}
-                                pageSize={projectsPerPage}
-                                onChange={handlePageChange}
-                            />
-                        </div>
-                        <div>
-                            <Form.Label className="me-2">
-                                Items per page:
-                            </Form.Label>
-                            <Form.Select
-                                value={projectsPerPage}
-                                onChange={(e) => handleChangePerPage(e.target.value)}
-                            >
-                                <option value="4">4</option>
-                                <option value="8">8</option>
-                                <option value="12">12</option>
-                            </Form.Select>
-                        </div>
-                    </div>
-                </>
-            )}
-        </>
+                                            <div className="d-flex justify-content-between mt-3">
+                                                <div>
+                                                    <Pagination>
+                                                        <Pagination.Prev
+                                                            onClick={() => handlePageChange(currentPage - 1)}
+                                                            disabled={currentPage === 1}
+                                                        />
+                                                        {Array.from(Array(Math.ceil(projects.length / projectsPerPage)).keys()).map((page) => (
+                                                            <Pagination.Item
+                                                                key={page + 1}
+                                                                active={page + 1 === currentPage}
+                                                                onClick={() => handlePageChange(page + 1)}
+                                                            >
+                                                                {page + 1}
+                                                            </Pagination.Item>
+                                                        ))}
+                                                        <Pagination.Next
+                                                            onClick={() => handlePageChange(currentPage + 1)}
+                                                            disabled={currentPage === Math.ceil(projects.length / projectsPerPage)}
+                                                        />
+                                                    </Pagination>
+                                                </div>
+                                                <div>
+                                                    <Form.Label className="me-2">
+                                                        Items per page:
+                                                    </Form.Label>
+                                                    <Form.Select
+                                                        value={projectsPerPage}
+                                                        onChange={(e) => handleChangePerPage(e.target.value)}
+                                                    >
+                                                        <option value="4">4</option>
+                                                        <option value="8">8</option>
+                                                        <option value="12">12</option>
+                                                    </Form.Select>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
+        </Content>
     );
 };
 

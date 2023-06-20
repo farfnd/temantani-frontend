@@ -70,20 +70,20 @@ export const OrdersProvider = props => {
                 });
 
                 setOrders(updatedOrders);
-                message.success("Order status updated successfully");
+                message.success("Status pesanan berhasil diperbarui");
     
                 history.push("/admin/orders");
                 fetchData();
             })
             .catch((err) => {
                 console.log(err);
-                message.error("Failed to update order: " + err.response.data.message);
+                message.error("Gagal memperbarui status pesanan: " + err.response.data.message);
             });
     };
 
     const deleteData = (id) => {
         confirm({
-            title: 'Are you sure you want to delete this order?',
+            title: 'Apakah anda yakin akan menghapus pesanan ini?',
             icon: <ExclamationCircleOutlined />,
             okText: 'Yes',
             cancelText: 'No',
@@ -98,16 +98,16 @@ export const OrdersProvider = props => {
                     });
 
                     if (response.ok) {
-                        message.success('Successfully deleted order');
+                        message.success('Berhasil menghapus pesanan');
                         const newOrders = orders.filter(order => order.id !== id);
                         setOrders(newOrders);
                     } else {
                         const responseBody = await response.json();
-                        message.error('Failed to delete order: ' + responseBody.message);
+                        message.error('Gagal menghapus pesanan: ' + responseBody.message);
                     }
                 } catch (error) {
                     console.error(error);
-                    message.error('Failed to delete order: ' + error.message);
+                    message.error('Gagal menghapus pesanan: ' + error.message);
                 }
             }
         });

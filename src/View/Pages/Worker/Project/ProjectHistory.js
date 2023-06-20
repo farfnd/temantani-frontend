@@ -76,6 +76,7 @@ const WorkerProjectHistory = () => {
             });
     
             setWorkOffers(updatedWorkOffers);
+            console.log('Work offers:', JSON.stringify(updatedWorkOffers, null, 2));
         } catch (error) {
             console.error('Error fetching active work offer data:', error);
             message.error('Gagal memuat data proyek aktif');

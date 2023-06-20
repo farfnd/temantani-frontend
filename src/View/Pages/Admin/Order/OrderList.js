@@ -136,9 +136,9 @@ const OrderList = () => {
 
             const responseBody = await response.json();
             if (response.ok) {
-                message.success('Order status updated successfully');
+                message.success('Status pesanan berhasil diperbarui');
             } else {
-                message.error(`Failed to update order: ${responseBody}`);
+                message.error(`Gagal memperbarui pesanan: ${responseBody}`);
             }
             setLoading(false);
             setOpen(false);
@@ -146,7 +146,7 @@ const OrderList = () => {
         } catch (error) {
             setLoading(false);
             console.error(error);
-            message.error('Failed to update order: ' + error);
+            message.error('Gagal memperbarui pesanan: ' + error);
         }
     };
 

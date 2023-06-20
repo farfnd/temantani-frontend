@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 
 const { Content, Footer } = Layout;
 
-const LayoutComponent = (props) => {
+const AdminLayout = (props) => {
 
     const { setLoginStatus } = useContext(UserContext)
 
@@ -16,8 +16,6 @@ const LayoutComponent = (props) => {
             <Layout style={{ minHeight: '100vh'}}>
                 <Sidebar />
                 <Layout>
-
-                    <Navbar />
                     <Content className="mx-3">
                         {props.body}
                     </Content>
@@ -28,4 +26,4 @@ const LayoutComponent = (props) => {
 
 }
 
-export default LayoutComponent
+export default AdminLayout

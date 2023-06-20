@@ -116,7 +116,7 @@ const ShowProfile = () => {
                                                 </Row>
                                                 <Row>
                                                     <Form.Label column md="2" htmlFor="formBasicSkills">
-                                                        <strong>Kemampuan</strong>
+                                                        <strong>Keahlian</strong>
                                                     </Form.Label>
                                                     <Form.Label column md="10">
                                                         <p className='m-0'>
@@ -124,7 +124,7 @@ const ShowProfile = () => {
                                                                 worker.skills.length > 0 ? (
                                                                     worker.skills.map((skill, index) => skill.tag).join(', ')
                                                                 ) : (
-                                                                    'No skills available'
+                                                                    '-'
                                                                 )
                                                             }
                                                         </p>

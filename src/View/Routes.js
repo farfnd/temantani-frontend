@@ -7,7 +7,7 @@ import Cookies from "js-cookie";
 import { message } from "antd";
 
 import AuthLayout from "./Components/AuthLayout";
-import LayoutComponent from "./Components/LayoutComponent";
+import AdminLayout from "./Components/AdminLayout";
 import WorkerLayout from "./Components/WorkerLayout";
 import Home from "./Pages/Home";
 import Login from "./Pages/Auth/Login"
@@ -28,7 +28,8 @@ import WorkerWorkDetailEdit from "./Pages/Worker/Profile/EditWork";
 import WorkerBankAccount from "./Pages/Worker/BankAccount/Show";
 import WorkerBankAccountEdit from "./Pages/Worker/BankAccount/Edit";
 import WorkerProjectDashboard from "./Pages/Worker/Project/Dashboard";
-import WorkerProjectHistory from "./Pages/Worker/Project/History";
+import WorkerProjectHistory from "./Pages/Worker/Project/ProjectHistory";
+import WorkerProjectOffers from "./Pages/Worker/Project/Offer";
 import WorkerProjectDetail from "./Pages/Worker/Project/Detail";
 
 const Routes = () => {
@@ -77,39 +78,39 @@ const Routes = () => {
             </NotLoggedInRoute>
 
             <Route path="/admin" exact>
-              <LayoutComponent body={<AdminDashboard />} />
+              <AdminLayout body={<AdminDashboard />} />
             </Route>
 
             <Route path="/admin/projects/hiring" exact>
-              <LayoutComponent body={<HiringProjectList />} />
+              <AdminLayout body={<HiringProjectList />} />
             </Route>
 
             <Route path="/admin/projects/hiring/:id" exact>
-              <LayoutComponent body={<HiringProjectDetail />} />
+              <AdminLayout body={<HiringProjectDetail />} />
             </Route>
 
             <Route path="/admin/projects/ongoing" exact>
-              <LayoutComponent body={<OngoingProjectList />} />
+              <AdminLayout body={<OngoingProjectList />} />
             </Route>
 
             <Route path="/admin/projects/ongoing/:id" exact>
-              <LayoutComponent body={<OngoingProjectDetail />} />
+              <AdminLayout body={<OngoingProjectDetail />} />
             </Route>
 
             <Route path="/admin/products" exact>
-              <LayoutComponent body={<ProductList />} />
+              <AdminLayout body={<ProductList />} />
             </Route>
 
             <Route path="/admin/products/create" exact>
-              <LayoutComponent body={<ProductForm />} />
+              <AdminLayout body={<ProductForm />} />
             </Route>
 
             <Route path="/admin/products/:id/edit" exact>
-              <LayoutComponent body={<ProductForm />} />
+              <AdminLayout body={<ProductForm />} />
             </Route>
 
             <Route path="/admin/orders" exact>
-              <LayoutComponent body={<OrderList />} />
+              <AdminLayout body={<OrderList />} />
             </Route>
 
             <Route path="/worker" exact>
@@ -148,12 +149,16 @@ const Routes = () => {
               <WorkerLayout body={<WorkerProjectHistory />} />
             </Route>
 
+            <Route path="/worker/projects/offers" exact>
+              <WorkerLayout body={<WorkerProjectOffers />} />
+            </Route>
+
             <Route path="/worker/projects/history/:id" exact>
               <WorkerLayout body={<WorkerProjectDetail />} />
             </Route>
 
             <LoggedInRoute path="/change-password" exact>
-              <LayoutComponent body={<ChangePassword />} />
+              <AdminLayout body={<ChangePassword />} />
             </LoggedInRoute>
 
             <LoggedInRoute path="/logout" exact>

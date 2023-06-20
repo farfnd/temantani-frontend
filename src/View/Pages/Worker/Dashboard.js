@@ -44,7 +44,7 @@ const WorkerProjectDashboard = () => {
     const handleLogout = () => {
         Modal.confirm({
             title: 'Logout',
-            content: 'Are you sure you want to logout?',
+            content: 'Apakah Anda yakin ingin keluar?',
             onOk: () => {
                 history.push('/logout');
             },

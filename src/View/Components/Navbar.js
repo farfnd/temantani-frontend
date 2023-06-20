@@ -31,10 +31,6 @@ const Navbar = () => {
     return (
         <>
             <Header className="topnav">
-
-                <Menu theme="dark" mode="horizontal">
-                    <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
-                </Menu>
                 <Menu theme="dark" mode="horizontal" style={{ marginLeft: "auto" }} disabledOverflow="true">
                     {
                         Cookies.get('token') !== undefined && (
@@ -47,18 +43,6 @@ const Navbar = () => {
                                         <Link to="/#">Logout</Link>
                                     </Menu.Item>
                                 </SubMenu>
-                            </>
-                        )
-                    }
-                    {
-                        Cookies.get('token') === undefined && (
-                            <>
-                                <Menu.Item key="login">
-                                    <Link to="/login">Login</Link>
-                                </Menu.Item>
-                                <Menu.Item key="register">
-                                    <Link to="/register">Register</Link>
-                                </Menu.Item>
                             </>
                         )
                     }

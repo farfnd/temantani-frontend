@@ -1,10 +1,11 @@
 import { DesktopOutlined, FileOutlined, HomeOutlined, PaperClipOutlined, LogoutOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme, Modal, message } from 'antd';
 import { Link, useLocation, useHistory } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { Button, Image } from 'react-bootstrap';
 import { useState, useContext } from 'react';
 import { UserContext } from '../../Contexts/UserContext';
 import Cookies from 'js-cookie';
+import navLogo from '../../assets/img/logonav.png';
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
@@ -20,12 +21,12 @@ function getItem(label, key, icon, path = null, children) {
 
 const items = [
     getItem('Dashboard', '1', <HomeOutlined />, '/admin'),
-    getItem('Projects', '2', <PaperClipOutlined />, '#', [
-        getItem('Hire Worker', '3', <PaperClipOutlined />, '/admin/projects/hiring'),
-        getItem('Ongoing Projects', '3', <PaperClipOutlined />, '/admin/projects/ongoing'),
+    getItem('Proyek', '2', <PaperClipOutlined />, '#', [
+        getItem('Cari Pekerja', '3', <PaperClipOutlined />, '/admin/projects/hiring'),
+        getItem('Sedang Berjalan', '3', <PaperClipOutlined />, '/admin/projects/ongoing'),
     ]),
-    getItem('Products Inventory', '4', <FileOutlined />, '/admin/products'),
-    getItem('Orders', '5', <FileOutlined />, '/admin/orders'),
+    getItem('Inventaris Pasil Panen', '4', <FileOutlined />, '/admin/products'),
+    getItem('Pesanan', '5', <FileOutlined />, '/admin/orders'),
 ];
 
 const Sidebar = () => {
@@ -40,7 +41,7 @@ const Sidebar = () => {
     const handleLogout = () => {
         Modal.confirm({
             title: 'Logout',
-            content: 'Are you sure you want to logout?',
+            content: 'Apakah Anda yakin ingin keluar?',
             onOk: () => {
                 setLoginStatus(false);
                 setRole([]);
@@ -55,7 +56,7 @@ const Sidebar = () => {
     return (
         <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
             <Link to="/">
-                <div className="logo" style={{ height: '32px', background: 'rgba(255, 255, 255, 0.2)', margin: '16px' }} />
+                <Image src={navLogo} className="logo" height='32px' style={{margin: '16px'}} />
             </Link>
             <Menu theme="dark" selectedKeys={[location.pathname]} defaultOpenKeys={['sub1']} mode="inline">
                 {items.map(item => (

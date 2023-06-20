@@ -25,6 +25,7 @@ const ProjectDetail = () => {
   const [loadingWorker, setLoadingWorker] = useState(true);
   const [sentWorkOffers, setSentWorkOffers] = useState([]);
   const [loadingOffer, setLoadingOffer] = useState(false);
+  const [dateOptions] = useState({ year: 'numeric', month: 'long', day: 'numeric' });
 
   useEffect(() => {
     fetchProject();
@@ -38,13 +39,13 @@ const ProjectDetail = () => {
   const headers = [
     {
       prop: "name",
-      title: "Name",
+      title: "Nama",
       isFilterable: true,
       isSortable: true,
       cell: (row) => (
         <div>
           <img
-            src="https://placehold.co/50x50"
+            src={row.worker.profilePictureUrl ? `${config.api.workerService}/images/${row.worker.profilePictureUrl}` : "https://placehold.co/50x50"}
             alt="Placeholder"
             style={{ width: '50px', height: '50px', marginRight: '10px' }}
           />
@@ -57,8 +58,21 @@ const ProjectDetail = () => {
       title: "Email"
     },
     {
+      prop: "skills",
+      title: "Keahlian",
+      cell: (row) => (
+        <>
+          {row.skills.length > 0 ? (
+            row.skills.map((skill, index) => skill.tag).join(', ')
+          ) : (
+            '-'
+          )}
+        </>
+      )
+    },
+    {
       prop: "button",
-      title: "Action",
+      title: "Aksi",
       cell: (row) => (
         <div>
           {!isOfferSent(row.id) ? (
@@ -90,7 +104,6 @@ const ProjectDetail = () => {
     }
   ];
 
-
   const fetchProject = async () => {
     try {
       setLoadingProject(true);
@@ -105,6 +118,12 @@ const ProjectDetail = () => {
       const projectData = await response.json();
 
       if (projectData) {
+        if (projectData.initiatedAt) {
+          projectData.initiatedAtReadable = new Date(projectData.initiatedAt).toLocaleDateString('id-ID', dateOptions);
+        }
+        if (projectData.estimatedFinished) {
+          projectData.estimatedFinishedReadable = new Date(projectData.estimatedFinished).toLocaleDateString('id-ID', dateOptions);
+        }
         setProject(projectData);
         const landResponse = await fetch(`${config.api.landService}/lands/${projectData.landId}`, {
           method: 'GET',
@@ -126,7 +145,7 @@ const ProjectDetail = () => {
   const fetchAvailableWorkers = async () => {
     try {
       setLoadingWorker(true);
-      const response = await fetch(`${config.api.workerService}/admin/workers?filter[workAvailability]=AVAILABLE`, {
+      const response = await fetch(`${config.api.workerService}/admin/workers?filter[workAvailability]=AVAILABLE&include=skills`, {
         method: 'GET',
         headers: {
           Authorization: "Bearer " + Cookies.get('token'),
@@ -187,28 +206,28 @@ const ProjectDetail = () => {
       if (response.ok) {
         setLoadingOffer(false);
         fetchSentWorkOffers();
-        message.success('Work offer sent!');
+        message.success('Tawaran kerja berhasil dikirim');
       } else {
         const responseBody = await response.json();
-        message.error(`Failed to send work offer: ${responseBody}`);
+        message.error(`Gagal send tawaran kerja: ${responseBody}`);
       }
     } catch (error) {
       console.error(error);
-      message.error('Failed to send work offer: ' + error);
+      message.error('Gagal send tawaran kerja: ' + error);
     }
   };
 
   const cancelWorkOffer = (workerId) => {
     confirm({
-      title: 'Are you sure you want to cancel the work offer?',
+      title: 'Apakah Anda yakin akan membatalkan tawaran kerja?',
       icon: <ExclamationCircleOutlined />,
-      okText: 'Yes',
-      cancelText: 'No',
+      okText: 'Ya',
+      cancelText: 'Tidak',
       onOk: async () => {
         try {
           const offer = sentWorkOffers.find((offer) => offer.workerId === workerId);
           if (!offer) {
-            message.error('Work offer not found');
+            message.error('Tawaran kerja tidak ditemukan');
             return;
           }
           const offerId = offer.id;
@@ -222,15 +241,15 @@ const ProjectDetail = () => {
           });
 
           if (response.ok) {
-            message.success('Work offer canceled!');
-            fetchSentWorkOffers(); // Refresh the sent work offers list
+            message.success('Tawaran kerja berhasil dibatalkan');
+            fetchSentWorkOffers(); // Refresh the sent tawaran kerjas list
           } else {
             const responseBody = await response.json();
-            message.error(`Failed to cancel work offer: ${responseBody}`);
+            message.error(`Gagal membatalkan tawaran kerja: ${responseBody}`);
           }
         } catch (error) {
           console.error(error);
-          message.error('Failed to cancel work offer: ' + error);
+          message.error('Gagal membatalkan tawaran kerja: ' + error);
         }
       }
     });
@@ -241,7 +260,7 @@ const ProjectDetail = () => {
       <Card>
         <Link to="/admin/projects/hiring" style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
           <LeftCircleOutlined style={{ marginRight: '5px' }} />
-          <span>Back to Projects</span>
+          <span>Kembali ke Daftar Proyek</span>
         </Link>
         <Card.Body>
           {loadingProject ? (
@@ -259,8 +278,9 @@ const ProjectDetail = () => {
                     <Card.Title>{land.street}, {land.city}</Card.Title>
                     <Card.Text>
                       <strong>Status:</strong> {project.status}<br />
-                      <strong>Worker Needs:</strong> {project.workerNeeds}<br />
-                      <strong>Description:</strong> {project.description}<br />
+                      <strong>Masa Proyek:</strong> {`${project.initiatedAtReadable ?? 'N/A'} - ${project.estimatedFinishedReadable ?? 'N/A'}`}<br />
+                      <strong>Kebutuhan Pekerja:</strong> {project.workerNeeds}<br />
+                      <strong>Deskripsi:</strong> {project.description}<br />
                     </Card.Text>
                   </div>
                 </div>
@@ -274,7 +294,7 @@ const ProjectDetail = () => {
             <Spin />
           ) : (
             <>
-              <strong>Available Workers:</strong>
+              <strong>Pekerja yang Tersedia:</strong>
               <Datatable data={availableWorkers} headers={headers} />
             </>
           )}

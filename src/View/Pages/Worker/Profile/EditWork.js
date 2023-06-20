@@ -23,6 +23,7 @@ const EditWorkDetails = () => {
     const [worker, setWorker] = useState(null);
     const [validated, setValidated] = useState(false);
     const [skillOptions, setSkillOptions] = useState([]);
+    const [activeOffer, setActiveOffer] = useState(null);
     const [loading, setLoading] = useState(false);
 
     const [inputData, setInputData] = useState({
@@ -36,6 +37,7 @@ const EditWorkDetails = () => {
     useEffect(() => {
         fetchWorker();
         fetchSkillOptions();
+        fetchActiveWorkOffer();
     }, []);
 
     useEffect(() => {
@@ -67,7 +69,6 @@ const EditWorkDetails = () => {
         }
     };
 
-
     const fetchSkillOptions = async () => {
         try {
             const response = await fetch(`${config.api.workerService}/skills`, {
@@ -89,6 +90,23 @@ const EditWorkDetails = () => {
         }
     };
 
+    const fetchActiveWorkOffer = async () => {
+        try {
+            const response = await fetch(`${config.api.workerService}/worker/work-offers/active?include=project`, {
+                method: 'GET',
+                headers: {
+                    Authorization: "Bearer " + Cookies.get('token'),
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            setActiveOffer(data);
+        } catch (error) {
+            console.error('Error fetching active work offer data:', error);
+            message.error('Gagal memuat data proyek aktif');
+        }
+    };
+
     const handleChange = (event) => {
         const { name, value } = event.target;
         setInputData({ ...inputData, [name]: value });
@@ -98,7 +116,7 @@ const EditWorkDetails = () => {
         const skills = selectedOptions ? selectedOptions.map((option) => option.value) : [];
         setInputData({ ...inputData, skills });
         console.log(inputData);
-    };    
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -153,26 +171,34 @@ const EditWorkDetails = () => {
                             {
                                 worker ? (
                                     <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                                        <Row className="mb-3">
-                                            <Form.Label column md="2" htmlFor="formBasicWorkAvailability">Ketersediaan Kerja</Form.Label>
-                                            <Col md="10">
-                                                <Form.Select
-                                                    name="workAvailability"
-                                                    value={inputData.workAvailability}
-                                                    onChange={handleChange}
-                                                    required
-                                                >
-                                                    <option value="AVAILABLE">Tersedia</option>
-                                                    <option value="NOT_AVAILABLE">Tidak tersedia</option>
-                                                </Form.Select>
-                                                <Form.Control.Feedback type="invalid">
-                                                    Mohon pilih ketersediaan kerja.
-                                                </Form.Control.Feedback>
-                                            </Col>
-                                        </Row>
+                                        {
+                                            activeOffer ? (
+                                                <Alert variant="warning">
+                                                    Anda tidak dapat mengubah ketersediaan kerja karena masih memiliki proyek aktif.
+                                                </Alert>
+                                            ) : (
+                                                <Row className="mb-3">
+                                                    <Form.Label column md="2" htmlFor="formBasicWorkAvailability">Ketersediaan Kerja</Form.Label>
+                                                    <Col md="10">
+                                                        <Form.Select
+                                                            name="workAvailability"
+                                                            value={inputData.workAvailability}
+                                                            onChange={handleChange}
+                                                            required
+                                                        >
+                                                            <option value="AVAILABLE">Tersedia</option>
+                                                            <option value="NOT_AVAILABLE">Tidak tersedia</option>
+                                                        </Form.Select>
+                                                        <Form.Control.Feedback type="invalid">
+                                                            Mohon pilih ketersediaan kerja.
+                                                        </Form.Control.Feedback>
+                                                    </Col>
+                                                </Row>
+                                            )
+                                        }
                                         <Row className="mb-3">
                                             <Form.Label column md="2" htmlFor="formBasicName">
-                                                Kemampuan
+                                                Keahlian
                                             </Form.Label>
                                             <Col md="10">
                                                 <Select

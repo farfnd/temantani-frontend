@@ -32,7 +32,7 @@ const WorkerNavbar = (props) => {
                                     <span className="mx-2">{user.name}</span>
                                 </div>
                             } id="basic-nav-dropdown">
-                                <NavDropdown.Item href="/edit-profile">Edit Profile</NavDropdown.Item>
+                                <NavDropdown.Item href="/worker/profile">Profil</NavDropdown.Item>
                                 <NavDropdown.Item href="/change-password">Change Password</NavDropdown.Item>
                                 <NavDropdown.Divider />
                                 <NavDropdown.Item><Link to="/logout">Logout</Link></NavDropdown.Item>
