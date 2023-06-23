@@ -44,6 +44,8 @@ const ProductForm = () => {
                 status: "AVAILABLE",
                 preOrderEstimatedStock: 0,
                 preOrderEstimatedDate: "",
+                expiryPeriod: 1,
+                image: null,
             })
         }
     }, [])
@@ -87,10 +89,9 @@ const ProductForm = () => {
         }
     };
 
-
     return (
         <>
-            <Container>
+            <Container className="mb-3">
                 <Row className="justify-content-md-center">
                     <Col md="12">
                         <Card className="text-center">
@@ -101,12 +102,12 @@ const ProductForm = () => {
                                 <Form noValidate validated={validated} onSubmit={handleSubmit} encType="multipart/form-data">
                                     <Row className="mb-3">
                                         <Form.Label column md="2" htmlFor="formBasicName">
-                                            Name
+                                            Nama Produk
                                         </Form.Label>
                                         <Col md="10">
                                             <Form.Control
                                                 type="text"
-                                                placeholder="Enter name"
+                                                placeholder="Masukkan nama produk"
                                                 name="name"
                                                 value={inputData.name}
                                                 onChange={handleChange}
@@ -115,37 +116,37 @@ const ProductForm = () => {
                                                 maxLength={50}
                                             />
                                             <Form.Control.Feedback type="invalid">
-                                                Please enter a valid name (3-50 characters).
+                                                Mohon masukkan nama produk (3-50 karakter).
                                             </Form.Control.Feedback>
                                         </Col>
                                     </Row>
 
                                     <Row className="mb-3">
-                                        <Form.Label column md="2" htmlFor="formBasicDescription">Description</Form.Label>
+                                        <Form.Label column md="2" htmlFor="formBasicDescription">Deskripsi</Form.Label>
                                         <Col md="10">
                                             <Form.Control
                                                 as="textarea"
                                                 rows={2}
-                                                placeholder="Enter description"
+                                                placeholder="Masukkan deskripsi"
                                                 name="description"
                                                 value={inputData.description}
                                                 onChange={handleChange}
                                                 required
                                             />
                                             <Form.Control.Feedback type="invalid">
-                                                Please enter a valid description.
+                                                Masukkan deskripsi produk.
                                             </Form.Control.Feedback>
                                         </Col>
                                     </Row>
 
                                     <Row className="mb-3">
-                                        <Form.Label column md="2" htmlFor="formBasicPrice">Price</Form.Label>
+                                        <Form.Label column md="2" htmlFor="formBasicPrice">Harga</Form.Label>
                                         <Col md="10">
                                             <InputGroup className="mb-3">
                                                 <InputGroup.Text>Rp</InputGroup.Text>
                                                 <FormControl
                                                     type="number"
-                                                    placeholder="Enter price"
+                                                    placeholder="Masukkan harga"
                                                     name="price"
                                                     value={inputData.price}
                                                     onChange={handleChange}
@@ -154,18 +155,20 @@ const ProductForm = () => {
                                                     step={100}
                                                 />
                                                 <Form.Control.Feedback type="invalid">
-                                                    Please enter a valid price (minimum Rp1000).
+                                                    Mohon masukkan harga produk (minimal Rp1000).
                                                 </Form.Control.Feedback>
                                             </InputGroup>
                                         </Col>
                                     </Row>
 
-                                    <Row className="mb-3">
-                                        <Form.Label column md="2" htmlFor="formBasicStock">Stock</Form.Label>
-                                        <Col md="10">
+                                    <Row className="mb-3 align-items-center">
+                                        <Col md={2}>
+                                            <Form.Label htmlFor="formBasicStock">Stok</Form.Label>
+                                        </Col>
+                                        <Col md={4}>
                                             <Form.Control
                                                 type="number"
-                                                placeholder="Enter stock"
+                                                placeholder="Masukkan stok"
                                                 name="stock"
                                                 value={inputData.stock}
                                                 onChange={handleChange}
@@ -173,47 +176,44 @@ const ProductForm = () => {
                                                 required
                                             />
                                         </Col>
-                                    </Row>
-
-                                    <Row className="mb-3">
-                                        <Form.Label column md="2" htmlFor="formBasicStatus">Status</Form.Label>
-                                        <Col md="10">
+                                        <Col md={2}>
+                                            <Form.Label htmlFor="formBasicStatus">Status</Form.Label>
+                                        </Col>
+                                        <Col md={4}>
                                             <Form.Select
                                                 aria-label="Default select example"
                                                 name="status"
                                                 onChange={handleChange}
-                                                defaultValue={inputData.status}
+                                                value={inputData.status || ""}
                                                 required
                                             >
-                                                <option value="AVAILABLE">Available</option>
+                                                <option label="Pilih status" value="" disabled hidden></option>
+                                                <option value="AVAILABLE">Tersedia</option>
                                                 <option value="PREORDER">Pre-Order</option>
-                                                <option value="NOT_AVAILABLE">Not Available</option>
+                                                <option value="NOT_AVAILABLE">Tidak Tersedia</option>
                                             </Form.Select>
                                             <Form.Control.Feedback type="invalid">
-                                                Please select a valid status.
+                                                Mohon pilih status produk.
                                             </Form.Control.Feedback>
                                         </Col>
                                     </Row>
 
                                     <Row className="mb-3">
-                                        <Form.Label column md="2" htmlFor="formBasicPreOrderEstimatedStock">Pre-Order Estimated Stock</Form.Label>
-                                        <Col md="10">
+                                        <Form.Label column md="2" htmlFor="formBasicPreOrderEstimatedStock">Estimasi Stok Pre-order</Form.Label>
+                                        <Col md={4}>
                                             <Form.Control
                                                 type="number"
-                                                placeholder="Enter pre-order estimated stock"
+                                                placeholder="Masukkan estimasi stok pre-order"
                                                 name="preOrderEstimatedStock"
                                                 value={inputData.preOrderEstimatedStock}
                                                 onChange={handleChange}
                                             />
                                         </Col>
-                                    </Row>
-
-                                    <Row className="mb-3">
-                                        <Form.Label column md="2" htmlFor="formBasicPreOrderEstimatedDate">Pre-Order Estimated Date</Form.Label>
-                                        <Col md="10">
+                                        <Form.Label column md="2" htmlFor="formBasicPreOrderEstimatedDate">Estimasi Tanggal Tersedia</Form.Label>
+                                        <Col md={4}>
                                             <Form.Control
                                                 type="date"
-                                                placeholder="Enter pre-order estimated date"
+                                                placeholder="Masukkan estimasi tanggal tersedia"
                                                 name="preOrderEstimatedDate"
                                                 value={inputData.preOrderEstimatedDate}
                                                 onChange={handleChange}
@@ -222,11 +222,43 @@ const ProductForm = () => {
                                     </Row>
 
                                     <Row className="mb-3">
-                                        <Form.Label column md="2" htmlFor="formBasicImage">Image</Form.Label>
+                                        <Form.Label column md="2" htmlFor="formBasicExpiryPeriod">Umur Simpan</Form.Label>
+                                        <Col md={10}>
+                                            <InputGroup className="mb-3" hasValidation>
+                                                <Form.Control
+                                                    type="number"
+                                                    placeholder="Masukkan umur simpan"
+                                                    name="expiryPeriod"
+                                                    value={inputData.expiryPeriod}
+                                                    onChange={handleChange}
+                                                    required
+                                                />
+                                                <Form.Select
+                                                    aria-label="Default select example"
+                                                    name="expiryPeriodUnit"
+                                                    onChange={handleChange}
+                                                    value={inputData.expiryPeriodUnit || ""}
+                                                    required
+                                                >
+                                                    <option label="Pilih satuan" value="" disabled hidden></option>
+                                                    <option value="Hari">Hari</option>
+                                                    <option value="Bulan">Bulan</option>
+                                                    <option value="Tahun">Tahun</option>
+                                                </Form.Select>
+                                                <Form.Control.Feedback type="invalid">
+                                                    Mohon masukkan umur simpan produk.
+                                                </Form.Control.Feedback>
+
+                                            </InputGroup>
+                                        </Col>
+                                    </Row>
+
+                                    <Row className="mb-3">
+                                        <Form.Label column md="2" htmlFor="formBasicImage">Gambar</Form.Label>
                                         <Col md="10">
                                             <Form.Control
                                                 type="file"
-                                                placeholder="Enter image"
+                                                placeholder="Unggah gambar"
                                                 name="image"
                                                 onChange={handleImage}
                                                 required={currentId === null}
@@ -237,10 +269,10 @@ const ProductForm = () => {
                                     {imagePreview && (
                                         <Row className="mb-3">
                                             <Col md="2">
-                                                <Form.Label>Image Preview:</Form.Label>
+                                                <Form.Label>Pratinjau Gambar:</Form.Label>
                                             </Col>
                                             <Col md="10">
-                                                <img src={imagePreview} alt="Preview" style={{ maxWidth: "10rem" }} className="float-start"/>
+                                                <img src={imagePreview} alt="Preview" style={{ maxWidth: "10rem" }} className="float-start" />
                                             </Col>
                                         </Row>
                                     )}

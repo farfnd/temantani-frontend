@@ -18,6 +18,9 @@ export const ProductsProvider = props => {
         status: "AVAILABLE",
         preOrderEstimatedStock: 0,
         preOrderEstimatedDate: "",
+        expiryPeriod: 1,
+        expiryPeriodUnit: "BULAN",
+        image: null,
     })
     const [fetchStatus, setFetchStatus] = useState(true)
     const [currentId, setCurrentId] = useState(null)
@@ -61,6 +64,8 @@ export const ProductsProvider = props => {
             status: data.status,
             preOrderEstimatedStock: parseInt(data.preOrderEstimatedStock),
             preOrderEstimatedDate: data.preOrderEstimatedDate,
+            expiryPeriod: parseInt(data.expiryPeriod),
+            expiryPeriodUnit: data.expiryPeriodUnit,
         })
         setImagePreview(`${config.api.inventoryService}/images/${data.image}`)
         setCurrentId(data.id)
@@ -86,29 +91,33 @@ export const ProductsProvider = props => {
         formData.append("price", inputData.price);
         formData.append("stock", inputData.stock);
         formData.append("status", inputData.status);
-        if(preOrderEstimatedStock !== null && preOrderEstimatedDate !== null) {
+        if (preOrderEstimatedStock !== null && preOrderEstimatedDate !== null) {
             formData.append("preOrderEstimatedStock", preOrderEstimatedStock);
             formData.append("preOrderEstimatedDate", preOrderEstimatedDate);
         }
-        formData.append("image", inputData.image);
-    
+        formData.append("expiryPeriod", inputData.expiryPeriod);
+        formData.append("expiryPeriodUnit", inputData.expiryPeriodUnit);
+        if (inputData.image !== undefined) {
+            formData.append("image", inputData.image)
+        };
+
         const requestConfig = {
             headers: {
                 Authorization: "Bearer " + Cookies.get('token'),
                 "Content-Type": "multipart/form-data",
             },
         };
-    
+
         const apiEndpoint = id
             ? `${config.api.inventoryService}/products/${id}`
             : `${config.api.inventoryService}/products`;
 
         const requestMethod = id ? axios.put : axios.post;
-    
+
         requestMethod(apiEndpoint, formData, requestConfig)
             .then((res) => {
                 const data = res.data;
-    
+
                 if (id) {
                     // Update existing product in the local state
                     const updatedProducts = products.map((product) => {
@@ -122,12 +131,14 @@ export const ProductsProvider = props => {
                                 status: data.status,
                                 preOrderEstimatedStock: parseInt(data.preOrderEstimatedStock),
                                 preOrderEstimatedDate: data.preOrderEstimatedDate,
+                                expiryPeriod: parseInt(data.expiryPeriod),
+                                expiryPeriodUnit: data.expiryPeriodUnit,
                             };
                         } else {
                             return product;
                         }
                     });
-    
+
                     setProducts(updatedProducts);
                     message.success("Produk berhasil diperbarui");
                 } else {
@@ -143,12 +154,15 @@ export const ProductsProvider = props => {
                             status: data.status,
                             preOrderEstimatedStock: parseInt(data.preOrderEstimatedStock),
                             preOrderEstimatedDate: data.preOrderEstimatedDate,
+                            expiryPeriod: parseInt(data.expiryPeriod),
+                            expiryPeriodUnit: data.expiryPeriodUnit,
                         },
                     ]);
                     message.success("Produk berhasil ditambahkan");
                 }
-    
+
                 history.push("/admin/products");
+                setImagePreview("");
                 setInputData({
                     name: "",
                     description: "",
@@ -157,13 +171,15 @@ export const ProductsProvider = props => {
                     status: "AVAILABLE",
                     preOrderEstimatedStock: 0,
                     preOrderEstimatedDate: "",
+                    expiryPeriod: 1,
+                    expiryPeriodUnit: "BULAN",
                     image: null,
                 });
             })
             .catch((err) => {
                 console.log(err);
                 if (err.response.status === 400 && err.response.data.message === "No files were uploaded") {
-                    message.error("Mohon ungah gambar produk");
+                    message.error("Mohon unggah gambar produk");
                 } else {
                     message.error("Gagal " + (id ? "memperbarui" : "menambahkan") + " produk: " + err.response.data.message);
                 }

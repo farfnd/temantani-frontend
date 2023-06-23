@@ -49,16 +49,26 @@ const ProductList = () => {
             title: "Harga",
             isFilterable: true,
             isSortable: true,
+            width: '150',
         },
         {
             prop: "stock",
             title: "Stok",
             isFilterable: true,
             isSortable: true,
+            width: '150',
+        },
+        {
+            prop: "expiryPeriod",
+            title: "Umur Simpan",
+            isFilterable: true,
+            isSortable: true,
+            cell: (row) => (`${row.expiryPeriod} ${row.expiryPeriodUnit}`)
         },
         {
             prop: "status",
             title: 'Aksi',
+            width: '150',
             cell: (row) => (
                 <div>
                     <Link to={`/admin/products/${row.id}/edit`} className="btn btn-primary btn-sm me-2">Edit</Link>
