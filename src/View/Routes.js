@@ -9,6 +9,7 @@ import { message } from "antd";
 import AuthLayout from "./Components/AuthLayout";
 import AdminLayout from "./Components/AdminLayout";
 import WorkerLayout from "./Components/WorkerLayout";
+import StoreLayout from "./Components/StoreLayout";
 import Home from "./Pages/Home";
 import Login from "./Pages/Auth/Login"
 import Register from "./Pages/Auth/Register";
@@ -31,6 +32,12 @@ import WorkerProjectDashboard from "./Pages/Worker/Project/Dashboard";
 import WorkerProjectHistory from "./Pages/Worker/Project/ProjectHistory";
 import WorkerProjectOffers from "./Pages/Worker/Project/Offer";
 import WorkerProjectDetail from "./Pages/Worker/Project/Detail";
+import StoreLanding from "./Pages/Store/Landing";
+import StoreProductList from "./Pages/Store/Product/ProductList";
+import StoreProductDetail from "./Pages/Store/Product/ProductDetail";
+import StoreBuyerDashboard from "./Pages/Store/Buyer/Orders";
+import StoreBuyerAddresses from "./Pages/Store/Buyer/Addresses";
+import ConfirmOrder from "./Pages/Store/Product/ConfirmOrder";
 
 const Routes = () => {
   const { user, setLoginStatus, setUser } = useContext(UserContext);
@@ -155,6 +162,34 @@ const Routes = () => {
 
             <Route path="/worker/projects/history/:id" exact>
               <WorkerLayout body={<WorkerProjectDetail />} />
+            </Route>
+
+            <Route path="/store" exact>
+              <StoreLayout body={<StoreLanding />} />
+            </Route>
+
+            <Route path="/store/products" exact>
+              <StoreLayout body={<StoreProductList />} />
+            </Route>
+
+            <Route path="/store/products/:id" exact>
+              <StoreLayout body={<StoreProductDetail />} />
+            </Route>
+
+            <Route path="/store/me" exact>
+              <StoreLayout body={<StoreBuyerDashboard />} />
+            </Route>
+
+            <Route path="/store/me/orders" exact>
+              <StoreLayout body={<StoreBuyerDashboard />} />
+            </Route>
+
+            <Route path="/store/me/addresses" exact>
+              <StoreLayout body={<StoreBuyerAddresses />} />
+            </Route>
+
+            <Route path="/store/checkout" exact>
+              <StoreLayout body={<ConfirmOrder />} />
             </Route>
 
             <LoggedInRoute path="/change-password" exact>

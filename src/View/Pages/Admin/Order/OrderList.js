@@ -62,12 +62,12 @@ const OrderList = () => {
             isSortable: true,
         },
         {
-            prop: "orderStatus",
+            prop: "status",
             title: "Status",
             isFilterable: true,
             isSortable: true,
             cell: (row) => (
-                <Badge bg={bgs[row.orderStatus] || 'primary'}>{row.orderStatus}</Badge>
+                <Badge bg={bgs[row.status] || 'primary'}>{row.status}</Badge>
             )
         },
         {
@@ -124,7 +124,7 @@ const OrderList = () => {
                     Authorization: "Bearer " + Cookies.get('token'),
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ orderStatus: newStatus })
+                body: JSON.stringify({ status: newStatus })
             });
 
             const responseBody = await response.json();
@@ -170,7 +170,7 @@ const OrderList = () => {
                     <Button key="back" onClick={handleCancel} className="me-2" variant="outline-danger">
                         Close
                     </Button>,
-                    ((modalData.orderStatus === 'PAID' && (
+                    ((modalData.status === 'PAID' && (
                         loading ? (
                             <Button key="markProcessed" type="primary" disabled>
                                 <Spin />
@@ -180,7 +180,7 @@ const OrderList = () => {
                                 Mark as Processed
                             </Button>
                         )
-                    )) || (modalData.orderStatus === 'PROCESSED' && (
+                    )) || (modalData.status === 'PROCESSED' && (
                         <Button key="markSent" type="primary" onClick={() => updateOrderStatus(modalData.id, 'SENT')}>
                             Mark as Sent
                         </Button>
@@ -199,13 +199,13 @@ const OrderList = () => {
                         <strong>Amount:</strong> {modalData.amount}
                     </p>
                     <p>
-                        <strong>Order Status:</strong> {modalData.orderStatus}
+                        <strong>Order Status:</strong> {modalData.status}
                     </p>
                     <p>
                         <strong>Ordered By:</strong> {modalData.user?.name} ({modalData.user?.email})
                     </p>
                     {
-                        modalData.orderStatus === 'PAID' && (
+                        modalData.status === 'PAID' && (
                             <>
                                 <p>
                                     <strong>Payment Method:</strong> {modalData.paymentMethod}

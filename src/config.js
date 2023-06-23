@@ -14,6 +14,23 @@ const config = {
         buyer: ["ADMIN_SUPER", "ADMIN_BUYER"],
         worker: ["ADMIN_SUPER", "ADMIN_WORKER"],
         project: ["ADMIN_SUPER", "ADMIN_PROJECT"],
+    },
+    midtrans: {
+        clientKey: "SB-Mid-client-ObmJinWW8tqcjZtQ",
+    },
+    googleMapsApiKey: 'AIzaSyBiSH85zr_h9i4mkaZOcNNSekc1FWJi5ZI',
+    shipping: {
+        origin: {
+            subdistrict: 'Keputih',
+            district: 'Sukolilo',
+            city: 'Surabaya',
+            postalCode: '60111',
+        },
+        cost: {
+            base: 10000,
+            perKmUnder10Km: 2000,
+            perKmAbove10Km: 2500,
+        }
     }
 }
 
