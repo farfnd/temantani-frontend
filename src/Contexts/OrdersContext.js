@@ -62,7 +62,7 @@ export const OrdersProvider = props => {
                     if (order.id === id) {
                         return {
                             ...order,
-                            status: data.orderStatus,
+                            status: data.status,
                         };
                     } else {
                         return order;
