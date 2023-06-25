@@ -241,7 +241,7 @@ const BuyerDashboard = () => {
         }
     };
 
-    const handlDeleteAddress = async (address) => {
+    const handleDeleteAddress = async (address) => {
         AntdModal.confirm({
             zIndex: 4000,
             title: 'Apakah anda yakin akan menghapus alamat ini?',
@@ -367,7 +367,7 @@ const BuyerDashboard = () => {
                                                                     <Button
                                                                         variant='danger'
                                                                         className='btn-sm w-100'
-                                                                        onClick={() => handlDeleteAddress(address)}
+                                                                        onClick={() => handleDeleteAddress(address)}
                                                                     >
                                                                         Hapus
                                                                     </Button>
