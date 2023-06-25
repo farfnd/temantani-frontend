@@ -6,6 +6,7 @@ const config = {
         workerService: "http://localhost:4001",
         inventoryService: "http://localhost:3333",
         orderService: "http://localhost:4002",
+        invoiceService: "http://localhost:4005",
     },
     jwtSecret: "$2b$10$OstRst1LWEfDyKEGdKcOKO",
     adminRoles: {

@@ -38,6 +38,7 @@ import StoreProductDetail from "./Pages/Store/Product/ProductDetail";
 import StoreBuyerDashboard from "./Pages/Store/Buyer/Orders";
 import StoreBuyerAddresses from "./Pages/Store/Buyer/Addresses";
 import ConfirmOrder from "./Pages/Store/Product/ConfirmOrder";
+import Invoice from "./Pages/Store/Invoice";
 
 const Routes = () => {
   const { user, setLoginStatus, setUser } = useContext(UserContext);
@@ -190,6 +191,10 @@ const Routes = () => {
 
             <Route path="/store/checkout" exact>
               <StoreLayout body={<ConfirmOrder />} />
+            </Route>
+
+            <Route path="/invoice/:id" exact>
+              <Invoice/>
             </Route>
 
             <LoggedInRoute path="/change-password" exact>

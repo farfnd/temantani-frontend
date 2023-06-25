@@ -121,7 +121,7 @@ const BuyerDashboard = () => {
             onOk: async () => {
                 try {
                     const response = await fetch(`${config.api.orderService}/orders/${selectedOrder.id}`, {
-                        method: 'PUT',
+                        method: 'PATCH',
                         headers: {
                             Authorization: "Bearer " + Cookies.get('token'),
                             'Content-Type': 'application/json'
@@ -353,6 +353,26 @@ const BuyerDashboard = () => {
                                                             <strong>Tanggal Pemesanan:</strong>&nbsp;
                                                             {new Date(selectedOrder.createdAt).toLocaleDateString('id-ID', dateOptions)}
                                                         </p>
+                                                        {
+                                                            (selectedOrder.paymentMethod) && (
+                                                                <>
+                                                                    <p className='mb-0'>
+                                                                        <strong>Metode Pembayaran:</strong>&nbsp;
+                                                                        {selectedOrder.paymentMethod.split("_")
+                                                                            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                                                                            .join(" ")}
+                                                                    </p>
+                                                                    {/* buka faktur pembelian */}
+                                                                    <Button
+                                                                        variant='outline-dark'
+                                                                        className='me-2 mt-3'
+                                                                        onClick={() => window.open(`/invoice/${selectedOrder.id}`, '_blank')}
+                                                                    >
+                                                                        Lihat Faktur
+                                                                    </Button>
+                                                                </>
+                                                            )
+                                                        }
                                                     </>
                                                 )
                                             }

@@ -257,6 +257,12 @@ h1.ant-typography,
   background: #1b8651;
 }
 
+@media print {
+  .print-hidden {
+      display: none;
+  }
+}
+
 @media (max-width: 991.98px) {
   .offcanvas-collapse {
     position: fixed;

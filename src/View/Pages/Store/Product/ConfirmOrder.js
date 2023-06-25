@@ -3,7 +3,6 @@ import { useLocation, useHistory } from "react-router-dom";
 import config from "../../../../config";
 import { useEffect, useState } from "react";
 import { Modal, message } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
 import Cookies from "js-cookie";
 
 const axios = require('axios');
@@ -89,16 +88,16 @@ const ConfirmOrder = () => {
                 const data = await response.json();
                 window.snap.pay(data.token, {
                     onSuccess: function (result) {
-                        message.success('Pesanan berhasil dibuat');
                         history.push('/store/me/orders');
+                        message.success('Pesanan berhasil dibuat');
                     },
                     onError: function (result) {
-                        message.error('Gagal membuat pesanan');
                         history.push('/store/me/orders');
+                        message.error('Gagal membuat pesanan');
                     },
                     onClose: function () {
-                        message.success('Pesanan berhasil dibuat, silahkan lakukan pembayaran sebelum 24 jam');
                         history.push('/store/me/orders');
+                        message.success('Pesanan berhasil dibuat, silahkan lakukan pembayaran sebelum 24 jam');
                     }
                 })
                 return data;
@@ -182,7 +181,7 @@ const ConfirmOrder = () => {
                                                 <Card.Text>
                                                     <strong>Subtotal:</strong> Rp{parseInt(amount * product.price).toLocaleString('id-ID')}
                                                     <br />
-                                                    <strong>Ongkos Kirim:</strong> {shippingCost !== null ? `Rp${shippingCost}` : 'Loading...'}
+                                                    <strong>Ongkos Kirim:</strong> {shippingCost !== null ? `Rp${parseInt(shippingCost).toLocaleString('id-ID')}` : 'Loading...'}
                                                 </Card.Text>
                                                 <hr />
                                                 <h5><strong>Total:</strong> {
