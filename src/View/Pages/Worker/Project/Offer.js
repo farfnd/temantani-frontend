@@ -1,4 +1,4 @@
-import { Layout, Image, message, Spin } from 'antd';
+import { Layout, Image, message, Spin, Modal as AntdModal } from 'antd';
 import { Card, Row, Col, Badge, Button, Modal, Form, Pagination, Spinner } from "react-bootstrap";
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../../../Contexts/UserContext';
@@ -10,12 +10,14 @@ import { Link } from 'react-router-dom/cjs/react-router-dom.min';
 import Datatable from '../../../Components/Datatable';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faWheatAwn } from '@fortawesome/free-solid-svg-icons';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
 
 const { Content } = Layout;
 
 const WorkerProjectOffers = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [projectsPerPage, setProjectsPerPage] = useState(4);
+    const [worker, setWorker] = useState(null);
     const [workOffers, setWorkOffers] = useState([]);
     const [selectedOffer, setSelectedOffer] = useState(null);
     const [loadingOffer, setLoadingOffer] = useState(true);
@@ -23,13 +25,17 @@ const WorkerProjectOffers = () => {
     const [loading, setLoading] = useState(false);
     const [loadingModal, setLoadingModal] = useState(false);
     const [open, setOpen] = useState(false);
+    const [openWorkContract, setOpenWorkContract] = useState(false);
     const [modalData, setModalData] = useState({});
     const [imagePreview, setImagePreview] = useState("");
+    const [userName, setUserName] = useState("");
+    const [validated, setValidated] = useState(false);
+    const [workContractModalButtonDisabled, setWorkContractModalButtonDisabled] = useState(true);
+    const [loadingUpdate, setLoadingUpdate] = useState(false);
     const [dateOptions] = useState({ year: 'numeric', month: 'long', day: 'numeric' });
     const history = useHistory();
 
     const showModal = (row) => {
-        console.log(row);
         setSelectedOffer(row);
         setOpen(true)
     };
@@ -41,6 +47,7 @@ const WorkerProjectOffers = () => {
 
     useEffect(() => {
         fetchUserIfEmpty();
+        fetchWorker();
         fetchWorkOffer();
     }, []);
 
@@ -105,6 +112,25 @@ const WorkerProjectOffers = () => {
         },
     ];
 
+    const fetchWorker = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch(`${config.api.workerService}/worker/me`, {
+                method: 'GET',
+                headers: {
+                    Authorization: "Bearer " + Cookies.get('token'),
+                    'Content-Type': 'application/json'
+                }
+            });
+            const data = await response.json();
+            setWorker(data);
+        } catch (error) {
+            console.error('Error fetching worker data:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const fetchWorkOffer = async () => {
         try {
             setLoadingOffer(true);
@@ -167,8 +193,37 @@ const WorkerProjectOffers = () => {
         setImagePreview(null);
     };
 
+    const handleOpenWorkContract = () => {
+        setOpenWorkContract(true);
+    };
 
+    const handleCloseWorkContract = () => {
+        setOpenWorkContract(false);
+    };
+
+    const handleNameChange = (e) => {
+        e.persist();
+        setUserName(e.target.value);
+        setWorkContractModalButtonDisabled(e.target.value.toLowerCase() !== worker.name.toLowerCase());
+        console.log(e.target.value);
+    };
+
+    const handleDenyOffer = async (id) => {
+        AntdModal.confirm({
+            zIndex: 4000,
+            title: 'Apakah anda yakin akan menolak tawaran kerja ini?',
+            icon: <ExclamationCircleOutlined />,
+            okText: 'Ya',
+            cancelText: 'Tidak',
+            onOk: async () => await handleUpdate(id, "REJECTED")
+        });
+    };
     const handleUpdate = async (id, status) => {
+        setLoadingUpdate(true);
+        let body = { status };
+        if (status === "ACCEPTED") {
+            body.workContractAccepted = 1;
+        }
         try {
             const response = await fetch(`${config.api.workerService}/worker/work-offers/${id}`, {
                 method: 'PATCH',
@@ -176,7 +231,7 @@ const WorkerProjectOffers = () => {
                     Authorization: "Bearer " + Cookies.get('token'),
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({status})
+                body: JSON.stringify(body)
             });
 
             if (response.ok) {
@@ -187,7 +242,7 @@ const WorkerProjectOffers = () => {
                             Authorization: "Bearer " + Cookies.get('token'),
                             'Content-Type': 'application/json'
                         },
-                        body: JSON.stringify({workAvailability: 'NOT_AVAILABLE'})
+                        body: JSON.stringify({ workAvailability: 'NOT_AVAILABLE' })
                     });
                     if (userResponse.ok) {
                         const userBody = await userResponse.json();
@@ -206,6 +261,10 @@ const WorkerProjectOffers = () => {
 
         } catch (error) {
             console.error(error);
+        } finally {
+            setLoadingUpdate(false);
+            setWorkContractModalButtonDisabled(false);
+            setOpenWorkContract(false);
         }
     };
 
@@ -228,7 +287,7 @@ const WorkerProjectOffers = () => {
                         <Col>
                             <Card>
                                 <Card.Header className="text-center">
-                                    <h3>Riwayat Proyek</h3>
+                                    <h3>Riwayat Tawaran Pekerjaan</h3>
                                 </Card.Header>
                                 <Card.Body>
                                     {
@@ -314,23 +373,211 @@ const WorkerProjectOffers = () => {
                                         Tutup
                                     </Button>
                                     {
-                                        selectedOffer && selectedOffer.status === 'PENDING' && user.workAvailability === 'AVAILABLE' &&
-                                        <>
+                                        selectedOffer ? (
+                                            selectedOffer.status === 'PENDING' && worker.workAvailability === 'AVAILABLE' &&
+                                            <>
+                                                <Button
+                                                    variant="primary"
+                                                    onClick={() => handleOpenWorkContract(selectedOffer)}
+                                                >
+                                                    Terima
+                                                </Button>
+                                                <Button
+                                                    variant="danger"
+                                                    onClick={() => handleDenyOffer(selectedOffer.id)}
+                                                >
+                                                    Tolak
+                                                </Button>
+                                            </>
+                                        ) : (
+                                            <></>
+                                        )
+
+                                    }
+                                </Modal.Footer>
+                            </Modal>
+                            <Modal
+                                show={openWorkContract}
+                                onHide={handleCloseWorkContract}
+                                size='lg'
+                                dialogClassName='modal-70w'
+                            >
+                                <Modal.Header closeButton>
+                                    <Modal.Title>
+                                        Kontrak Kerja Proyek
+                                    </Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body style={{
+                                    maxHeight: 'calc(100vh - 210px)',
+                                    overflowY: 'auto'
+                                }}>
+                                    {
+                                        selectedOffer ? (
+                                            <>
+                                                <Card.Text>
+                                                    Tangggal: {new Date().toLocaleDateString('id-ID', dateOptions)}
+                                                    <br />
+                                                    Perihal: Kontrak Kerja
+                                                </Card.Text>
+                                                <p>Yang bertanda tangan di bawah ini:</p>
+                                                <p>
+                                                    <strong>PIHAK PERTAMA</strong><br />
+                                                    Nama: {worker.name}<br />
+                                                    Alamat: {user.street}, {user.city}, {user.postalCode}<br />
+                                                    No. HP: {user.phoneNumber}<br />
+                                                    Email: {worker.email}<br />
+                                                </p>
+                                                <p>
+                                                    <strong>PIHAK KEDUA</strong><br />
+                                                    Nama: TemanTani<br />
+                                                    Alamat: Jl. Raya ITS, Keputih, Kec. Sukolilo, Kota SBY, Jawa Timur 60111<br />
+                                                    Email: admin@temantani.com
+                                                </p>
+                                                <p>
+                                                    Selanjutnya disebut sebagai <strong>PIHAK PERTAMA</strong> dan <strong>PIHAK KEDUA</strong> secara bersama-sama disebut sebagai <strong>PIHAK</strong>.
+                                                    <br />
+                                                    Menyatakan bahwa <strong>PIHAK</strong> sepakat untuk mengadakan perjanjian kerja sama dalam bidang pertanian dengan ketentuan sebagai berikut:
+                                                </p>
+                                                <p>
+                                                    <div className="text-center">
+                                                        <strong>PASAL 1<br />
+                                                            KETENTUAN UMUM</strong><br />
+                                                    </div>
+                                                    <strong>1.1</strong> Pihak Pertama dengan ini menyatakan bahwa Pihak Pertama adalah seorang pekerja yang memiliki keahlian dalam bidang pertanian.<br />
+                                                    <strong>1.2</strong> Pihak Kedua dengan ini menyatakan bahwa Pihak Kedua adalah sebuah perusahaan yang bergerak di bidang pertanian.<br />
+                                                    <strong>1.3</strong> Pihak Pertama dan Pihak Kedua dengan ini sepakat untuk melakukan kerjasama dalam bidang pertanian.<br />
+                                                    <strong>1.4</strong> Proyek yang akan dilaksanakan oleh Pihak Pertama dan Pihak Kedua adalah sebagai berikut:<br />
+                                                    <ul>
+                                                        <li>Lokasi: {selectedOffer.land.street}, {selectedOffer.land.city}</li>
+                                                        <li>Luas: {selectedOffer.land.area ?? "3700"} m<sup>2</sup></li>
+                                                        <li>Deskripsi: {selectedOffer.project.description}</li>
+                                                        <li>Komoditas: {selectedOffer.land.harvest ?? "Padi"}</li>
+                                                        <li>Pemilik Lahan: {selectedOffer.land.owner.name ?? "N/A"}</li>
+                                                        <li>Perkiraan Masa Proyek: {selectedOffer.project.initiatedAtReadable ?? "N/A"} - {selectedOffer.project.estimatedFinishedReadable ?? "N/A"}</li>
+                                                    </ul>
+
+                                                </p>
+                                                <p>
+                                                    <div className="text-center">
+                                                        <strong>PASAL 2<br />
+                                                            SYARAT-SYARAT KERJA
+                                                        </strong><br />
+                                                    </div>
+                                                    <strong>2.1</strong> Pihak Pertama setuju untuk bekerja selama periode proyek yang telah ditentukan.<br />
+                                                    <strong>2.2</strong> Pihak Pertama akan melaksanakan tugas dan tanggung jawab yang terkait dengan proyek, termasuk tetapi tidak terbatas pada:<br />
+                                                    <ul className='mb-0'>
+                                                        <li style={{ listStyleType: 'initial' }}>Pengelolaan lahan</li>
+                                                        <li>Pemeliharaan tanaman</li>
+                                                        <li>Pemanenan</li>
+                                                        <li>Pengolahan pascapanen</li>
+                                                    </ul>
+                                                    <strong>2.3</strong> Pihak Pertama akan menjalankan tugas dengan penuh dedikasi dan memastikan pekerjaan dilakukan dengan baik.<br />
+                                                    <strong>2.4</strong> Pihak Kedua akan memberikan pengawasan dan bimbingan kepada Pihak Pertama selama proyek berlangsung.<br />
+                                                    <strong>2.5</strong> Pihak Pertama akan memberikan laporan kemajuan mingguan kepada Pihak Kedua.<br />
+                                                </p>
+                                                <p>
+                                                    <div className="text-center">
+                                                        <strong>PASAL 3<br />
+                                                            PEMBAYARAN
+                                                        </strong><br />
+                                                    </div>
+                                                    <strong>3.1</strong> Pihak Kedua akan membayar Pihak Pertama sesuai dengan kesepakatan yang telah disepakati sebelumnya.<br />
+                                                    <strong>3.2</strong> Pembayaran akan dilakukan setelah proyek selesai dan laporan kemajuan mingguan diterima dan diverifikasi oleh Pihak Kedua.<br />
+                                                    <strong>3.3</strong> Pihak Pertama setuju untuk menerima pembayaran dari Pihak Kedua melalui transfer bank.<br />
+                                                </p>
+                                                <p>
+                                                    <div className="text-center">
+                                                        <strong>PASAL 4<br />
+                                                            KEWAJIBAN PIHAK PERTAMA
+                                                        </strong><br />
+                                                    </div>
+                                                    <strong>4.1</strong> Pihak Pertama setuju untuk bekerja selama periode proyek yang telah ditentukan.<br />
+                                                    <strong>4.2</strong> Pihak Pertama harus mematuhi instruksi dan petunjuk yang diberikan oleh Pihak Kedua.<br />
+                                                    <strong>4.3</strong> Pihak Pertama bertanggung jawab untuk menjaga kebersihan dan keamanan di lokasi proyek.<br />
+                                                    <strong>4.4</strong> Pihak Pertama bertanggung jawab untuk memastikan bahwa semua peralatan yang digunakan dalam proyek berada dalam kondisi baik.<br />
+                                                </p>
+                                                <p>
+                                                    <div className="text-center">
+                                                        <strong>PASAL 5<br />
+                                                            KEWAJIBAN PIHAK KEDUA
+                                                        </strong><br />
+                                                    </div>
+                                                    <strong>5.1</strong> Pihak Kedua akan menyediakan semua peralatan dan bahan yang diperlukan untuk melaksanakan proyek.<br />
+                                                    <strong>5.2</strong> Pihak Kedua akan memberikan dukungan dan bimbingan kepada Pihak Pertama.<br />
+                                                    <strong>5.3</strong> Pihak Kedua akan memberikan pembayaran kepada Pihak Pertama sesuai dengan kesepakatan yang telah disepakati sebelumnya.<br />
+                                                </p>
+                                                <p>
+                                                    <div className="text-center">
+                                                        <strong>PASAL 6<br />
+                                                            KONDISI UMUM
+                                                        </strong><br />
+                                                    </div>
+                                                    <strong>6.1</strong> Pihak Pertama dan Pihak Kedua dengan ini menyatakan bahwa mereka adalah pihak yang sah dan berwenang untuk mengikat pihak mereka masing-masing dalam perjanjian ini.<br />
+                                                    <strong>6.2</strong> Pihak Pertama dan Pihak Kedua dengan ini menyatakan bahwa mereka telah membaca dan memahami isi dari perjanjian ini.<br />
+                                                    <strong>6.3</strong> Perjanjian ini akan berlaku efektif pada tanggal yang disebutkan di atas dan akan berakhir pada tanggal yang disebutkan di atas.<br />
+                                                    <strong>6.4</strong> Perjanjian ini dapat diperpanjang dengan persetujuan tertulis dari kedua belah pihak.<br />
+                                                    <strong>6.5</strong> Dalam hal terjadi pelanggaran terhadap perjanjian ini oleh salah satu pihak, pihak lain memiliki hak untuk mengakhiri kontrak dan mengambil langkah hukum yang diperlukan<br />
+                                                </p>
+                                                <hr />
+                                                <p>
+                                                    Dengan mengetikkan nama dan menekan tombol "Setuju", Anda menyatakan bahwa Anda telah membaca, memahami, dan menyetujui semua syarat dan ketentuan dalam Perjanjian ini.
+                                                </p>
+                                                <div className="mb-3">
+                                                    <label htmlFor="userName" className="form-label">
+                                                        Nama
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        id="userName"
+                                                        required
+                                                        value={userName}
+                                                        onChange={handleNameChange}
+                                                    />
+                                                    <Form.Control.Feedback type="invalid">Nama tidak sesuai dengan nama pengguna</Form.Control.Feedback>
+                                                </div>
+
+                                            </>
+                                        ) : (
+                                            <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
+                                                <Spinner animation="border" />
+                                            </div>
+                                        )
+                                    }
+                                </Modal.Body>
+                                <Modal.Footer>
+                                    <Button variant="secondary" onClick={handleCloseWorkContract}>
+                                        Tutup
+                                    </Button>
+                                    {selectedOffer ? (
+                                        selectedOffer.status === "PENDING" ? (
                                             <Button
                                                 variant="primary"
-                                                className='me-2' c
                                                 onClick={() => handleUpdate(selectedOffer.id, "ACCEPTED")}
+                                                disabled={workContractModalButtonDisabled}
                                             >
-                                                Terima
+                                                {loadingUpdate ? (
+                                                    <>
+                                                        <Spinner
+                                                            as="span"
+                                                            animation="grow"
+                                                            size="sm"
+                                                            role="status"
+                                                            aria-hidden="true"
+                                                        />
+                                                        &nbsp;
+                                                        Loading...
+                                                    </>
+                                                ) : (
+                                                    "Terima Tawaran"
+                                                )}
                                             </Button>
-                                            <Button
-                                                variant="danger"
-                                                onClick={() => handleUpdate(selectedOffer.id, "ACCEPTED")}
-                                            >
-                                                Tolak
-                                            </Button>
-                                        </>
-                                    }
+                                        ) : (
+                                            <></>
+                                        )
+                                    ) : (
+                                        <></>
+                                    )}
                                 </Modal.Footer>
                             </Modal>
                         </Col>
