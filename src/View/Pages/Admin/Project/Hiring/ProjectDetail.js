@@ -45,7 +45,7 @@ const ProjectDetail = () => {
       cell: (row) => (
         <div>
           <img
-            src={row.worker.profilePictureUrl ? `${config.api.workerService}/images/${row.worker.profilePictureUrl}` : "https://placehold.co/50x50"}
+            src={row.profilePictureUrl ? `${config.api.workerService}/images/${row.profilePictureUrl}` : "https://placehold.co/50x50"}
             alt="Placeholder"
             style={{ width: '50px', height: '50px', marginRight: '10px' }}
           />

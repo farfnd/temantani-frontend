@@ -1,4 +1,3 @@
-import Image from "../../../../assets/img/nillkin-case-1.jpg";
 import { Link } from "react-router-dom";
 
 function RelatedProduct(props) {
@@ -36,7 +35,7 @@ function RelatedProduct(props) {
           className="card-img-top bg-dark cover"
           height="200"
           alt=""
-          src={Image}
+          src="https://via.placeholder.com/300x200"
         />
         <div className="card-body">
           <h5 className="card-title text-center text-dark text-truncate">

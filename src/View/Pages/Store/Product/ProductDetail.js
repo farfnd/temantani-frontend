@@ -226,10 +226,20 @@ function ProductDetail() {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Nama Produk</Form.Label>
-              <h5>{product ? product.name : "N/A"}</h5>
-            </Form.Group>
+            <Row>
+              <Col>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Nama Produk</Form.Label>
+                  <h5>{product ? product.name : "N/A"}</h5>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Harga</Form.Label>
+                  <h5>Rp{product ? parseInt(product.price).toLocaleString('id-id') : "N/A"}/kg</h5>
+                </Form.Group>
+              </Col>
+            </Row>
 
             <Form.Label>Jumlah</Form.Label>
             <InputGroup className="mb-3">
@@ -244,6 +254,11 @@ function ProductDetail() {
               />
               <InputGroup.Text>kg</InputGroup.Text>
             </InputGroup>
+
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Total Harga</Form.Label>
+              <h5>Rp{product ? parseInt(product.price * amount).toLocaleString('id-id') : "N/A"}</h5>
+            </Form.Group>
 
             {
               addresses && addresses.length > 0 ? (
