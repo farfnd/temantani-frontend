@@ -1,20 +1,13 @@
 import { LeftCircleOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Card, Button, Col, Row, Table, Badge } from 'react-bootstrap';
+import { Card, Button, Badge, Modal } from 'react-bootstrap';
 import config from '../../../../../config';
 import Cookies from 'js-cookie';
-import { Spin, message, Modal } from 'antd';
-import $ from 'jquery';
-import {
-  DatatableWrapper,
-  Filter,
-  Pagination,
-  PaginationOptions,
-  TableBody,
-  TableHeader
-} from 'react-bs-datatable';
+import { Spin, message } from 'antd';
 import Datatable from '../../../../Components/Datatable';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
 
 const ProjectDetail = () => {
   const { id } = useParams();
@@ -25,6 +18,9 @@ const ProjectDetail = () => {
   const [loadingWorker, setLoadingWorker] = useState(true);
   const [sentWorkOffers, setSentWorkOffers] = useState([]);
   const [loadingOffer, setLoadingOffer] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [modalData, setModalData] = useState({});
+  const [selectedWorker, setSelectedWorker] = useState(null);
   const [dateOptions] = useState({ year: 'numeric', month: 'long', day: 'numeric' });
 
   useEffect(() => {
@@ -75,6 +71,9 @@ const ProjectDetail = () => {
       title: "Aksi",
       cell: (row) => (
         <div>
+          <Button type="primary" size="small" onClick={() => showWorkerDetail(row)} className='me-2'>
+            <FontAwesomeIcon icon={faEye} />
+          </Button>
           {!isOfferSent(row.id) ? (
             <Button
               onClick={() => sendWorkOffer(row.id)}
@@ -103,6 +102,35 @@ const ProjectDetail = () => {
       )
     }
   ];
+
+  const showWorkerDetail = async (row) => {
+    console.log(row);
+    setSelectedWorker(row);
+    try {
+      const response = await fetch(`${config.api.userService}/users/${row.id}`, {
+        method: 'GET',
+        headers: {
+          Authorization: "Bearer " + Cookies.get('token'),
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      setModalData(data);
+    } catch (error) {
+      console.error(error);
+      message.error('Gagal memuat data pekerja');
+    }
+    showModal();
+  };
+
+  const showModal = () => {
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalData(null);
+    setOpen(false);
+  };
 
   const fetchProject = async () => {
     try {
@@ -300,6 +328,38 @@ const ProjectDetail = () => {
           )}
         </Card.Footer>
       </Card>
+      <Modal
+        show={open}
+        onHide={handleCloseModal}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Informasi Pekerja</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {
+            modalData ? (
+              <>
+                <p>
+                  <strong>Nama:</strong> {modalData?.name}<br />
+                  <strong>Alamat:</strong> {`${modalData?.street}, ${modalData?.city}, ${modalData?.postalCode}`}<br />
+                  <strong>Telepon:</strong> {modalData?.phoneNumber}<br />
+                  <strong>Email:</strong> {modalData?.email}
+                </p>
+                <p>
+                  <strong>Keterampilan:</strong><br />{selectedWorker?.skills?.map((skill) => skill.tag).join(', ')}
+                </p>
+              </>
+            ) : (
+              <Spin />
+            )
+          }
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Tutup
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
