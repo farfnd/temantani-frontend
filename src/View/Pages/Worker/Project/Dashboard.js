@@ -166,9 +166,21 @@ const WorkHistory = () => {
                     'Content-Type': 'application/json'
                 }
             });
-            const data = await response.json();
-            setActiveOffer(data);
-            setProject(data.project);
+            if (response.ok) {
+                const text = await response.text();
+                const data = text ? JSON.parse(text) : null;
+                if (data) {
+                    setActiveOffer(data);
+                    setProject(data.project);
+                } else {
+                    setActiveOffer(null);
+                    setProject(null);
+                }
+            } else {
+                setActiveOffer(null);
+                setProject(null);
+                message.error('Gagal memuat data proyek aktif');
+            }
         } catch (error) {
             console.error('Error fetching active work offer data:', error);
             message.error('Gagal memuat data proyek aktif');
@@ -370,50 +382,69 @@ const WorkHistory = () => {
                                 <Card.Header className="text-center">
                                     <h3>Proyek Aktif</h3>
                                 </Card.Header>
-                                {activeOffer && activeOffer.project.status === 'ONGOING' ? (
-                                    <Card.Body>
-                                        {loadingOffer && loadingLand ? (
+                                {activeOffer ? (
+                                    activeOffer.project.status === 'ONGOING' ? (
+                                        <>
+                                            <Card.Body>
+                                                {loadingOffer && loadingLand ? (
+                                                    <Spin />
+                                                ) : (
+                                                    activeOffer && land ? (
+                                                        <>
+                                                            <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                                <Image
+                                                                    src="https://ik.trn.asia/uploads/2021/04/lahan-pertanian-mulai-terbatas.jpg"
+                                                                    style={{ maxWidth: '300px', maxHeight: '300px' }}
+                                                                />
+                                                                <div style={{ marginLeft: '10px' }}></div>
+                                                                <div style={{ flex: 1 }}>
+                                                                    <Card.Title>{land.street}, {land.city}</Card.Title>
+                                                                    <Card.Text>
+                                                                        <strong>Status:</strong> {activeOffer.project.status}<br />
+                                                                        <strong>Luas Lahan:</strong> {land.area ?? 3700} m<sup>2</sup><br />
+                                                                        <strong>Deskripsi:</strong> {project.description ?? activeOffer.project.description}<br />
+                                                                        <strong>Masa Proyek (tentatif):</strong>&nbsp;
+                                                                        {project.initiatedAtReadable ?? "N/A"} - {project.estimatedFinishedReadable ?? "N/A"}<br />
+                                                                    </Card.Text>
+                                                                </div>
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <Card.Text className='text-center'>
+                                                            Anda belum memiliki proyek aktif
+                                                        </Card.Text>
+                                                    )
+                                                )}
+                                            </Card.Body>
+                                            <Card.Footer>
+                                                {loadingWorkReport ? (
+                                                    <Spin />
+                                                ) : (
+                                                    weekRows ? (
+                                                        <>
+                                                            <strong>Laporan Pekerjaan</strong>
+                                                            <Datatable data={weekRows} headers={headers} />
+                                                        </>
+                                                    ) : (
+                                                        <Card.Text>
+                                                            Anda belum memiliki laporan pekerjaan
+                                                        </Card.Text>
+                                                    )
+                                                )}
+                                            </Card.Footer>
+                                        </>
+                                    ) : (
+                                        <Card.Body>
                                             <Spin />
-                                        ) : (
-                                            activeOffer && land && (
-                                                <>
-                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
-
-                                                        <Image
-                                                            src="https://ik.trn.asia/uploads/2021/04/lahan-pertanian-mulai-terbatas.jpg"
-                                                            style={{ maxWidth: '300px', maxHeight: '300px' }}
-                                                        />
-                                                        <div style={{ marginLeft: '10px' }}></div>
-                                                        <div style={{ flex: 1 }}>
-                                                            <Card.Title>{land.street}, {land.city}</Card.Title>
-                                                            <Card.Text>
-                                                                <strong>Status:</strong> {activeOffer.project.status}<br />
-                                                                <strong>Luas Lahan:</strong> {land.area ?? 3700} m<sup>2</sup><br />
-                                                                <strong>Deskripsi:</strong> {project.description ?? activeOffer.project.description}<br />
-                                                                <strong>Masa Proyek (tentatif):</strong>&nbsp;
-                                                                {project.initiatedAtReadable ?? "N/A"} - {project.estimatedFinishedReadable ?? "N/A"}<br />
-                                                            </Card.Text>
-                                                        </div>
-                                                    </div>
-                                                </>
-                                            )
-                                        )}
-                                    </Card.Body>
+                                        </Card.Body>
+                                    )
                                 ) : (
                                     <Card.Body>
-                                        <Spin />
+                                        <Card.Text className='text-center'>
+                                            Anda belum memiliki proyek aktif
+                                        </Card.Text>
                                     </Card.Body>
                                 )}
-                                <Card.Footer>
-                                    {loadingWorkReport ? (
-                                        <Spin />
-                                    ) : (
-                                        <>
-                                            <strong>Laporan Pekerjaan</strong>
-                                            <Datatable data={weekRows} headers={headers} />
-                                        </>
-                                    )}
-                                </Card.Footer>
                             </Card>
                             <Modal show={showModal} onHide={handleCloseModal}>
                                 <Modal.Header closeButton>
@@ -424,10 +455,7 @@ const WorkHistory = () => {
                                 <Modal.Body>
                                     <Form encType="multipart/form-data">
                                         <h5><strong>{selectedWeekString}</strong></h5>
-                                        <Form.Group
-                                            className="mb-3"
-                                            controlId="formDescription"
-                                        >
+                                        <Form.Group className="mb-3" controlId="formDescription">
                                             <Form.Label>Deskripsi</Form.Label>
                                             <Form.Control
                                                 as="textarea"
@@ -436,13 +464,9 @@ const WorkHistory = () => {
                                                 onChange={handleChange}
                                                 defaultValue={inputData.description}
                                                 required
-
                                             />
                                         </Form.Group>
-                                        <Form.Group
-                                            className="mb-3"
-                                            controlId="formProof"
-                                        >
+                                        <Form.Group className="mb-3" controlId="formProof">
                                             <Form.Label>File Bukti</Form.Label>
                                             <Form.Control
                                                 type="file"
@@ -478,6 +502,7 @@ const WorkHistory = () => {
             </Row>
         </Content>
     );
+    
 };
 
 export default WorkHistory;
