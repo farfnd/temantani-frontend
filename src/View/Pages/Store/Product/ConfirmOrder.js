@@ -32,7 +32,7 @@ const ConfirmOrder = () => {
         return () => {
             document.body.removeChild(scriptTag);
         }
-    }, []); //
+    }, []);
 
     const getDistance = async (address) => {
         const destination = encodeURIComponent(

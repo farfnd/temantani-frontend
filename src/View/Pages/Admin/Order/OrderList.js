@@ -50,14 +50,14 @@ const OrderList = () => {
     const headers = [
         {
             prop: "product.name",
-            title: "Product Name",
+            title: "Nama Produk",
             isFilterable: true,
             isSortable: true,
             cell: (row) => row.product.name
         },
         {
             prop: "amount",
-            title: "Amount",
+            title: "Jumlah",
             isFilterable: true,
             isSortable: true,
         },
@@ -72,21 +72,21 @@ const OrderList = () => {
         },
         {
             prop: "user.name",
-            title: "User",
+            title: "Pemesan",
             isFilterable: true,
             isSortable: true,
             cell: (row) => row.user.name
         },
         {
             prop: "address",
-            title: "Address",
+            title: "Alamat",
             isFilterable: true,
             isSortable: true,
             cell: (row) => row.address.address + ", " + row.address.subdistrict + ", " + row.address.district + ", " + row.address.city
         },
         {
             prop: "paymentMethod",
-            title: "Payment Method",
+            title: "Metode Pembayaran",
             isFilterable: true,
             isSortable: true,
         },
@@ -99,7 +99,7 @@ const OrderList = () => {
         },
         {
             prop: "actions",
-            title: "Actions",
+            title: "Aksi",
             cell: (row) => (
                 <div>
                     <Button type="primary" size="small" onClick={() => showEditModal(row)}>
@@ -151,12 +151,12 @@ const OrderList = () => {
                     <nav aria-label="breadcrumb" className="d-none d-md-inline-block">
                         <ol className="breadcrumb breadcrumb-dark breadcrumb-transparent">
                             <li className="breadcrumb-item"><Link to="/admin"><FontAwesomeIcon icon={faHouse} /></Link></li>
-                            <li className="breadcrumb-item"><Link to="/admin/orders">Orders</Link></li>
-                            <li className="breadcrumb-item active" aria-current="page">Order List</li>
+                            <li className="breadcrumb-item"><Link to="/admin/orders">Pesanan</Link></li>
+                            <li className="breadcrumb-item active" aria-current="page">Daftar Pesanan</li>
                         </ol>
                     </nav>
-                    <h2 className="h4">Order List</h2>
-                    <p className="mb-0">Show all orders</p>
+                    <h2 className="h4">Daftar Pesanan</h2>
+                    <p className="mb-0">Daftar pesanan hasil panen yang telah dibuat oleh pengguna.</p>
                 </div>
             </div>
             <Datatable headers={headers} data={orders} />
@@ -168,7 +168,7 @@ const OrderList = () => {
                 onCancel={handleCancel}
                 footer={[
                     <Button key="back" onClick={handleCancel} className="me-2" variant="outline-danger">
-                        Close
+                        Tutup
                     </Button>,
                     ((modalData.status === 'PAID' && (
                         loading ? (
@@ -177,12 +177,12 @@ const OrderList = () => {
                             </Button>
                         ) : (
                             <Button key="markProcessed" type="primary" onClick={() => updateOrderStatus(modalData.id, 'PROCESSED')}>
-                                Mark as Processed
+                                Tandai Sedang Diproses
                             </Button>
                         )
                     )) || (modalData.status === 'PROCESSED' && (
                         <Button key="markSent" type="primary" onClick={() => updateOrderStatus(modalData.id, 'SENT')}>
-                            Mark as Sent
+                            Tandai Sedang Dikirim
                         </Button>
                     ))
                     )
@@ -193,31 +193,31 @@ const OrderList = () => {
                         <strong>Order ID:</strong> {modalData.id}
                     </p>
                     <p>
-                        <strong>Product Name:</strong> {modalData.product?.name}
+                        <strong>Nama Produk:</strong> {modalData.product?.name}
                     </p>
                     <p>
-                        <strong>Amount:</strong> {modalData.amount}
+                        <strong>Jumlah:</strong> {modalData.amount}
                     </p>
                     <p>
-                        <strong>Order Status:</strong> {modalData.status}
+                        <strong>Status:</strong> {modalData.status}
                     </p>
                     <p>
-                        <strong>Ordered By:</strong> {modalData.user?.name} ({modalData.user?.email})
+                        <strong>Pemesan:</strong> {modalData.user?.name} ({modalData.user?.email})
                     </p>
                     {
                         modalData.status === 'PAID' && (
                             <>
                                 <p>
-                                    <strong>Payment Method:</strong> {modalData.paymentMethod}
+                                    <strong>Metode Pembayaran:</strong> {modalData.paymentMethod}
                                 </p>
                                 <p>
-                                    <strong>Payment Amount:</strong> {modalData.paymentAmount}
+                                    <strong>Jumlah Dibayar:</strong> {modalData.paymentAmount}
                                 </p>
                             </>
                         )
                     }
                     <p>
-                        <strong>Shipping Address:</strong>
+                        <strong>Alamat Pengiriman:</strong>
                         <br />
                         {modalData.address?.name}<br />
                         {modalData.address?.phoneNumber}<br />

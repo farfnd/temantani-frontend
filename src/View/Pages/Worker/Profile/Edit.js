@@ -21,7 +21,7 @@ import { UserContext } from '../../../../Contexts/UserContext';
 const { Content } = Layout;
 
 const EditProfile = () => {
-    const { user, setUser, fetchUser } = useContext(UserContext);
+    const { user, setUser, fetchUserIfEmpty } = useContext(UserContext);
     const [validated, setValidated] = useState(false);
     const [imagePreview, setImagePreview] = useState("");
     const [loading, setLoading] = useState(false);
@@ -41,7 +41,7 @@ const EditProfile = () => {
     const history = useHistory();
 
     useEffect(() => {
-        fetchUser();
+        fetchUserIfEmpty();
         setInputData({
             name: user?.name || "",
             email: user?.email || "",
@@ -84,13 +84,16 @@ const EditProfile = () => {
             setValidated(true);
         } else {
             setValidated(true);
-    
+
             const formData = new FormData();
             console.log(inputData);
             for (let key in inputData) {
-                formData.append(key, inputData[key]);
+                const value = inputData[key].trim();
+                if (value) {
+                    formData.append(key, value);
+                }
             }
-    
+
             try {
                 setLoading(true);
                 const response = await fetch(`${config.api.userService}/me`, {
@@ -112,7 +115,7 @@ const EditProfile = () => {
             }
         }
     };
-    
+
 
     return (
         <Container>
@@ -271,7 +274,7 @@ const EditProfile = () => {
                                                             Simpan
                                                         </Button>
                                                     )
-                                                }   
+                                                }
                                             </Col>
                                         </Row>
                                     </Form>

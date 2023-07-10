@@ -423,7 +423,7 @@ const BuyerDashboard = () => {
                                     </div>
                                 </Card.Footer>
                             </Card>
-                            <Modal show={showModal} onHide={handleCloseModal}>
+                            <Modal show={showModal} onHide={handleCloseModal} size='lg'>
                                 <Modal.Header closeButton>
                                     <Modal.Title>Detail Alamat</Modal.Title>
                                 </Modal.Header>

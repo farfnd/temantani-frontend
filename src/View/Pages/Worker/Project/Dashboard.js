@@ -110,6 +110,13 @@ const WorkHistory = () => {
                     }>
                         {row.status}
                     </Badge>
+                    {
+                        row.status === 'REJECTED' ? (
+                            <p className="mt-2">
+                                <strong>Alasan:</strong> {row.rejectionMessage}
+                            </p>
+                        ) : null
+                    }
                 </>
             )
         },
@@ -304,12 +311,13 @@ const WorkHistory = () => {
             const weekRange = renderWeekRange(startOfWeek, endOfWeek, i);
             const uploadedReport = workReports.find(report => report.week === i + 1);
             weekRows.push({
+                ...uploadedReport,
                 weekDescription: weekRange,
                 week: i + 1,
                 description: uploadedReport ? uploadedReport.description : '',
                 proof: uploadedReport ? uploadedReport.proof : '',
                 status: uploadedReport ? uploadedReport.status : 'NOT SUBMITTED',
-                actions: weekRange
+                actions: weekRange,
             });
         }
     }

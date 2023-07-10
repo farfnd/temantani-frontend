@@ -75,8 +75,12 @@ export const ProductsProvider = props => {
         setLoading(true);
 
         let preOrderEstimatedStock =
-            parseInt(inputData.preOrderEstimatedStock) === 0 &&
-                inputData.preOrderEstimatedDate === ""
+            (
+                parseInt(inputData.preOrderEstimatedStock) === 0
+                || inputData.preOrderEstimatedStock === ""
+                || isNaN(parseInt(inputData.preOrderEstimatedStock))
+            ) 
+            && inputData.preOrderEstimatedDate === ""
                 ? null
                 : inputData.preOrderEstimatedStock;
 
@@ -117,6 +121,7 @@ export const ProductsProvider = props => {
         requestMethod(apiEndpoint, formData, requestConfig)
             .then((res) => {
                 const data = res.data;
+                const preOrderEstimatedStock = data.preOrderEstimatedStock ? parseInt(data.preOrderEstimatedStock) : null;
 
                 if (id) {
                     // Update existing product in the local state
@@ -129,7 +134,7 @@ export const ProductsProvider = props => {
                                 price: parseInt(data.price),
                                 stock: parseInt(data.stock),
                                 status: data.status,
-                                preOrderEstimatedStock: parseInt(data.preOrderEstimatedStock),
+                                preOrderEstimatedStock: preOrderEstimatedStock,
                                 preOrderEstimatedDate: data.preOrderEstimatedDate,
                                 expiryPeriod: parseInt(data.expiryPeriod),
                                 expiryPeriodUnit: data.expiryPeriodUnit,
@@ -152,7 +157,7 @@ export const ProductsProvider = props => {
                             price: parseInt(data.price),
                             stock: parseInt(data.stock),
                             status: data.status,
-                            preOrderEstimatedStock: parseInt(data.preOrderEstimatedStock),
+                            preOrderEstimatedStock: preOrderEstimatedStock,
                             preOrderEstimatedDate: data.preOrderEstimatedDate,
                             expiryPeriod: parseInt(data.expiryPeriod),
                             expiryPeriodUnit: data.expiryPeriodUnit,

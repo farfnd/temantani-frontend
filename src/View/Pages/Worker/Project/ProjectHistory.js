@@ -136,7 +136,8 @@ const WorkerProjectHistory = () => {
                                                             <Card className="h-100">
                                                                 <Card.Img
                                                                     variant="top"
-                                                                    data-src="holder.js/300x180"
+                                                                    src={offer.land && offer.land.imageUrl ? `${config.api.landService}/images/${offer.land.imageUrl}`
+                                                                        : 'https://ik.trn.asia/uploads/2021/04/lahan-pertanian-mulai-terbatas.jpg'}
                                                                     className="img-fluid"
                                                                     style={{ objectFit: "cover", height: "180px" }}
                                                                 />

@@ -6,7 +6,7 @@ import config from "../../../../config";
 import StockBadge from "../StockBadge";
 
 function ProductH({ product }) {
-  const price = product.price;
+  const price = parseInt(product.price).toLocaleString("id-ID");
   let offPrice = `Rp${price}/kg`;
 
   return (
@@ -35,9 +35,11 @@ function ProductH({ product }) {
                   {offPrice}
                 </Card.Text>
                 <div>
+                  <Link to={`/store/products/${product.id}`} className="text-decoration-none text-dark" replace>
                   <Button variant="outline-dark" className="ms-auto">
-                    <FontAwesomeIcon icon={faCartPlus} /> Add to cart
+                    Detail
                   </Button>
+                  </Link>
                 </div>
               </div>
             </Card.Body>

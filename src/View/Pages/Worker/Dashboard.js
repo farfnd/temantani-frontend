@@ -192,7 +192,7 @@ const WorkerProjectDashboard = () => {
     };
 
     return (
-        <Content className="mx-3">
+        <Content className="m-3">
             <Row>
                 <Col sm={4}>
                     <Row>

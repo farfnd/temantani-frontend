@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import { faCartPlus, faEye } from "@fortawesome/free-solid-svg-icons";
 import config from "../../../../config";
 import { Badge, Button, Card, Col } from "react-bootstrap";
 import StockBadge from "../StockBadge";
 
 function Product({ product }) {
-  const price = product.price;
+  const price = parseInt(product.price).toLocaleString("id-ID");
   let offPrice = `Rp${price}/kg`;
 
   return (
@@ -34,7 +34,9 @@ function Product({ product }) {
           <div className="d-grid d-block">
             {product.status !== 'NOT_AVAILABLE' && (
               <Button variant="outline-dark" className="mt-3">
-                <FontAwesomeIcon icon={faCartPlus} /> Add to cart
+                <Link to={`/store/products/${product.id}`} className="text-decoration-none text-dark" replace>
+                  Detail
+                </Link>
               </Button>
             )}
           </div>

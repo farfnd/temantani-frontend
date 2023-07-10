@@ -38,10 +38,23 @@ function ProductDetail() {
     } catch (error) {
       console.error(error);
       message.error('Error fetching product');
+      await fetchProductFromOrderService();
     } finally {
       setLoading(false);
     }
   };
+
+  const fetchProductFromOrderService = async () => {
+    try {
+      const orderResponse = await fetch(`${config.api.orderService}/products/${id}`);
+      const orderData = await orderResponse.json();
+      setProduct(orderData);
+    } catch (error) {
+      console.log("Failed to fetch products from order service.");
+      setProduct(null);
+    }
+  };
+
 
   const fetchAddresses = async () => {
     try {
@@ -202,7 +215,7 @@ function ProductDetail() {
                       )
                     }
                     <dt className="col-sm-4">Umur Simpan</dt>
-                    <dd className="col-sm-8 mb-3">{product.expiryPeriod ?? 1} {product.expiryPeriodUnit ?? "Bulan"}</dd>
+                    <dd className="col-sm-8 mb-3">{product.expiryPeriod} {product.expiryPeriodUnit}</dd>
                   </dl>
 
                   <h4 className="mb-0">Deskripsi</h4>
@@ -267,6 +280,7 @@ function ProductDetail() {
                   <Form.Select
                     defaultValue={selectedAddress ?? ""}
                     onChange={(e) => setSelectedAddress(e.target.value)}
+                    required
                   >
                     <option label="Pilih alamat" value="" disabled hidden></option>
                     {addresses.map((address, index) => (
