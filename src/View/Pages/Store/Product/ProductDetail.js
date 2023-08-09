@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import StockBadge from "../../../Components/Store/StockBadge";
 import Cookies from "js-cookie";
+import axios from "axios";
 
 const iconPath =
   "M18.571 7.221c0 0.201-0.145 0.391-0.29 0.536l-4.051 3.951 0.96 5.58c0.011 0.078 0.011 0.145 0.011 0.223 0 0.29-0.134 0.558-0.458 0.558-0.156 0-0.313-0.056-0.446-0.134l-5.011-2.634-5.011 2.634c-0.145 0.078-0.29 0.134-0.446 0.134-0.324 0-0.469-0.268-0.469-0.558 0-0.078 0.011-0.145 0.022-0.223l0.96-5.58-4.063-3.951c-0.134-0.145-0.279-0.335-0.279-0.536 0-0.335 0.346-0.469 0.625-0.513l5.603-0.815 2.511-5.078c0.1-0.212 0.29-0.458 0.547-0.458s0.446 0.246 0.547 0.458l2.511 5.078 5.603 0.815c0.268 0.045 0.625 0.179 0.625 0.513z";
@@ -23,11 +24,19 @@ function ProductDetail() {
   const [amount, setAmount] = useState(1);
   const [loadingAddresses, setLoadingAddresses] = useState(true);
   const [addresses, setAddresses] = useState([]);
-  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const origin = config.shipping.origin;
+  const [shippingCost, setShippingCost] = useState(null);
 
   useEffect(() => {
     fetchProduct();
   }, []);
+
+  useEffect(() => {
+    if (selectedAddressId) {
+      calculateShippingCost();
+    }
+  }, [selectedAddressId]);
 
   const fetchProduct = async () => {
     try {
@@ -74,6 +83,39 @@ function ProductDetail() {
     } finally {
       setLoadingAddresses(false);
     }
+  };
+
+  const getDistance = async (address) => {
+    const destination = encodeURIComponent(
+      `${address.subdistrict}, ${address.district}, ${address.city}, ${address.postalCode}`
+    );
+    const originAddress = encodeURIComponent(
+      `${origin.subdistrict}, ${origin.district}, ${origin.city}, ${origin.postalCode}`
+    );
+
+    try {
+      const response = await axios.get(
+        `${config.api.orderService}/get-distance?origin=${originAddress}&destination=${destination}`
+      );
+      const data = await response.data.data;
+      return data;
+    } catch (error) {
+      console.error(error);
+      return 0;
+    }
+  };
+
+  const calculateShippingCost = async () => {
+    const address = addresses.find((address) => address.id === selectedAddressId);
+    const distance = await getDistance(address);
+    const cost =
+      config.shipping.cost.base +
+      config.shipping.cost.perKmUnder10Km * Math.ceil(distance / 1000) +
+      (distance > 10000
+        ? config.shipping.cost.perKmAbove10Km * Math.ceil((distance - 10000) / 1000)
+        : 0);
+
+    setShippingCost(cost);
   };
 
   const handleOpenModal = async (row) => {
@@ -278,8 +320,8 @@ function ProductDetail() {
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Alamat Pengiriman</Form.Label>
                   <Form.Select
-                    defaultValue={selectedAddress ?? ""}
-                    onChange={(e) => setSelectedAddress(e.target.value)}
+                    defaultValue={selectedAddressId ?? ""}
+                    onChange={(e) => setSelectedAddressId(e.target.value)}
                     required
                   >
                     <option label="Pilih alamat" value="" disabled hidden></option>
@@ -298,6 +340,18 @@ function ProductDetail() {
                 </div>
               )
             }
+
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Ongkos Kirim</Form.Label>
+              <h5>
+                {
+                  shippingCost !== null && selectedAddressId
+                  ? `Rp${parseInt(shippingCost).toLocaleString('id-ID')}`
+                  : (selectedAddressId ? "N/A" : "Pilih alamat terlebih dahulu")
+                }
+              </h5>
+            </Form.Group>
+            
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -310,7 +364,8 @@ function ProductDetail() {
               state: {
                 product: product,
                 amount: amount,
-                address: addresses.find(address => address.id === selectedAddress)
+                address: addresses.find(address => address.id === selectedAddressId),
+                shippingCost: shippingCost
               }
             }}
           >

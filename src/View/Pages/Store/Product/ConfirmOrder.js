@@ -5,20 +5,13 @@ import { useEffect, useState } from "react";
 import { Modal, message } from "antd";
 import Cookies from "js-cookie";
 
-const axios = require('axios');
-
 const ConfirmOrder = () => {
     const location = useLocation();
-    const { address, product, amount } = location.state;
-    const origin = config.shipping.origin;
-    const [shippingCost, setShippingCost] = useState(null);
+    const { address, product, amount, shippingCost } = location.state;
     const [loading, setLoading] = useState(false);
-    const { confirm } = Modal;
     const history = useHistory();
 
     useEffect(() => {
-        calculateShippingCost();
-
         const midtransScriptUrl = 'https://app.sandbox.midtrans.com/snap/snap.js';
 
         let scriptTag = document.createElement('script');
@@ -33,38 +26,6 @@ const ConfirmOrder = () => {
             document.body.removeChild(scriptTag);
         }
     }, []);
-
-    const getDistance = async (address) => {
-        const destination = encodeURIComponent(
-            `${address.subdistrict}, ${address.district}, ${address.city}, ${address.postalCode}`
-        );
-        const originAddress = encodeURIComponent(
-            `${origin.subdistrict}, ${origin.district}, ${origin.city}, ${origin.postalCode}`
-        );
-
-        try {
-            const response = await axios.get(
-                `${config.api.orderService}/get-distance?origin=${originAddress}&destination=${destination}`
-            );
-            const data = await response.data.data;
-            return data;
-        } catch (error) {
-            console.error(error);
-            return 0;
-        }
-    };
-
-    const calculateShippingCost = async () => {
-        const distance = await getDistance(address);
-        const cost =
-            config.shipping.cost.base +
-            config.shipping.cost.perKmUnder10Km * Math.ceil(distance / 1000) +
-            (distance > 10000
-                ? config.shipping.cost.perKmAbove10Km * Math.ceil((distance - 10000) / 1000)
-                : 0);
-
-        setShippingCost(cost);
-    };
 
     const confirmStoreOrder = async () => {
         try {
@@ -118,7 +79,7 @@ const ConfirmOrder = () => {
                 </Col>
             </Row>
             <Row>
-                <Col>
+                {<Col>
                     <Card>
                         <Card.Body>
                             <Row>
@@ -230,7 +191,7 @@ const ConfirmOrder = () => {
                             </Row>
                         </Card.Body>
                     </Card>
-                </Col>
+                </Col>}
             </Row>
         </Container>
     );
